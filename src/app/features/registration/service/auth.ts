@@ -1,14 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
-import { SignUpRequest } from '../models/signUp';
+import { inject, Injectable } from '@angular/core';
+
+import { signUpRequest } from '../models/signUp';
 import { signInRequest } from '../models/signIn';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  public http = inject(HttpClient);
-  public baseUrl = 'https://trainsapi.stepacademy.ge/api/auth';
+  private readonly http = inject(HttpClient);
 
-  signUp(userData: SignUpRequest) {
+  private readonly baseUrl = 'https://trainsapi.stepacademy.ge/api/auth';
+
+  signUp(userData: signUpRequest) {
     return this.http.post(`${this.baseUrl}/register`, userData);
   }
 

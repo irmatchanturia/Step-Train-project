@@ -125,22 +125,30 @@
             type="password"
             name="password"
             [(ngModel)]="password"
-            placeholder="Password (min. 6 characters)"
+            placeholder="Password (Min. 8 characters, uppercase and symbol)"
             autocomplete="new-password"
-            minlength="6"
+            minlength="8"
+            pattern="^(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$"
             required
           />
         </label>
 
-        <button class="create-account-button" type="submit">
+        <button class="create-account-button" type="submit" [disabled]="isLoading">
           <svg viewBox="0 0 24 24">
             <path d="M10 17l5-5-5-5" />
             <path d="M15 12H3" />
             <path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5" />
           </svg>
 
-          <span>Create Account</span>
+          <span>
+            {{ isLoading ? 'Creating account...' : 'Create Account' }}
+          </span>
         </button>
+        @if (errorMessage) {
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
+        }
       </form>
 
       <p class="sign-in-text">
