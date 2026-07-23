@@ -1,11 +1,16 @@
 <header class="site-header">
-  <a class="brand">
+  <a class="brand" routerLink="/">
     <span class="brand-icon">↝</span>
     <span>STEPTRAINS</span>
   </a>
 
   <nav class="main-navigation" aria-label="Main navigation">
-    <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a
+      class="nav-link"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       Home
     </a>
 
@@ -13,7 +18,8 @@
   </nav>
 
   <div class="header-actions">
-    <a class="sign-in-link">Sign In</a>
-    <a class="get-started-button" routerLink="getStarted">Get Started</a>
+    <a class="sign-in-link" routerLink="/sign-in"> Sign In </a>
+
+    <a class="get-started-button" routerLink="/sign-up"> Get Started </a>
   </div>
 </header>
