@@ -18,6 +18,7 @@ export class Home {
   errorMessage = '';
   filteredTrains: Train[] = [];
   isSearching = false;
+  
 
   trainSearchForm = new FormGroup({
     departure: new FormControl('', {
