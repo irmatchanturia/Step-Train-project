@@ -15,15 +15,14 @@
       <p class="hero-description">
         Search thousands of train routes and book your seats in seconds.
       </p>
-
-      <form class="train-search-form">
+      <form class="train-search-form" [formGroup]="trainSearchForm" (ngSubmit)="searchTrains()">
         <div class="search-field">
           <label for="departure">From</label>
 
           <input
             id="departure"
-            name="departure"
             type="text"
+            formControlName="departure"
             placeholder="Origin city or station"
             autocomplete="off"
           />
@@ -41,22 +40,46 @@
 
           <input
             id="destination"
-            name="destination"
             type="text"
+            formControlName="destination"
             placeholder="Destination city or station"
             autocomplete="off"
           />
         </div>
 
-        <button class="search-button" type="submit">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="7"></circle>
-            <path d="m16 16 5 5"></path>
-          </svg>
+        <button class="search-button" type="submit" [disabled]="isSearching">
+          @if (isSearching) {
+            <span class="button-spinner" aria-hidden="true"></span>
+            <span>Searching...</span>
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m16 16 5 5"></path>
+            </svg>
 
-          <span>Search</span>
+            <span>Search</span>
+          }
         </button>
       </form>
+      @if (errorMessage) {
+        <p class="error-message">{{ errorMessage }}</p>
+      }
+
+      @if (filteredTrains.length > 0) {
+        <section class="train-results">
+          @for (train of filteredTrains; track train.id) {
+            <article class="train-card">
+              <img [src]="train.thumbnail" [alt]="train.name" />
+
+              <h2>{{ train.name }}</h2>
+
+              <p>Train number: {{ train.number }}</p>
+              <p>Coaches: {{ train.coachesCount }}</p>
+              <p>Total seats: {{ train.totalSeats }}</p>
+            </article>
+          }
+        </section>
+      }
     </div>
   </section>
 
