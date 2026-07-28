@@ -16,17 +16,23 @@
         Search thousands of train routes and book your seats in seconds.
       </p>
       <form class="train-search-form" [formGroup]="trainSearchForm" (ngSubmit)="searchTrains()">
-        <div class="search-field">
+        <div class="search-field search-field--select">
           <label for="departure">From</label>
 
           <input
             id="departure"
             type="text"
             formControlName="departure"
+            list="stations-list"
             placeholder="Origin city or station"
             autocomplete="off"
           />
         </div>
+        <datalist id="stations-list">
+          @for (station of stations; track station.id) {
+            <option [value]="station.name"></option>
+          }
+        </datalist>
 
         <div class="route-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24">
@@ -35,18 +41,23 @@
           </svg>
         </div>
 
-        <div class="search-field">
+        <div class="search-field search-field--select">
           <label for="destination">To</label>
 
           <input
             id="destination"
             type="text"
             formControlName="destination"
+            list="stations-list"
             placeholder="Destination city or station"
             autocomplete="off"
           />
         </div>
-
+        <datalist id="stations-list">
+          @for (station of stations; track station.id) {
+            <option [value]="station.name"></option>
+          }
+        </datalist>
         <button class="search-button" type="submit" [disabled]="isSearching">
           @if (isSearching) {
             <span class="button-spinner" aria-hidden="true"></span>

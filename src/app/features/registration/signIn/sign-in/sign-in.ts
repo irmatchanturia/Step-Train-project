@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
-
+import { ToastService } from '../../../../shared/service/toast-service';
 import { AuthService } from '../../service/auth';
 
 @Component({
@@ -24,11 +24,11 @@ export class SignIn {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private toastService: ToastService,
   ) {}
 
   signIn(): void {
     this.errorMessage = '';
-    this.successMessage = '';
 
     if (!this.email.trim() || !this.password) {
       this.errorMessage = 'გთხოვთ, შეავსოთ ყველა ველი.';
@@ -51,9 +51,12 @@ export class SignIn {
       )
       .subscribe({
         next: (response) => {
-          console.log('Login response:', response);
+          const { accessToken, refreshToken } = response.data;
 
-          this.successMessage = 'ავტორიზაცია წარმატებით დასრულდა!';
+          this.authService.saveTokens(accessToken, refreshToken);
+
+          this.toastService.success('Login successful!');
+
           this.router.navigate(['/home']);
         },
 
@@ -61,9 +64,7 @@ export class SignIn {
           console.error('Login error:', error);
           console.error('Backend response:', error.error);
 
-          this.errorMessage =
-            error.error?.message ??
-            'ელფოსტა ან პაროლი არასწორია.';
+          this.errorMessage = error.error?.message ?? 'ელფოსტა ან პაროლი არასწორია.';
         },
       });
   }

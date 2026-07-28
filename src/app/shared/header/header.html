@@ -15,11 +15,17 @@
     </a>
 
     <a class="nav-link" routerLink="/trains" routerLinkActive="active"> Trains </a>
+
+    @if (isAuthenticated()) {
+      <a class="nav-link" routerLink="/profile" routerLinkActive="active"> My Profile </a>
+    }
   </nav>
 
-  <div class="header-actions">
-    <a class="sign-in-link" routerLink="/sign-in"> Sign In </a>
+  @if (!isAuthenticated()) {
+    <div class="header-actions">
+      <a class="sign-in-link" routerLink="/sign-in"> Sign In </a>
 
-    <a class="get-started-button" routerLink="/sign-up"> Get Started </a>
-  </div>
+      <a class="get-started-button" routerLink="/sign-up"> Get Started </a>
+    </div>
+  }
 </header>

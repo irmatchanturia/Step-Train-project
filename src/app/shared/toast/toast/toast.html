@@ -1,0 +1,34 @@
+@if (toastService.toast(); as toast) {
+  <div
+    class="toast"
+    [class.toast-success]="toast.type === 'success'"
+    [class.toast-error]="toast.type === 'error'"
+    [class.toast-info]="toast.type === 'info'"
+    role="alert"
+  >
+    <div class="toast-content">
+      <span class="toast-icon" aria-hidden="true">
+        @if (toast.type === 'success') {
+          ✓
+        } @else if (toast.type === 'error') {
+          !
+        } @else {
+          i
+        }
+      </span>
+
+      <span class="toast-message">
+        {{ toast.message }}
+      </span>
+    </div>
+
+    <button
+      class="toast-close"
+      type="button"
+      aria-label="Close notification"
+      (click)="toastService.hide()"
+    >
+      ×
+    </button>
+  </div>
+}

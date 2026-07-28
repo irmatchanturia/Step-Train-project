@@ -361,6 +361,60 @@
   line-height: 1.9;
 }
 
+.search-field--select {
+  position: relative;
+}
+
+/* პატარა dropdown ისარი */
+.search-field--select::after {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 8px;
+  height: 8px;
+  content: '';
+  pointer-events: none;
+  border-right: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  transform: translateY(-65%) rotate(45deg);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+/* ტექსტი ისარს რომ არ დაეჯახოს */
+.search-field--select input {
+  padding-right: 32px;
+}
+
+/* focus-ის დროს ველის ფონი ოდნავ იცვლება */
+.search-field--select:focus-within {
+  border-radius: 12px;
+  background: rgba(226, 233, 241, 0.38);
+}
+
+/* focus-ის დროს ისარი ზემოთ შეტრიალდება */
+.search-field--select:focus-within::after {
+  border-color: var(--primary-dark);
+  transform: translateY(-30%) rotate(225deg);
+}
+
+/* input-ის ტექსტის რბილი ცვლილება */
+.search-field--select input {
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.search-field--select input:focus {
+  color: var(--text-primary);
+}
+
+/* ბრაუზერის ზოგიერთ შემთხვევაში datalist-ის ნაგულისხმევი ისრის დამალვა */
+.search-field--select input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
 /* CTA SECTION */
 
 .cta-section {
@@ -580,6 +634,15 @@
   .cta-card {
     min-height: 380px;
     padding: 60px 25px;
+  }
+  .search-field--select::after {
+    right: 20px;
+  }
+
+  .search-field--select:focus-within {
+    border-color: var(--primary);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(127, 145, 168, 0.1);
   }
 }
 

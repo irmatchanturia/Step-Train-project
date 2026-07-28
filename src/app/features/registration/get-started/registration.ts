@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../service/auth';
+import { ToastService } from '../../../shared/service/toast-service';
 
 @Component({
   selector: 'app-sign-up',
@@ -41,6 +42,7 @@ export class SignUp {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private toastService: ToastService,
   ) {}
 
   signUp(): void {
@@ -71,12 +73,9 @@ export class SignUp {
 
     this.authService.signUp(userData).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.successMessage = 'რეგისტრაცია წარმატებით დასრულდა!';
+        this.toastService.success('Registration completed successfully!');
 
-        this.registrationForm.reset();
-
-        this.router.navigate(['/sign-in']);
+        this.router.navigate(['/signIn']);
       },
 
       error: (error: HttpErrorResponse) => {
