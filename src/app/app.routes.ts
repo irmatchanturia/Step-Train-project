@@ -3,6 +3,10 @@ import { Home } from './features/home/home/home';
 import { SignUp } from './features/registration/get-started/registration';
 import { SignIn } from './features/registration/signIn/sign-in/sign-in';
 import { TrainComponent } from './features/train/train/train';
+import { ProfileLayout } from './features/profile/profile-layout/profile-layout';
+import { MyProfile } from './features/profile/my-profile/my-profile';
+import { MyBookings } from './features/profile/my-bookings/my-bookings';
+import { Settings } from './features/profile/settings/settings';
 
 export const routes: Routes = [
   {
@@ -20,6 +24,29 @@ export const routes: Routes = [
   {
     path: 'trains',
     component: TrainComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileLayout,
+    children: [
+      {
+        path: '',
+        redirectTo: 'my-profile',
+        pathMatch: 'full',
+      },
+      {
+        path: 'my-profile',
+        component: MyProfile,
+      },
+      {
+        path: 'my-bookings',
+        component: MyBookings,
+      },
+      {
+        path: 'settings',
+        component: Settings,
+      },
+    ],
   },
   {
     path: '**',

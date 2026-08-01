@@ -1,0 +1,15 @@
+<main class="profile-page">
+  <div class="profile-layout">
+    <app-aside [user]="profileService.currentUser()" [isLoading]="isLoading"></app-aside>
+
+    <section class="profile-content">
+      @if (errorMessage) {
+        <p class="profile-error">
+          {{ errorMessage }}
+        </p>
+      }
+
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+</main>

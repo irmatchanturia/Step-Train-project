@@ -1,0 +1,297 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.profile-card {
+  width: 100%;
+  padding: 40px;
+
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.profile-card-header {
+  margin-bottom: 34px;
+}
+
+.profile-title {
+  margin: 0 0 8px;
+
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.profile-description {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.form-field {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-field label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-field input {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+
+  color: var(--text-primary);
+  background-color: var(--surface-light);
+
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  outline: none;
+
+  font: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.form-field input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+.form-field input:hover {
+  border-color: var(--primary);
+  background-color: var(--surface);
+}
+
+.form-field input:focus {
+  border-color: var(--primary-dark);
+  background-color: var(--surface);
+
+  box-shadow: 0 0 0 4px rgba(127, 145, 168, 0.15);
+}
+
+.form-field input:disabled,
+.form-field input[readonly] {
+  color: var(--text-muted);
+  background-color: var(--background-secondary);
+  cursor: not-allowed;
+}
+
+/* Date input icon */
+
+.form-field input[type='date'] {
+  color-scheme: light;
+}
+
+.form-field input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.form-field input[type='date']::-webkit-calendar-picker-indicator:hover {
+  opacity: 0.85;
+}
+
+/* Form button */
+
+.form-actions {
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-button {
+  min-width: 145px;
+  height: 46px;
+  padding: 0 24px;
+
+  color: var(--surface);
+  background-color: var(--primary-dark);
+
+  border: none;
+  border-radius: 9px;
+  box-shadow: 0 10px 22px rgba(86, 107, 132, 0.2);
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.save-button:hover {
+  background-color: var(--primary-darker);
+  box-shadow: 0 13px 28px rgba(86, 107, 132, 0.26);
+  transform: translateY(-1px);
+}
+
+.save-button:active {
+  transform: translateY(0);
+}
+
+.save-button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.save-button:disabled {
+  background-color: var(--primary);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+.field-error {
+  margin-top: -2px;
+
+  color: #b34a4a;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.form-field input.ng-invalid.ng-touched {
+  border-color: rgba(179, 74, 74, 0.65);
+  box-shadow: 0 0 0 4px rgba(179, 74, 74, 0.08);
+}
+
+.form-message {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px 16px;
+
+  color: #176b3a;
+  background-color: #e9f8ef;
+
+  border: 1px solid #8ed0a8;
+  border-left: 5px solid #2e9d5b;
+  border-radius: 10px;
+
+  box-shadow: 0 8px 20px rgba(46, 157, 91, 0.14);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  animation: message-appear 0.25s ease-out;
+}
+
+.success-message::before {
+  content: '✓';
+
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+  background-color: #2e9d5b;
+  border-radius: 50%;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  } 
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-message {
+  color: #a33f3f;
+  background-color: #fff1f1;
+  border: 1px solid rgba(163, 63, 63, 0.2);
+}
+/* Tablet */
+
+@media (max-width: 1024px) {
+  .profile-card {
+    padding: 32px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .profile-card {
+    padding: 26px 20px;
+    border-radius: 14px;
+  }
+
+  .profile-card-header {
+    margin-bottom: 28px;
+  }
+
+  .profile-title {
+    font-size: 21px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .save-button {
+    width: 100%;
+  }
+}

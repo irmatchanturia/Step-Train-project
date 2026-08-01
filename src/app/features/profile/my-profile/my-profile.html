@@ -1,0 +1,131 @@
+<section class="profile-card">
+  <div class="profile-card-header">
+    <h1 class="profile-title">Personal Information</h1>
+
+    <p class="profile-description">Update your name, contact details and date of birth.</p>
+  </div>
+
+  <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="pictureUrl">Picture URL</label>
+
+      <input
+        id="pictureUrl"
+        type="url"
+        formControlName="pictureUrl"
+        placeholder="https://"
+        autocomplete="url"
+      />
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="firstName">First Name</label>
+
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          placeholder="Enter your first name"
+          autocomplete="given-name"
+        />
+
+        @if (
+          profileForm.controls.firstName.touched &&
+          profileForm.controls.firstName.hasError('required')
+        ) {
+          <span class="field-error"> First name is required. </span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="lastName">Last Name</label>
+
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          placeholder="Enter your last name"
+          autocomplete="family-name"
+        />
+
+        @if (
+          profileForm.controls.lastName.touched &&
+          profileForm.controls.lastName.hasError('required')
+        ) {
+          <span class="field-error"> Last name is required. </span>
+        }
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="email">Email Address</label>
+
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email address"
+        autocomplete="email"
+      />
+
+      @if (profileForm.controls.email.touched && profileForm.controls.email.hasError('required')) {
+        <span class="field-error"> Email address is required. </span>
+      } @else if (
+        profileForm.controls.email.touched && profileForm.controls.email.hasError('email')
+      ) {
+        <span class="field-error"> Enter a valid email address. </span>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="phoneNumber">Phone Number</label>
+
+      <input
+        id="phoneNumber"
+        type="tel"
+        formControlName="phoneNumber"
+        placeholder="e.g. +995 555 01 01 01"
+        autocomplete="tel"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="address">Address</label>
+
+      <input
+        id="address"
+        type="text"
+        formControlName="address"
+        placeholder="Enter your address"
+        autocomplete="street-address"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="dob">Date of Birth</label>
+
+      <input id="dob" type="date" formControlName="dob" autocomplete="bday" />
+    </div>
+    @if (successMessage) {
+      <p class="form-message success-message">
+        {{ successMessage }}
+      </p>
+    }
+
+    @if (errorMessage) {
+      <p class="form-message error-message">
+        {{ errorMessage }}
+      </p>
+    }
+    <div class="form-actions">
+      <button class="save-button" type="submit" [disabled]="profileForm.invalid || isSaving">
+        @if (isSaving) {
+          Saving...
+        } @else {
+          Save Changes
+        }
+      </button>
+    </div>
+  </form>
+</section>
