@@ -1,1 +1,163 @@
-<p>my-bookings works!</p>
+<section class="bookings-card">
+  <header class="bookings-header">
+    <h1 class="bookings-title">My Bookings</h1>
+
+    <p class="bookings-description">View and manage all your train reservations.</p>
+  </header>
+
+  <form class="bookings-filter" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+    <div class="filter-field">
+      <label for="fromDate">From Date</label>
+
+      <input id="fromDate" type="date" formControlName="fromDate" />
+    </div>
+
+    <div class="filter-field">
+      <label for="toDate">To Date</label>
+
+      <input id="toDate" type="date" formControlName="toDate" />
+
+      @if (filterForm.controls.toDate.touched && filterForm.hasError('invalidDateRange')) {
+        <span class="field-error"> To date cannot be earlier than from date. </span>
+      }
+    </div>
+
+    <div class="filter-actions">
+      <button class="filter-button" type="submit" [disabled]="isLoading || filterForm.invalid">
+        Filter
+      </button>
+
+      <button
+        class="clear-button"
+        type="button"
+        [disabled]="isLoading || !hasActiveFilters"
+        (click)="clearFilters()"
+      >
+        Clear
+      </button>
+    </div>
+  </form>
+
+  @if (errorMessage) {
+    <div class="bookings-message error-message" role="alert">
+      <div>
+        <strong>Bookings could not be loaded.</strong>
+
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button class="retry-button" type="button" (click)="loadBookings()">Try Again</button>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="bookings-loading" aria-live="polite" aria-label="Loading bookings">
+      @for (item of loadingItems; track $index) {
+        <div class="booking-skeleton">
+          <div class="skeleton-line skeleton-route"></div>
+          <div class="skeleton-line skeleton-details"></div>
+        </div>
+      }
+    </div>
+  } @else if (!errorMessage && bookings.length === 0) {
+    <div class="empty-bookings">
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+
+          <path d="M8 3v4M16 3v4M4 10h16"></path>
+        </svg>
+      </div>
+
+      @if (hasActiveFilters) {
+        <h2>No bookings found</h2>
+
+        <p>There are no reservations matching the selected date range.</p>
+
+        <button class="browse-button" type="button" (click)="clearFilters()">Clear Filters</button>
+      } @else {
+        <h2>No bookings yet</h2>
+
+        <p>When you book a train, your reservations will appear here.</p>
+
+        <a class="browse-button" routerLink="/trains"> Browse Trains </a>
+      }
+    </div>
+  } @else {
+    <div class="bookings-list">
+      @for (booking of bookings; track booking.id) {
+        <article class="booking-item">
+          <div class="journey-information">
+            <div class="route">
+              <strong>
+                {{ booking.origin }}
+              </strong>
+
+              <svg class="route-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14"></path>
+                <path d="m14 7 5 5-5 5"></path>
+              </svg>
+
+              <strong>
+                {{ booking.destination }}
+              </strong>
+            </div>
+
+            <div class="train-information">
+              <span>
+                {{ booking.trainName }}
+              </span>
+
+              <span aria-hidden="true">•</span>
+
+              <span> #{{ booking.trainNumber }} </span>
+
+              <span aria-hidden="true">•</span>
+
+              <time>
+                {{ booking.departureTime | slice: 0 : 5 }}
+              </time>
+
+              <span aria-hidden="true">•</span>
+
+              <time [attr.datetime]="booking.travelDate">
+                {{ booking.travelDate | date: 'MMM d, y' }}
+              </time>
+            </div>
+          </div>
+
+          <div class="seat-information">
+            <span class="seat-class">
+              {{ booking.coachClass }}
+            </span>
+
+            <strong> Seat {{ booking.seatNumber }} </strong>
+
+            <span> Coach {{ booking.coachNumber }} </span>
+          </div>
+
+          <div class="booking-price">₾{{ booking.price }}</div>
+
+          <div class="booking-actions">
+            <button class="details-button" type="button" (click)="viewBookingDetails(booking.id)">
+              Details
+            </button>
+
+            <button
+              class="delete-button"
+              type="button"
+              [disabled]="deletingBookingId === booking.id"
+              (click)="deleteBooking(booking.id)"
+            >
+              @if (deletingBookingId === booking.id) {
+                Deleting...
+              } @else {
+                Delete
+              }
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
