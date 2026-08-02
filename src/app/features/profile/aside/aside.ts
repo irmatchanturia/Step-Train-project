@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, Input } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ProfileUser } from '../../profile/models/user-models';
 
 @Component({
@@ -11,6 +11,7 @@ import { ProfileUser } from '../../profile/models/user-models';
 export class Aside {
   @Input() user: ProfileUser | null = null;
   @Input() isLoading = false;
+  private readonly router = inject(Router);
 
   get fullName(): string {
     return [this.user?.firstName, this.user?.lastName].filter(Boolean).join(' ');
@@ -22,5 +23,14 @@ export class Aside {
     const lastInitial = this.user?.lastName?.trim().charAt(0) ?? '';
 
     return `${firstInitial}${lastInitial}`.toUpperCase();
+  }
+
+  signOut(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    void this.router.navigate(['/sign-in'], {
+      replaceUrl: true,
+    });
   }
 }

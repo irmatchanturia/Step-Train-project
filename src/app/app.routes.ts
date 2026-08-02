@@ -1,12 +1,16 @@
 import { Routes } from '@angular/router';
+
 import { Home } from './features/home/home/home';
 import { SignUp } from './features/registration/get-started/registration';
 import { SignIn } from './features/registration/signIn/sign-in/sign-in';
 import { TrainComponent } from './features/train/train/train';
+
 import { ProfileLayout } from './features/profile/profile-layout/profile-layout';
 import { MyProfile } from './features/profile/my-profile/my-profile';
 import { MyBookings } from './features/profile/my-bookings/my-bookings';
 import { Settings } from './features/profile/settings/settings';
+
+import { authGuard } from '../app/core/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -28,6 +32,7 @@ export const routes: Routes = [
   {
     path: 'profile',
     component: ProfileLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
