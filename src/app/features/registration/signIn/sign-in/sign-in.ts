@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
+
 import { ToastService } from '../../../../shared/service/toast-service';
 import { AuthService } from '../../service/auth';
 
@@ -16,6 +17,7 @@ import { AuthService } from '../../service/auth';
 export class SignIn {
   email = '';
   password = '';
+  rememberMe = false;
 
   errorMessage = '';
   successMessage = '';
@@ -25,10 +27,12 @@ export class SignIn {
     private authService: AuthService,
     private router: Router,
     private toastService: ToastService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   signIn(): void {
     this.errorMessage = '';
+    this.successMessage = '';
 
     if (!this.email.trim() || !this.password) {
       this.errorMessage = 'გთხოვთ, შეავსოთ ყველა ველი.';
@@ -47,25 +51,43 @@ export class SignIn {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+          this.changeDetectorRef.markForCheck();
         }),
       )
       .subscribe({
         next: (response) => {
           const { accessToken, refreshToken } = response.data;
 
-          this.authService.saveTokens(accessToken, refreshToken);
+          this.authService.saveTokens(accessToken, refreshToken, this.rememberMe);
 
           this.toastService.success('Login successful!');
 
-          this.router.navigate(['/home']);
+          void this.router.navigate(['/']);
         },
 
         error: (error: HttpErrorResponse) => {
           console.error('Login error:', error);
           console.error('Backend response:', error.error);
 
-          this.errorMessage = error.error?.message ?? 'ელფოსტა ან პაროლი არასწორია.';
+          if (error.status === 401) {
+            this.errorMessage = 'ელფოსტა ან პაროლი არასწორია.';
+          } else if (error.status === 0) {
+            this.errorMessage = 'სერვერთან დაკავშირება ვერ მოხერხდა.';
+          } else {
+            this.errorMessage =
+              this.extractBackendMessage(error) ?? 'ავტორიზაცია ვერ მოხერხდა. სცადეთ თავიდან.';
+          }
+
+          this.changeDetectorRef.markForCheck();
         },
       });
+  }
+
+  private extractBackendMessage(error: HttpErrorResponse): string | null {
+    if (typeof error.error === 'string') {
+      return error.error;
+    }
+
+    return error.error?.message ?? error.error?.title ?? error.error?.data?.message ?? null;
   }
 }

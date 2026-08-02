@@ -26,30 +26,45 @@ export class AuthService {
     return this.http.post<SignInResponse>(`${this.baseUrl}/login`, userData);
   }
 
-  saveTokens(accessToken: string, refreshToken: string): void {
-    localStorage.setItem(this.accessTokenKey, accessToken);
+  saveTokens(accessToken: string, refreshToken: string, rememberMe: boolean): void {
+    this.clearTokens();
 
-    localStorage.setItem(this.refreshTokenKey, refreshToken);
+    const storage = rememberMe ? localStorage : sessionStorage;
+
+    storage.setItem(this.accessTokenKey, accessToken);
+
+    storage.setItem(this.refreshTokenKey, refreshToken);
 
     this.isAuthenticated.set(true);
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey);
+    return localStorage.getItem(this.accessTokenKey) ?? sessionStorage.getItem(this.accessTokenKey);
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem(this.refreshTokenKey);
+    return (
+      localStorage.getItem(this.refreshTokenKey) ?? sessionStorage.getItem(this.refreshTokenKey)
+    );
   }
 
-  logout(): void {
+  clearTokens(): void {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
+
+    sessionStorage.removeItem(this.accessTokenKey);
+    sessionStorage.removeItem(this.refreshTokenKey);
 
     this.isAuthenticated.set(false);
   }
 
+  logout(): void {
+    this.clearTokens();
+  }
+
   private hasAccessToken(): boolean {
-    return Boolean(localStorage.getItem(this.accessTokenKey));
+    return Boolean(
+      localStorage.getItem(this.accessTokenKey) ?? sessionStorage.getItem(this.accessTokenKey),
+    );
   }
 }

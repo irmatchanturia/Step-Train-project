@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { BookingsResponse } from '../../profile/models/booking-models';
+import { AuthService } from '../../registration/service/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -10,10 +11,10 @@ export class BookingsService {
   private readonly http = inject(HttpClient);
 
   private readonly bookingsUrl = 'https://trainsapi.stepacademy.ge/api/bookings';
+  private readonly authService = inject(AuthService);
 
   getBookings(take: number = 10, page: number = 1): Observable<BookingsResponse> {
-    const accessToken = localStorage.getItem('accessToken');
-
+    const accessToken = this.authService.getAccessToken();
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }
@@ -30,8 +31,7 @@ export class BookingsService {
     });
   }
   deleteBooking(bookingId: number): Observable<unknown> {
-    const accessToken = localStorage.getItem('accessToken');
-
+    const accessToken = this.authService.getAccessToken();
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }
@@ -49,8 +49,7 @@ export class BookingsService {
     take: number = 10,
     page: number = 1,
   ): Observable<BookingsResponse> {
-    const accessToken = localStorage.getItem('accessToken');
-
+    const accessToken = this.authService.getAccessToken();
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }

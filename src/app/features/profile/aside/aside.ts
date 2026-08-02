@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ProfileUser } from '../../profile/models/user-models';
+import { AuthService } from '../../registration/service/auth';
 
 @Component({
   selector: 'app-aside',
@@ -12,6 +13,7 @@ export class Aside {
   @Input() user: ProfileUser | null = null;
   @Input() isLoading = false;
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   get fullName(): string {
     return [this.user?.firstName, this.user?.lastName].filter(Boolean).join(' ');
@@ -26,8 +28,7 @@ export class Aside {
   }
 
   signOut(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    this.authService.logout();
 
     void this.router.navigate(['/sign-in'], {
       replaceUrl: true,
