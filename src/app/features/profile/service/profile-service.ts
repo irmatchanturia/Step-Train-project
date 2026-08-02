@@ -6,6 +6,7 @@ import {
   ProfileUser,
   UpdateProfileRequest,
 } from '../../profile/models/user-models';
+import { ChangePasswordRequest } from '../models/setting-models';
 
 @Injectable({
   providedIn: 'root',
@@ -56,5 +57,40 @@ export class ProfileService {
         this.currentUserSignal.set(user);
       }),
     );
+  }
+
+  changePassword(request: ChangePasswordRequest): Observable<unknown> {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      return throwError(() => new Error('Access token was not found'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.put<unknown>(
+      'https://trainsapi.stepacademy.ge/api/users/change-password',
+      request,
+      { headers },
+    );
+  }
+
+  deleteProfile(): Observable<unknown> {
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!accessToken) {
+      return throwError(() => new Error('Access token was not found'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.delete<unknown>('https://trainsapi.stepacademy.ge/api/users/delete-profile', {
+      headers,
+      timeout: 20000,
+    });
   }
 }
