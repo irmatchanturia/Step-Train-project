@@ -32,10 +32,16 @@ export class AuthService {
     const storage = rememberMe ? localStorage : sessionStorage;
 
     storage.setItem(this.accessTokenKey, accessToken);
-
     storage.setItem(this.refreshTokenKey, refreshToken);
 
     this.isAuthenticated.set(true);
+
+    console.log('Saving tokens in:', rememberMe ? 'localStorage' : 'sessionStorage');
+
+    console.log(
+      'Token exists immediately after saving:',
+      Boolean(storage.getItem(this.accessTokenKey)),
+    );
   }
 
   getAccessToken(): string | null {

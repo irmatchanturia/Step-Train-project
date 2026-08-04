@@ -84,7 +84,12 @@
 
         <div class="form-options">
           <label class="remember-me">
-            <input type="checkbox" name="rememberMe" [(ngModel)]="rememberMe" />
+            <input
+              type="checkbox"
+              name="rememberMe"
+              [checked]="rememberMe"
+              (change)="onRememberMeChange($event)"
+            />
             <span>Remember me</span>
           </label>
 

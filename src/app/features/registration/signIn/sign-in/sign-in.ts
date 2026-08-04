@@ -58,7 +58,11 @@ export class SignIn {
         next: (response) => {
           const { accessToken, refreshToken } = response.data;
 
+          console.log('Remember me:', this.rememberMe);
+
           this.authService.saveTokens(accessToken, refreshToken, this.rememberMe);
+
+          console.log('AuthService can read token:', Boolean(this.authService.getAccessToken()));
 
           this.toastService.success('Login successful!');
 
@@ -89,5 +93,13 @@ export class SignIn {
     }
 
     return error.error?.message ?? error.error?.title ?? error.error?.data?.message ?? null;
+  }
+
+  onRememberMeChange(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+
+    this.rememberMe = checkbox.checked;
+
+    console.log('Checkbox changed:', this.rememberMe);
   }
 }
