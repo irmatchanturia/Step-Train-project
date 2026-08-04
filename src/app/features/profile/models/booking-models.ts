@@ -27,3 +27,20 @@ export interface BookingsPage {
 export interface BookingsResponse {
   data: BookingsPage;
 }
+
+export interface BookingDetailsModel extends Booking {
+  trainId: number;
+  trainThumbnail: string | null;
+}
+
+export interface BookingDetailsResponse {
+  data: BookingDetailsModel;
+}
+
+export interface UpdateBookingDateRequest {
+  travelDate: string;
+}
+
+export interface UpdateBookingDateResponse {
+  data: number;
+}

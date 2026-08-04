@@ -11,6 +11,7 @@ import { MyBookings } from './features/profile/my-bookings/my-bookings';
 import { Settings } from './features/profile/settings/settings';
 
 import { authGuard } from '../app/core/guards/auth-guard';
+import { BookingDetails } from './features/profile/booking-details/booking-details';
 
 export const routes: Routes = [
   {
@@ -50,6 +51,10 @@ export const routes: Routes = [
       {
         path: 'settings',
         component: Settings,
+      },
+      {
+        path: 'my-bookings/:id',
+        component: BookingDetails,
       },
     ],
   },

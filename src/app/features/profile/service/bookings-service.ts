@@ -1,7 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { BookingsResponse } from '../../profile/models/booking-models';
+import {
+  BookingDetailsResponse,
+  BookingsResponse,
+  UpdateBookingDateRequest,
+  UpdateBookingDateResponse,
+} from '../models/booking-models';
 import { AuthService } from '../../registration/service/auth';
 
 @Injectable({
@@ -71,6 +76,38 @@ export class BookingsService {
     return this.http.get<BookingsResponse>(`${this.bookingsUrl}/filter`, {
       headers,
       params,
+    });
+  }
+
+  getBookingById(bookingId: number): Observable<BookingDetailsResponse> {
+    const accessToken = this.authService.getAccessToken();
+
+    if (!accessToken) {
+      return throwError(() => new Error('Access token was not found'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.get<BookingDetailsResponse>(`${this.bookingsUrl}/${bookingId}`, { headers });
+  }
+  updateBookingDate(
+    bookingId: number,
+    request: UpdateBookingDateRequest,
+  ): Observable<UpdateBookingDateResponse> {
+    const accessToken = this.authService.getAccessToken();
+
+    if (!accessToken) {
+      return throwError(() => new Error('Access token was not found'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.put<UpdateBookingDateResponse>(`${this.bookingsUrl}/${bookingId}`, request, {
+      headers,
     });
   }
 }

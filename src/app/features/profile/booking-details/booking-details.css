@@ -1,0 +1,770 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.booking-details-card {
+  width: 100%;
+  min-height: 650px;
+  padding: 40px;
+
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+/* Back link */
+
+.back-link {
+  width: fit-content;
+  margin-bottom: 26px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-link svg {
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.back-link:hover {
+  color: var(--primary-darker);
+  transform: translateX(-2px);
+}
+
+/* Train image */
+
+.train-image-wrapper {
+  width: 100%;
+  height: 260px;
+
+  overflow: hidden;
+
+  background-color: var(--surface-light);
+  border-radius: 14px;
+}
+
+.train-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+}
+
+/* Summary */
+
+.booking-summary {
+  margin-top: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.booking-route {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.booking-route h1 {
+  margin: 0;
+
+  color: var(--text-primary);
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.route-arrow {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.booking-price {
+  flex-shrink: 0;
+
+  color: var(--primary-darker);
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.summary-divider {
+  width: 100%;
+  height: 1px;
+  margin: 30px 0;
+
+  background-color: var(--border);
+}
+
+/* Information */
+
+.booking-information {
+  margin: 0;
+}
+
+.information-row {
+  min-height: 54px;
+  padding: 14px 0;
+
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(200px, 2fr);
+  gap: 24px;
+  align-items: center;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.information-row:last-child {
+  border-bottom: none;
+}
+
+.information-row dt {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.information-row dd {
+  margin: 0;
+
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Status messages */
+
+.status-message {
+  margin-top: 22px;
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  animation: message-appear 0.24s ease-out;
+}
+
+.success-message {
+  color: #176b3a;
+  background-color: #e9f8ef;
+
+  border: 1px solid #8ed0a8;
+  border-left: 5px solid #2e9d5b;
+
+  box-shadow: 0 8px 20px rgba(46, 157, 91, 0.12);
+}
+
+.error-message {
+  color: #973e49;
+  background-color: #fff2f3;
+
+  border: 1px solid rgba(151, 62, 73, 0.22);
+  border-left: 5px solid #b84d5a;
+}
+
+/* Booking actions */
+
+.booking-actions {
+  margin-top: 34px;
+  padding-top: 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  border-top: 1px solid var(--border);
+}
+
+.change-date-button,
+.delete-booking-button,
+.save-date-button,
+.cancel-date-button,
+.retry-button {
+  min-height: 44px;
+  padding: 0 22px;
+
+  border-radius: 9px;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.change-date-button {
+  color: var(--primary-darker);
+  background-color: var(--surface);
+
+  border: 1px solid var(--border-strong);
+}
+
+.change-date-button:hover:not(:disabled) {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.delete-booking-button {
+  color: #b84050;
+  background-color: transparent;
+
+  border: 1px solid rgba(184, 64, 80, 0.45);
+}
+
+.delete-booking-button:hover:not(:disabled) {
+  color: #ffffff;
+  background-color: #b84050;
+  border-color: #b84050;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Change date */
+
+.change-date-section {
+  margin-top: 32px;
+  padding: 28px;
+
+  background-color: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  animation: section-appear 0.25s ease-out;
+}
+
+.change-date-section h2 {
+  margin: 0 0 22px;
+
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.change-date-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-field label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-field input {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+
+  color: var(--text-primary);
+  background-color: var(--surface);
+
+  border: 1px solid var(--border-strong);
+  border-radius: 9px;
+  outline: none;
+
+  font: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-field input:hover {
+  border-color: var(--primary);
+}
+
+.form-field input:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 4px rgba(127, 145, 168, 0.15);
+}
+
+.form-field input.ng-invalid.ng-touched {
+  border-color: rgba(179, 74, 74, 0.65);
+  box-shadow: 0 0 0 4px rgba(179, 74, 74, 0.08);
+}
+
+.field-error {
+  color: #a94747;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.change-date-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.save-date-button {
+  min-width: 100px;
+
+  color: #ffffff;
+  background-color: var(--primary-dark);
+
+  border: 1px solid var(--primary-dark);
+  box-shadow: 0 10px 22px rgba(86, 107, 132, 0.18);
+}
+
+.save-date-button:hover:not(:disabled) {
+  background-color: var(--primary-darker);
+  border-color: var(--primary-darker);
+  transform: translateY(-1px);
+}
+
+.cancel-date-button {
+  color: var(--text-secondary);
+  background-color: transparent;
+
+  border: 1px solid transparent;
+}
+
+.cancel-date-button:hover:not(:disabled) {
+  color: var(--text-primary);
+  background-color: var(--primary-light);
+}
+
+/* Error state */
+
+.details-error {
+  min-height: 380px;
+  padding: 40px 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+
+  text-align: center;
+}
+
+.details-error h2 {
+  margin: 0 0 8px;
+
+  color: var(--text-primary);
+  font-size: 21px;
+}
+
+.details-error p {
+  margin: 0;
+
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.retry-button {
+  color: #ffffff;
+  background-color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+}
+
+/* Loading */
+
+.details-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.image-skeleton,
+.title-skeleton,
+.row-skeleton {
+  position: relative;
+  overflow: hidden;
+
+  background-color: var(--background-secondary);
+  border-radius: 10px;
+}
+
+.image-skeleton::after,
+.title-skeleton::after,
+.row-skeleton::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+
+  transform: translateX(-100%);
+  animation: skeleton-loading 1.3s infinite;
+}
+
+.image-skeleton {
+  height: 260px;
+}
+
+.title-skeleton {
+  width: 65%;
+  height: 34px;
+  margin: 16px 0;
+}
+
+.row-skeleton {
+  height: 52px;
+}
+
+/* Animations */
+
+@keyframes skeleton-loading {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes section-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(37, 49, 66, 0.52);
+  backdrop-filter: blur(5px);
+}
+
+.confirmation-dialog {
+  width: 100%;
+  max-width: 460px;
+
+  padding: 30px;
+
+  border: 1px solid var(--border);
+  border-radius: 24px;
+
+  background: var(--surface);
+  box-shadow: var(--shadow-large);
+
+  animation: confirmation-dialog-enter 180ms ease-out;
+}
+
+.confirmation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+
+  margin-bottom: 20px;
+
+  border-radius: 18px;
+
+  color: #c44f4f;
+  background: rgba(196, 79, 79, 0.1);
+}
+
+.confirmation-icon svg {
+  width: 27px;
+  height: 27px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirmation-content h2 {
+  margin: 0 0 10px;
+
+  color: var(--text-primary);
+
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.confirmation-content p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.confirmation-content strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.confirmation-error {
+  margin-top: 20px;
+  padding: 13px 15px;
+
+  border: 1px solid rgba(196, 79, 79, 0.22);
+  border-radius: 12px;
+
+  color: #a83f3f;
+  background: rgba(196, 79, 79, 0.08);
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  margin-top: 28px;
+}
+
+.confirmation-cancel-button,
+.confirmation-delete-button {
+  min-height: 44px;
+  padding: 0 20px;
+
+  border-radius: 12px;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    opacity 160ms ease;
+}
+
+.confirmation-cancel-button {
+  border: 1px solid var(--border-strong);
+
+  color: var(--text-secondary);
+  background: var(--surface);
+}
+
+.confirmation-cancel-button:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--surface-light);
+}
+
+.confirmation-delete-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  border: 1px solid transparent;
+
+  color: #ffffff;
+  background: #c44f4f;
+}
+
+.confirmation-delete-button:hover:not(:disabled) {
+  background: #ad4242;
+  transform: translateY(-1px);
+}
+
+.confirmation-cancel-button:disabled,
+.confirmation-delete-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.delete-spinner {
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+
+  animation: delete-spinner-rotate 700ms linear infinite;
+}
+
+@keyframes delete-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes confirmation-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 520px) {
+  .confirmation-overlay {
+    align-items: flex-end;
+    padding: 14px;
+  }
+
+  .confirmation-dialog {
+    padding: 24px;
+    border-radius: 22px;
+  }
+
+  .confirmation-actions {
+    flex-direction: column-reverse;
+  }
+
+  .confirmation-cancel-button,
+  .confirmation-delete-button {
+    width: 100%;
+  }
+}
+/* Responsive */
+
+@media (max-width: 800px) {
+  .booking-details-card {
+    padding: 30px;
+  }
+
+  .train-image-wrapper,
+  .image-skeleton {
+    height: 220px;
+  }
+
+  .booking-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .booking-price {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .booking-details-card {
+    min-height: auto;
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+
+  .train-image-wrapper,
+  .image-skeleton {
+    height: 180px;
+  }
+
+  .booking-route {
+    gap: 10px;
+  }
+
+  .booking-route h1 {
+    font-size: 20px;
+  }
+
+  .information-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .information-row dd {
+    text-align: left;
+  }
+
+  .booking-actions,
+  .change-date-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .change-date-button,
+  .delete-booking-button,
+  .save-date-button,
+  .cancel-date-button {
+    width: 100%;
+  }
+
+  .change-date-section {
+    padding: 22px 18px;
+  }
+}

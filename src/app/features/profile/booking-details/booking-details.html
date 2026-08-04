@@ -1,0 +1,267 @@
+<section class="booking-details-card">
+  <a class="back-link" routerLink="/profile/my-bookings">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 12H5"></path>
+      <path d="m10 17-5-5 5-5"></path>
+    </svg>
+
+    <span>Back to bookings</span>
+  </a>
+
+  @if (isLoading) {
+    <div class="details-loading" aria-live="polite" aria-label="Loading booking details">
+      <div class="image-skeleton"></div>
+      <div class="title-skeleton"></div>
+
+      @for (item of loadingRows; track $index) {
+        <div class="row-skeleton"></div>
+      }
+    </div>
+  } @else if (errorMessage) {
+    <div class="details-error" role="alert">
+      <div>
+        <h2>Booking could not be loaded</h2>
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <button class="retry-button" type="button" (click)="loadBooking()">Try Again</button>
+    </div>
+  } @else if (booking) {
+    <div class="booking-content">
+      <div class="train-image-wrapper">
+        <img
+          class="train-image"
+          [src]="booking.trainThumbnail || 'assets/images/train-placeholder.jpg'"
+          [alt]="booking.trainName + ' train'"
+          referrerpolicy="no-referrer"
+        />
+      </div>
+
+      <header class="booking-summary">
+        <div class="booking-route">
+          <h1>{{ booking.origin }}</h1>
+
+          <svg class="route-arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m14 7 5 5-5 5"></path>
+          </svg>
+
+          <h1>{{ booking.destination }}</h1>
+        </div>
+
+        <div class="booking-price">{{ currencySymbol }}{{ booking.price }}</div>
+      </header>
+
+      <div class="summary-divider"></div>
+
+      <dl class="booking-information">
+        <div class="information-row">
+          <dt>Train</dt>
+
+          <dd>
+            {{ booking.trainName }}
+            #{{ booking.trainNumber }}
+          </dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Departure Time</dt>
+
+          <dd>
+            {{ booking.departureTime | slice: 0 : 5 }}
+          </dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Coach</dt>
+
+          <dd>
+            {{ booking.coachNumber }}
+            —
+            {{ booking.coachClass }}
+          </dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Ticket Price</dt>
+
+          <dd>{{ currencySymbol }}{{ booking.price }}</dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Seat</dt>
+
+          <dd>{{ booking.seatNumber }}</dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Travel Date</dt>
+
+          <dd>
+            <time [attr.datetime]="booking.travelDate">
+              {{ booking.travelDate | date: 'EEEE, MMMM d, y' }}
+            </time>
+          </dd>
+        </div>
+
+        <div class="information-row">
+          <dt>Booked On</dt>
+
+          <dd>
+            <time [attr.datetime]="booking.createdAt">
+              {{ booking.createdAt | date: 'EEEE, MMMM d, y' }}
+            </time>
+          </dd>
+        </div>
+      </dl>
+
+      @if (dateSuccessMessage) {
+        <div class="status-message success-message" role="status">
+          {{ dateSuccessMessage }}
+        </div>
+      }
+
+      @if (dateErrorMessage) {
+        <div class="status-message error-message" role="alert">
+          {{ dateErrorMessage }}
+        </div>
+      }
+
+      <div class="booking-actions">
+        <button
+          class="change-date-button"
+          type="button"
+          [disabled]="isDeletingBooking || isUpdatingDate"
+          (click)="openChangeDateEditor()"
+        >
+          Change Date
+        </button>
+
+        <button
+          class="delete-booking-button"
+          type="button"
+          [disabled]="isDeletingBooking || isUpdatingDate"
+          (click)="openDeleteConfirmation()"
+        >
+          Delete Booking
+        </button>
+      </div>
+
+      @if (isChangingDate) {
+        <section class="change-date-section">
+          <h2>Change Travel Date</h2>
+
+          <form class="change-date-form" [formGroup]="changeDateForm" (ngSubmit)="saveTravelDate()">
+            <div class="form-field">
+              <label for="travelDate"> New Travel Date </label>
+
+              <input
+                id="travelDate"
+                type="date"
+                formControlName="travelDate"
+                [min]="minimumTravelDate"
+              />
+
+              @if (
+                changeDateForm.controls.travelDate.touched &&
+                changeDateForm.controls.travelDate.hasError('required')
+              ) {
+                <span class="field-error"> Please select a new travel date. </span>
+              }
+            </div>
+
+            <div class="change-date-actions">
+              <button
+                class="save-date-button"
+                type="submit"
+                [disabled]="changeDateForm.invalid || isUpdatingDate"
+              >
+                @if (isUpdatingDate) {
+                  Saving...
+                } @else {
+                  Save
+                }
+              </button>
+
+              <button
+                class="cancel-date-button"
+                type="button"
+                [disabled]="isUpdatingDate"
+                (click)="closeChangeDateEditor()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </section>
+      }
+    </div>
+  }
+
+  @if (showDeleteConfirmation) {
+    <div class="confirmation-overlay" role="presentation" (click)="closeDeleteConfirmation()">
+      <section
+        class="confirmation-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="confirmation-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 6h18"></path>
+            <path d="M8 6V4h8v2"></path>
+            <path d="M19 6l-1 14H6L5 6"></path>
+            <path d="M10 11v5"></path>
+            <path d="M14 11v5"></path>
+          </svg>
+        </div>
+
+        <div class="confirmation-content">
+          <h2 id="delete-dialog-title">Delete this booking?</h2>
+
+          <p id="delete-dialog-description">
+            Your booking from
+            <strong>{{ booking?.origin }}</strong>
+            to
+            <strong>{{ booking?.destination }}</strong>
+            will be permanently deleted.
+          </p>
+        </div>
+
+        @if (deleteErrorMessage) {
+          <div class="confirmation-error" role="alert">
+            {{ deleteErrorMessage }}
+          </div>
+        }
+
+        <div class="confirmation-actions">
+          <button
+            class="confirmation-cancel-button"
+            type="button"
+            [disabled]="isDeletingBooking"
+            (click)="closeDeleteConfirmation()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="confirmation-delete-button"
+            type="button"
+            [disabled]="isDeletingBooking"
+            (click)="confirmDeleteBooking()"
+          >
+            @if (isDeletingBooking) {
+              <span class="delete-spinner" aria-hidden="true"></span>
+
+              Deleting...
+            } @else {
+              Yes, Delete
+            }
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+</section>
