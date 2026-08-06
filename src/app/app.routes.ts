@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { Home } from './features/home/home/home';
 import { SignUp } from './features/registration/get-started/registration';
 import { SignIn } from './features/registration/signIn/sign-in/sign-in';
-import { TrainComponent } from './features/train/train/train';
+import { TrainComponent } from './features/trains/train/train/train';
 
 import { ProfileLayout } from './features/profile/profile-layout/profile-layout';
 import { MyProfile } from './features/profile/my-profile/my-profile';
@@ -12,6 +12,7 @@ import { Settings } from './features/profile/settings/settings';
 
 import { authGuard } from '../app/core/guards/auth-guard';
 import { BookingDetails } from './features/profile/booking-details/booking-details';
+import { TrainDetails } from './features/trains/train-details/train-details';
 
 export const routes: Routes = [
   {
@@ -57,6 +58,10 @@ export const routes: Routes = [
         component: BookingDetails,
       },
     ],
+  },
+  {
+    path: 'trains/:id',
+    component: TrainDetails,
   },
   {
     path: '**',

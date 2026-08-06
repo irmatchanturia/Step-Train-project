@@ -1,16 +1,18 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Train } from '../../registration/models/trains.models';
-import { Station } from '../../registration/models/stations.model';
-import { TrainService } from '../../registration/service/trains-service';
+import { Train } from '../../../registration/models/trains.models';
+import { Station } from '../../../registration/models/stations.model';
+import { TrainService } from '../../../registration/service/trains-service';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-train',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './train.html',
   styleUrl: './train.css',
 })
 export class TrainComponent implements OnInit {
+  private readonly router = inject(Router);
   stations: Station[] = [];
   allTrains: Train[] = [];
   filteredTrains: Train[] = [];
@@ -128,6 +130,6 @@ export class TrainComponent implements OnInit {
   }
 
   openTrain(trainId: number): void {
-    console.log(trainId);
+    void this.router.navigate(['/trains', trainId]);
   }
 }

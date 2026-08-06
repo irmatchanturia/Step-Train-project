@@ -479,6 +479,83 @@ select {
   }
 }
 
+.train-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.train-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+}
+
+.train-card:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.coach-list {
+  display: grid;
+  gap: 16px;
+}
+
+.coach-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  min-height: 70px;
+  padding: 20px 30px;
+
+  border: 1px solid var(--border);
+  border-radius: 17px;
+
+  background: var(--surface);
+  box-shadow: var(--shadow-small);
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.coach-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+.coach-main-information {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.coach-number {
+  color: var(--text-primary);
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.coach-class {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 26px;
+  padding: 0 11px;
+
+  border-radius: 999px;
+
+  color: var(--primary-dark);
+  background: var(--primary-light);
+
+  font-size: 12px;
+}
 /* RESPONSIVE */
 
 @media (max-width: 1050px) {
