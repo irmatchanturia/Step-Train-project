@@ -1,0 +1,186 @@
+<section class="select-seats-page">
+  @if (isLoading) {
+    <div class="seats-state-card" aria-live="polite">Loading available seats...</div>
+  } @else if (errorMessage) {
+    <div class="seats-state-card seats-error" role="alert">
+      <h2>Seats could not be loaded</h2>
+
+      <p>{{ errorMessage }}</p>
+
+      <button class="retry-button" type="button" (click)="loadSeats()">Try Again</button>
+    </div>
+  } @else if (coach) {
+    <button class="back-button" type="button" (click)="backToDate()">← Back to date</button>
+
+    <header class="seats-header">
+      <div>
+        <h2>Select Your Seats</h2>
+
+        <p>Coach {{ coach.number }} — {{ coach.class }} class</p>
+      </div>
+
+      <div class="travel-date">
+        <span>Travel date</span>
+        <strong>{{ travelDate }}</strong>
+      </div>
+    </header>
+
+    <div class="seats-layout">
+      <div class="coach-container">
+        <div class="coach-top">
+          <div>
+            <strong>Coach {{ coach.number }}</strong>
+            <span>{{ coach.class }} class</span>
+          </div>
+
+          <div class="coach-price">
+            {{ coach.price }} GEL
+            <span>per seat</span>
+          </div>
+        </div>
+
+        @if (seatRows.length > 0) {
+          <div class="seat-map" aria-label="Coach seat map">
+            <div class="coach-front" aria-hidden="true">Front</div>
+
+            @for (row of seatRows; track $index) {
+              <div class="seat-row">
+                @for (seat of row; track seat.id; let seatIndex = $index) {
+                  @if (seatIndex === 2) {
+                    <div class="seat-aisle" aria-hidden="true"></div>
+                  }
+
+                  <button
+                    class="seat"
+                    type="button"
+                    [class.available]="seat.isAvailable && !isSeatSelected(seat.id)"
+                    [class.selected]="isSeatSelected(seat.id)"
+                    [class.booked]="!seat.isAvailable"
+                    [disabled]="!seat.isAvailable"
+                    [attr.aria-pressed]="isSeatSelected(seat.id)"
+                    [attr.aria-label]="
+                      seat.isAvailable
+                        ? 'Seat ' + seat.number + ', available'
+                        : 'Seat ' + seat.number + ', booked'
+                    "
+                    (click)="toggleSeat(seat)"
+                  >
+                    <span class="seat-icon"></span>
+
+                    <strong>
+                      {{ seat.number }}
+                    </strong>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="empty-seats">No seats were found for this coach.</div>
+        }
+
+        <div class="seat-legend">
+          <div class="legend-item">
+            <span class="legend-seat legend-available"></span>
+
+            <span>Available</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-seat legend-selected"></span>
+
+            <span>Selected</span>
+          </div>
+
+          <div class="legend-item">
+            <span class="legend-seat legend-booked"></span>
+
+            <span>Booked</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="selection-summary">
+        <h3>Your Selection</h3>
+
+        <div class="summary-route">
+          <span>Coach</span>
+
+          <strong>
+            {{ coach.number }}
+            · {{ coach.class }}
+          </strong>
+        </div>
+
+        <div class="summary-route">
+          <span>Travel date</span>
+
+          <strong>{{ travelDate }}</strong>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="selected-section">
+          <div class="selected-header">
+            <span>Selected seats</span>
+
+            <strong>
+              {{ selectedSeatsCount }}
+            </strong>
+          </div>
+
+          @if (selectedSeats.length > 0) {
+            <div class="selected-seat-list">
+              @for (seat of selectedSeats; track seat.id) {
+                <button
+                  class="selected-seat-chip"
+                  type="button"
+                  [attr.aria-label]="'Remove seat ' + seat.number"
+                  (click)="toggleSeat(seat)"
+                >
+                  {{ seat.number }}
+
+                  <span aria-hidden="true"> × </span>
+                </button>
+              }
+            </div>
+          } @else {
+            <p class="empty-selection">Select one or more available seats.</p>
+          }
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="price-row">
+          <span>
+            {{ selectedSeatsCount }}
+            × {{ coach.price }} GEL
+          </span>
+
+          <strong> {{ totalPrice }} GEL </strong>
+        </div>
+
+        <div class="total-row">
+          <span>Total</span>
+
+          <strong> {{ totalPrice }} GEL </strong>
+        </div>
+
+        @if (selectionErrorMessage) {
+          <p class="selection-error" role="alert">
+            {{ selectionErrorMessage }}
+          </p>
+        }
+
+        <button
+          class="continue-button"
+          type="button"
+          [disabled]="selectedSeatsCount === 0"
+          (click)="continueToConfirmation()"
+        >
+          Continue to Confirmation
+        </button>
+      </aside>
+    </div>
+  }
+</section>

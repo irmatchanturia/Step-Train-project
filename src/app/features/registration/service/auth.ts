@@ -10,12 +10,9 @@ import { signInRequest, SignInResponse } from '../models/signIn.models';
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-
   private readonly baseUrl = 'https://trainsapi.stepacademy.ge/api/auth';
-
   private readonly accessTokenKey = 'accessToken';
   private readonly refreshTokenKey = 'refreshToken';
-
   readonly isAuthenticated = signal<boolean>(this.hasAccessToken());
 
   signUp(userData: signUpRequest) {

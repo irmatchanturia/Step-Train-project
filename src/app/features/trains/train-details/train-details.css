@@ -809,6 +809,154 @@
   font-size: 14px;
 }
 
+.authentication-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background: rgba(37, 49, 66, 0.48);
+  backdrop-filter: blur(4px);
+}
+
+.authentication-modal {
+  position: relative;
+
+  width: min(100%, 430px);
+  padding: 34px;
+
+  border: 1px solid var(--border);
+  border-radius: 20px;
+
+  background: var(--surface);
+
+  box-shadow: var(--shadow-large);
+
+  text-align: center;
+}
+
+.authentication-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+
+  display: grid;
+  place-items: center;
+
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  color: var(--text-secondary);
+  background: transparent;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.authentication-modal-close:hover {
+  color: var(--text-primary);
+  background: var(--surface-light);
+}
+
+.authentication-modal-icon {
+  display: grid;
+  place-items: center;
+
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 20px;
+
+  border-radius: 50%;
+
+  color: var(--primary-dark);
+  background: var(--primary-light);
+
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.authentication-modal h2 {
+  margin: 0 0 12px;
+
+  color: var(--text-primary);
+
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.authentication-modal p {
+  max-width: 330px;
+  margin: 0 auto;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.authentication-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  margin-top: 28px;
+}
+
+.authentication-cancel-button,
+.authentication-sign-in-button {
+  min-height: 48px;
+  padding: 0 18px;
+
+  border-radius: 11px;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.authentication-cancel-button {
+  border: 1px solid var(--border-strong);
+
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+.authentication-cancel-button:hover {
+  background: var(--surface-light);
+}
+
+.authentication-sign-in-button {
+  border: 0;
+
+  color: #ffffff;
+  background: var(--primary-dark);
+}
+
+.authentication-sign-in-button:hover {
+  background: var(--primary-darker);
+}
+
+@media (max-width: 480px) {
+  .authentication-modal {
+    padding: 30px 22px 24px;
+  }
+
+  .authentication-modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 620px) {
   .coach-card {
     align-items: flex-start;

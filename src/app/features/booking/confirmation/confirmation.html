@@ -1,0 +1,177 @@
+<section class="confirmation-page">
+  @if (isLoading) {
+    <div class="confirmation-state-card" aria-live="polite">Loading your booking summary...</div>
+  } @else if (bookingId !== null) {
+    <div class="booking-success" role="status">
+      <div class="success-icon" aria-hidden="true">✓</div>
+
+      <h2>Booking Confirmed</h2>
+
+      <p>Your booking was created successfully.</p>
+
+      <div class="booking-reference">
+        <span>Booking ID</span>
+
+        <strong> #{{ bookingId }} </strong>
+      </div>
+
+      <button class="primary-button" type="button" (click)="backToTrains()">Back to Trains</button>
+    </div>
+  } @else if (errorMessage) {
+    <div class="confirmation-state-card confirmation-error" role="alert">
+      <h2>Booking summary could not be loaded</h2>
+
+      <p>{{ errorMessage }}</p>
+
+      <div class="error-actions">
+        <button class="secondary-button" type="button" (click)="backToSeats()">
+          Back to Seats
+        </button>
+
+        <button class="primary-button" type="button" (click)="loadConfirmationData()">
+          Try Again
+        </button>
+      </div>
+    </div>
+  } @else if (train && schedule && coach) {
+    <button class="back-button" type="button" (click)="backToSeats()">← Back to seats</button>
+
+    <header class="confirmation-header">
+      <h2>Review and Confirm</h2>
+
+      <p>Check your journey details before creating the booking.</p>
+    </header>
+
+    <div class="confirmation-layout">
+      <article class="booking-summary">
+        <section class="summary-section">
+          <div class="section-heading">
+            <span>Journey</span>
+
+            <strong> Train {{ train.number }} </strong>
+          </div>
+
+          <div class="journey-route">
+            <div>
+              <span>From</span>
+
+              <strong>
+                {{ schedule.origin }}
+              </strong>
+            </div>
+
+            <span class="route-arrow" aria-hidden="true"> → </span>
+
+            <div class="destination">
+              <span>To</span>
+
+              <strong>
+                {{ schedule.destination }}
+              </strong>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <div>
+              <span>Train</span>
+
+              <strong>
+                {{ train.name }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Departure</span>
+
+              <strong>
+                {{ schedule.departureTime | slice: 0 : 5 }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Travel date</span>
+
+              <strong>
+                {{ travelDate }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Coach</span>
+
+              <strong>
+                {{ coach.number }}
+                · {{ coach.class }}
+              </strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="summary-section">
+          <div class="section-heading">
+            <span>Selected seats</span>
+
+            <strong>
+              {{ selectedSeats.length }}
+            </strong>
+          </div>
+
+          <div class="seat-list">
+            @for (seat of selectedSeats; track seat.id) {
+              <span class="seat-chip">
+                {{ seat.number }}
+              </span>
+            }
+          </div>
+        </section>
+      </article>
+
+      <aside class="payment-summary">
+        <h3>Price Summary</h3>
+
+        <div class="price-line">
+          <span>Price per seat</span>
+
+          <strong> {{ coach.price }} GEL </strong>
+        </div>
+
+        <div class="price-line">
+          <span>Number of seats</span>
+
+          <strong>
+            {{ selectedSeats.length }}
+          </strong>
+        </div>
+
+        <div class="total-line">
+          <span>Total</span>
+
+          <strong> {{ totalPrice }} GEL </strong>
+        </div>
+
+        @if (submitErrorMessage) {
+          <p class="submit-error" role="alert">
+            {{ submitErrorMessage }}
+          </p>
+        }
+
+        <button
+          class="confirm-button"
+          type="button"
+          [disabled]="isSubmitting"
+          (click)="createBooking()"
+        >
+          @if (isSubmitting) {
+            Creating Booking...
+          } @else {
+            Confirm Booking
+          }
+        </button>
+
+        <p class="confirmation-note">
+          Seats are confirmed only after the booking is successfully created.
+        </p>
+      </aside>
+    </div>
+  }
+</section>

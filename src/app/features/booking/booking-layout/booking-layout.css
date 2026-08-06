@@ -1,0 +1,281 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.booking-layout {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  padding: 32px;
+
+  color: var(--text-primary);
+  background: var(--background);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 34px;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.back-link:hover {
+  color: var(--primary-dark);
+  transform: translateX(-2px);
+}
+
+.booking-header {
+  margin-bottom: 34px;
+}
+
+.booking-header h1 {
+  margin: 0 0 10px;
+
+  color: var(--text-primary);
+
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.booking-header p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.booking-layout {
+  width: 100%;
+  min-height: 100%;
+}
+
+.booking-header {
+  margin-bottom: 42px;
+}
+
+.back-to-trains {
+  display: inline-block;
+  margin-bottom: 22px;
+
+  color: var(--text-secondary);
+
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.back-to-trains:hover {
+  color: var(--primary-dark);
+}
+
+.booking-header h1 {
+  margin: 0 0 10px;
+
+  color: var(--text-primary);
+
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.booking-header p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+}
+
+.booking-stepper {
+  display: flex;
+  align-items: flex-start;
+
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  flex-shrink: 0;
+
+  min-width: 58px;
+}
+
+.step-circle {
+  display: grid;
+  place-items: center;
+
+  width: 46px;
+  height: 46px;
+
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+
+  color: var(--text-muted);
+  background: var(--surface);
+
+  font-size: 16px;
+  font-weight: 700;
+
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.step-label {
+  margin-top: 10px;
+
+  color: var(--text-muted);
+
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  transition: color 180ms ease;
+}
+
+.step-connector {
+  flex: 1;
+
+  height: 3px;
+  margin: 22px 20px 0;
+
+  border-radius: 999px;
+
+  background: var(--border-strong);
+
+  transition: background-color 180ms ease;
+}
+
+/* აქტიური ნაბიჯი — მაგალითად Date გვერდზე Date */
+
+.step-active .step-circle {
+  border-color: var(--primary-dark);
+
+  color: #ffffff;
+  background: var(--primary-dark);
+
+  box-shadow: 0 8px 20px rgba(101, 120, 143, 0.24);
+}
+
+.step-active .step-label {
+  color: var(--primary-dark);
+}
+
+/* უკვე გავლილი ნაბიჯი */
+
+.step-completed .step-circle {
+  border-color: var(--primary-dark);
+
+  color: #ffffff;
+  background: var(--primary-dark);
+}
+
+.step-completed .step-label {
+  color: var(--primary-dark);
+}
+
+.step-connector.connector-completed {
+  background: var(--primary-dark);
+}
+
+.booking-content {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .booking-stepper {
+    margin-bottom: 36px;
+  }
+
+  .step {
+    min-width: 42px;
+  }
+
+  .step-circle {
+    width: 38px;
+    height: 38px;
+
+    font-size: 14px;
+  }
+
+  .step-label {
+    font-size: 10px;
+  }
+
+  .step-connector {
+    margin: 18px 8px 0;
+  }
+}
+/* Child page */
+
+.booking-step-content {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .booking-layout {
+    padding: 24px;
+  }
+
+  .booking-stepper {
+    grid-template-columns:
+      auto 1fr
+      auto 1fr
+      auto 1fr
+      auto;
+  }
+
+  .booking-step {
+    min-width: 54px;
+  }
+
+  .step-label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .booking-layout {
+    padding: 18px;
+  }
+
+  .booking-header {
+    margin-bottom: 28px;
+  }
+
+  .booking-stepper {
+    margin-bottom: 34px;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+  }
+
+  .step-line {
+    margin-top: 15px;
+  }
+
+  .step-label {
+    display: none;
+  }
+}

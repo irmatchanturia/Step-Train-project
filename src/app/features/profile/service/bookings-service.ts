@@ -8,6 +8,10 @@ import {
   UpdateBookingDateResponse,
 } from '../models/booking-models';
 import { AuthService } from '../../registration/service/auth';
+import {
+  CreateBookingRequest,
+  CreateBookingResponse,
+} from '../../booking/models/create-booking-models';
 
 @Injectable({
   providedIn: 'root',
@@ -109,5 +113,11 @@ export class BookingsService {
     return this.http.put<UpdateBookingDateResponse>(`${this.bookingsUrl}/${bookingId}`, request, {
       headers,
     });
+  }
+  createBooking(request: CreateBookingRequest): Observable<CreateBookingResponse> {
+    return this.http.post<CreateBookingResponse>(
+      'https://trainsapi.stepacademy.ge/api/bookings',
+      request,
+    );
   }
 }

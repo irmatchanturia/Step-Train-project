@@ -1,12 +1,13 @@
 import { SlicePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { TrainCoach, TrainDetailsModel, TrainSchedule } from '../models/train-details-models';
 
 import { TrainService } from '../../registration/service/trains-service';
+import { AuthService } from '../../registration/service/auth';
 
 type TrainDetailsTab = 'schedules' | 'coaches';
 
@@ -21,9 +22,13 @@ export class TrainDetails implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly trainService = inject(TrainService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
-
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
   private trainId: number | null = null;
 
+  showAuthenticationModal = false;
+
+  private pendingBookingUrl: string | null = null;
   train: TrainDetailsModel | null = null;
 
   activeTab: TrainDetailsTab = 'schedules';
@@ -144,21 +149,37 @@ export class TrainDetails implements OnInit {
       });
   }
   bookSchedule(schedule: TrainSchedule): void {
-    console.log('Selected schedule:', schedule);
+    if (!this.train) {
+      return;
+    }
 
-    /*
-     * Booking wizard-ის შექმნის შემდეგ
-     * აქ navigation დაემატება.
-     *
-     * მაგალითად:
-     *
-     * void this.router.navigate([
-     *   '/trains',
-     *   schedule.trainId,
-     *   'book',
-     *   schedule.id,
-     *   'coach',
-     * ]);
-     */
+    const bookingUrl = `/trains/${this.train.id}/book/${schedule.id}/coach`;
+
+    const isAuthenticated = Boolean(this.authService.getAccessToken());
+
+    if (!isAuthenticated) {
+      this.pendingBookingUrl = bookingUrl;
+      this.showAuthenticationModal = true;
+
+      return;
+    }
+
+    void this.router.navigateByUrl(bookingUrl);
+  }
+  closeAuthenticationModal(): void {
+    this.showAuthenticationModal = false;
+    this.pendingBookingUrl = null;
+  }
+
+  goToSignIn(): void {
+    const returnUrl = this.pendingBookingUrl ?? '/trains';
+
+    this.showAuthenticationModal = false;
+
+    void this.router.navigate(['/sign-in'], {
+      queryParams: {
+        returnUrl,
+      },
+    });
   }
 }

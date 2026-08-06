@@ -265,3 +265,47 @@
     }
   }
 </section>
+@if (showAuthenticationModal) {
+  <div
+    class="authentication-modal-backdrop"
+    role="presentation"
+    (click)="closeAuthenticationModal()"
+  >
+    <section
+      class="authentication-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="authenticationModalTitle"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        class="authentication-modal-close"
+        type="button"
+        aria-label="Close"
+        (click)="closeAuthenticationModal()"
+      >
+        ×
+      </button>
+
+      <div class="authentication-modal-icon" aria-hidden="true">♙</div>
+
+      <h2 id="authenticationModalTitle">Sign in required</h2>
+
+      <p>You need to sign in before you can book this journey.</p>
+
+      <div class="authentication-modal-actions">
+        <button
+          class="authentication-cancel-button"
+          type="button"
+          (click)="closeAuthenticationModal()"
+        >
+          Cancel
+        </button>
+
+        <button class="authentication-sign-in-button" type="button" (click)="goToSignIn()">
+          Sign In
+        </button>
+      </div>
+    </section>
+  </div>
+}

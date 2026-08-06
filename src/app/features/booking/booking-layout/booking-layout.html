@@ -1,1 +1,43 @@
-<p>booking-layout works!</p>
+<section class="booking-layout">
+  <header class="booking-header">
+    <a class="back-to-trains" href="/trains"> ← Back to trains </a>
+
+    <h1>Book Your Journey</h1>
+
+    <p>Complete the steps below to create your booking.</p>
+  </header>
+
+  <nav class="booking-stepper" aria-label="Booking progress">
+    @for (step of steps; track step.number; let last = $last) {
+      <div
+        class="step"
+        [class.step-active]="isStepActive(step.number)"
+        [class.step-completed]="isStepCompleted(step.number)"
+      >
+        <div class="step-circle">
+          @if (isStepCompleted(step.number)) {
+            <span aria-hidden="true">✓</span>
+          } @else {
+            <span>{{ step.number }}</span>
+          }
+        </div>
+
+        <span class="step-label">
+          {{ step.label }}
+        </span>
+      </div>
+
+      @if (!last) {
+        <div
+          class="step-connector"
+          [class.connector-completed]="isConnectorCompleted(step.number)"
+          aria-hidden="true"
+        ></div>
+      }
+    }
+  </nav>
+
+  <main class="booking-content">
+    <router-outlet />
+  </main>
+</section>

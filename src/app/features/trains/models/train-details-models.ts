@@ -38,3 +38,24 @@ export interface CoachesPage {
 export interface CoachesResponse {
   data: CoachesPage;
 }
+
+export interface SeatAvailability {
+  id: number;
+  number: string;
+  coachId: number;
+  isAvailable: boolean;
+}
+
+export interface SeatAvailabilityResponse {
+  data: SeatAvailability[];
+}
+export interface SeatAvailability {
+  id: number;
+  number: string;
+  coachId: number;
+  isAvailable: boolean;
+}
+
+export interface SeatAvailabilityResponse {
+  data: SeatAvailability[];
+}

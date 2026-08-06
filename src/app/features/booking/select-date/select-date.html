@@ -1,0 +1,67 @@
+<section class="select-date-page">
+  @if (isLoading) {
+    <div class="date-selection-loading" aria-live="polite">Loading travel information...</div>
+  } @else if (errorMessage) {
+    <div class="date-selection-error" role="alert">
+      <h2>Travel information could not be loaded</h2>
+
+      <p>{{ errorMessage }}</p>
+
+      <button class="retry-button" type="button" (click)="loadDateSelectionData()">
+        Try Again
+      </button>
+    </div>
+  } @else if (schedule && coach) {
+    <div class="schedule-summary">
+      <div class="schedule-route">
+        <strong>
+          {{ schedule.origin }}
+        </strong>
+
+        <span aria-hidden="true">→</span>
+
+        <strong>
+          {{ schedule.destination }}
+        </strong>
+      </div>
+
+      <time class="schedule-time">
+        {{ schedule.departureTime | slice: 0 : 5 }}
+      </time>
+    </div>
+
+    <button class="back-to-coach-button" type="button" (click)="backToCoach()">
+      ← Back to coaches
+    </button>
+
+    <header class="select-date-header">
+      <h2>Choose Travel Date</h2>
+
+      <p>Coach {{ coach.number }} — {{ coach.class }} class</p>
+    </header>
+
+    <form class="date-form" [formGroup]="dateForm" (ngSubmit)="continueToSeats()">
+      <div class="date-field">
+        <label for="travelDate"> Travel Date </label>
+
+        <input id="travelDate" type="date" formControlName="travelDate" [min]="minimumTravelDate" />
+
+        @if (
+          dateForm.controls.travelDate.touched && dateForm.controls.travelDate.hasError('required')
+        ) {
+          <span class="date-error" role="alert"> Please select a travel date. </span>
+        }
+
+        @if (dateErrorMessage) {
+          <span class="date-error" role="alert">
+            {{ dateErrorMessage }}
+          </span>
+        }
+      </div>
+
+      <footer class="date-selection-footer">
+        <button class="continue-button" type="submit">Continue to Seats</button>
+      </footer>
+    </form>
+  }
+</section>

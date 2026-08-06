@@ -1,1 +1,176 @@
-<p>select-coach works!</p>
+<section class="select-coach-page">
+  @if (isLoading) {
+    <div class="coach-selection-loading" aria-live="polite" aria-label="Loading available coaches">
+      <div class="route-skeleton"></div>
+      <div class="heading-skeleton"></div>
+      <div class="description-skeleton"></div>
+
+      <div class="coach-skeleton-list">
+        @for (item of loadingItems; track $index) {
+          <div class="coach-card-skeleton"></div>
+        }
+      </div>
+    </div>
+  } @else if (errorMessage) {
+    <div class="coach-selection-error" role="alert">
+      <div class="error-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 8v5"></path>
+          <path d="M12 16.5h.01"></path>
+        </svg>
+      </div>
+
+      <h2>Coach information could not be loaded</h2>
+
+      <p>{{ errorMessage }}</p>
+
+      <button class="retry-button" type="button" (click)="loadCoachSelectionData()">
+        Try Again
+      </button>
+    </div>
+  } @else if (schedule) {
+    <div class="schedule-summary">
+      <div class="schedule-route">
+        <strong>{{ schedule.origin }}</strong>
+
+        <svg class="route-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 12h14"></path>
+          <path d="m14 7 5 5-5 5"></path>
+        </svg>
+
+        <strong>{{ schedule.destination }}</strong>
+      </div>
+
+      <div class="schedule-time">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="8"></circle>
+          <path d="M12 8v4l3 2"></path>
+        </svg>
+
+        <time>
+          {{ schedule.departureTime | slice: 0 : 5 }}
+        </time>
+      </div>
+    </div>
+
+    <header class="select-coach-header">
+      <p class="step-eyebrow">Step 1 of 4</p>
+
+      <h2>Select a Coach</h2>
+
+      <p>Choose the coach class you would like to travel in.</p>
+    </header>
+
+    @if (coaches.length === 0) {
+      <div class="empty-coaches">
+        <div class="empty-coaches-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="6" width="18" height="11" rx="2"></rect>
+
+            <path d="M7 17v2"></path>
+            <path d="M17 17v2"></path>
+            <path d="M7 10h3"></path>
+            <path d="M14 10h3"></path>
+            <path d="M3 13h18"></path>
+          </svg>
+        </div>
+
+        <h3>No coaches available</h3>
+
+        <p>This train currently has no coaches available for booking.</p>
+      </div>
+    } @else {
+      <div class="coach-rail" role="radiogroup" aria-label="Available coaches">
+        <div class="coach-track">
+          @for (coach of coaches; track coach.id) {
+            <button
+              class="wagon-option"
+              type="button"
+              role="radio"
+              [class.selected]="selectedCoachId === coach.id"
+              [attr.aria-checked]="selectedCoachId === coach.id"
+              [attr.aria-label]="
+                'Select coach ' +
+                coach.number +
+                ', ' +
+                coach.class +
+                ', ' +
+                coach.seatCount +
+                ' seats, ' +
+                coach.price +
+                ' lari'
+              "
+              (click)="selectCoach(coach.id)"
+            >
+              <img
+                class="wagon-image"
+                src="https://trains.stepacademy.ge/2.webp"
+                alt=""
+                draggable="false"
+              />
+
+              <span class="wagon-information">
+                <span
+                  class="wagon-class"
+                  [class.second-class]="coach.class === 'Second'"
+                  [class.business-class]="coach.class === 'Business'"
+                >
+                  {{ coach.class }}
+                </span>
+
+                <span class="wagon-seat-count">
+                  {{ coach.seatCount }}
+                  @if (coach.seatCount === 1) {
+                    seat
+                  } @else {
+                    seats
+                  }
+                </span>
+
+                <strong class="wagon-price"> ₾{{ coach.price }} </strong>
+              </span>
+
+              <span class="wagon-number"> Coach {{ coach.number }} </span>
+
+              @if (selectedCoachId === coach.id) {
+                <span class="wagon-selected-indicator" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="m5 12 4 4L19 6"></path>
+                  </svg>
+                </span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+
+      <p class="coach-scroll-hint">Scroll horizontally to view all coaches</p>
+
+      <footer class="coach-selection-footer">
+        <div class="selected-coach-summary">
+          @if (selectedCoach) {
+            <span>Selected coach</span>
+
+            <strong> Coach {{ selectedCoach.number }} — {{ selectedCoach.class }} </strong>
+          } @else {
+            <span>Select a coach to continue</span>
+          }
+        </div>
+        <button
+          class="continue-button"
+          type="button"
+          [disabled]="selectedCoachId === null"
+          (click)="continueToDate()"
+        >
+          Continue to Date
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m14 7 5 5-5 5"></path>
+          </svg>
+        </button>
+      </footer>
+    }
+  }
+</section>

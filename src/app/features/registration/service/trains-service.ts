@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { TrainsResponse } from '../models/trains-response.model';
 import { CoachesResponse, TrainDetailsResponse } from '../../trains/models/train-details-models';
-
+import { SeatAvailabilityResponse } from '../../trains/models/train-details-models';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,7 +14,7 @@ export class TrainService {
   private searchTrainsUrl = 'https://trainsapi.stepacademy.ge/api/trains/search';
   private filterTrainsUrl = 'https://trainsapi.stepacademy.ge/api/trains/filter';
   private readonly coachesUrl = 'https://trainsapi.stepacademy.ge/api/coaches';
-
+  private readonly seatAvailabilityUrl = 'https://trainsapi.stepacademy.ge/api/seats/availability';
   constructor(private http: HttpClient) {}
 
   getStations(): Observable<StationsResponse> {
@@ -56,5 +56,21 @@ export class TrainService {
     const params = new HttpParams().set('Take', take.toString()).set('Page', page.toString());
 
     return this.http.get<CoachesResponse>(`${this.coachesUrl}/train/${trainId}`, { params });
+  }
+  getSeatAvailability(
+    scheduleId: number,
+    coachId: number,
+    travelDate: string,
+  ): Observable<SeatAvailabilityResponse> {
+    const formattedTravelDate = travelDate.includes('T') ? travelDate : `${travelDate}T00:00:00`;
+
+    const params = new HttpParams()
+      .set('scheduleId', scheduleId.toString())
+      .set('coachId', coachId.toString())
+      .set('travelDate', formattedTravelDate);
+
+    return this.http.get<SeatAvailabilityResponse>(this.seatAvailabilityUrl, {
+      params,
+    });
   }
 }
