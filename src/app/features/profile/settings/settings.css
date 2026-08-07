@@ -3,16 +3,25 @@
   width: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .settings-card {
   width: 100%;
   min-height: 620px;
+
   padding: 40px;
 
-  background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
+
+  background-color: var(--surface);
+
   box-shadow: var(--shadow-small);
 }
+
+/* HEADER */
 
 .settings-header {
   margin-bottom: 34px;
@@ -22,6 +31,7 @@
   margin: 0 0 8px;
 
   color: var(--text-primary);
+
   font-size: 24px;
   font-weight: 700;
   line-height: 1.25;
@@ -31,54 +41,58 @@
   margin: 0;
 
   color: var(--text-muted);
+
   font-size: 14px;
   line-height: 1.6;
 }
+
+/* PASSWORD SECTION */
 
 .password-section {
   width: 100%;
 }
 
-.section-title {
-  margin: 0 0 20px;
-
-  color: var(--text-primary);
-  font-size: 18px;
-  font-weight: 700;
-}
-
 .password-form {
+  width: 100%;
+
   display: flex;
   flex-direction: column;
+
   gap: 22px;
 }
 
 .form-field {
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
+
   gap: 9px;
 }
 
 .form-field label {
   color: var(--text-secondary);
-  font-size: 12px;
+
+  font-size: 13px;
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  line-height: 1.3;
+
+  letter-spacing: 0.2px;
 }
 
 .form-field input {
   width: 100%;
-  height: 48px;
-  padding: 0 15px;
+  height: 50px;
 
-  color: var(--text-primary);
-  background-color: var(--surface-light);
+  padding: 0 15px;
 
   border: 1px solid var(--border-strong);
   border-radius: 9px;
+
   outline: none;
+
+  color: var(--text-primary);
+  background-color: var(--surface-light);
 
   font: inherit;
   font-size: 14px;
@@ -91,79 +105,51 @@
 
 .form-field input::placeholder {
   color: var(--text-muted);
+
   opacity: 0.75;
 }
 
 .form-field input:hover {
   border-color: var(--primary);
+
   background-color: var(--surface);
 }
 
 .form-field input:focus {
   border-color: var(--primary-dark);
+
   background-color: var(--surface);
+
   box-shadow: 0 0 0 4px rgba(127, 145, 168, 0.15);
 }
 
 .form-field input.ng-invalid.ng-touched {
   border-color: rgba(179, 74, 74, 0.65);
+
   box-shadow: 0 0 0 4px rgba(179, 74, 74, 0.08);
 }
 
+/* FIELD ERRORS */
+
 .field-error {
   color: #a94747;
+
   font-size: 12px;
   line-height: 1.4;
 }
 
-.password-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 8px;
-}
-
-.update-password-button {
-  min-width: 170px;
-  height: 46px;
-  padding: 0 24px;
-
-  color: var(--surface);
-  background-color: var(--primary-dark);
-
-  border: none;
-  border-radius: 9px;
-  box-shadow: 0 10px 22px rgba(86, 107, 132, 0.2);
-
-  font: inherit;
-  font-size: 14px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.update-password-button:hover:not(:disabled) {
-  background-color: var(--primary-darker);
-  box-shadow: 0 13px 28px rgba(86, 107, 132, 0.26);
-  transform: translateY(-1px);
-}
-
-.update-password-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-  box-shadow: none;
-}
+/* FORM MESSAGES */
 
 .form-message {
-  padding: 14px 16px;
+  width: 100%;
 
   display: flex;
   align-items: center;
+
   gap: 10px;
+
+  margin: 0;
+  padding: 14px 16px;
 
   border-radius: 10px;
 
@@ -174,44 +160,146 @@
   animation: message-appear 0.25s ease-out;
 }
 
+.error-message {
+  border: 1px solid rgba(151, 62, 73, 0.22);
+  border-left: 5px solid #b84d5a;
+
+  color: #973e49;
+  background-color: #fff2f3;
+}
+
 .success-message {
-  color: #176b3a;
-  background-color: #e9f8ef;
   border: 1px solid #8ed0a8;
   border-left: 5px solid #2e9d5b;
+
+  color: #176b3a;
+  background-color: #e9f8ef;
+
   box-shadow: 0 8px 20px rgba(46, 157, 91, 0.12);
 }
 
 .success-message::before {
-  content: '✓';
-
   width: 24px;
   height: 24px;
-  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  flex-shrink: 0;
+
+  content: '✓';
+
+  border-radius: 50%;
+
   color: #ffffff;
   background-color: #2e9d5b;
-  border-radius: 50%;
 }
 
-.error-message {
-  color: #973e49;
-  background-color: #fff2f3;
-  border: 1px solid rgba(151, 62, 73, 0.22);
-  border-left: 5px solid #b84d5a;
+/* PASSWORD ACTIONS */
+
+.password-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 8px;
 }
+
+.update-password-button {
+  min-width: 180px;
+  min-height: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 0 24px;
+
+  border: 0;
+  border-radius: 9px;
+
+  color: var(--surface);
+  background-color: var(--primary-dark);
+
+  box-shadow: 0 10px 22px rgba(86, 107, 132, 0.2);
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.update-password-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background-color: var(--primary-darker);
+
+  box-shadow: 0 13px 28px rgba(86, 107, 132, 0.26);
+}
+
+.update-password-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.update-password-button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+.update-password-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+/* LOADER */
+
+.button-spinner,
+.delete-spinner {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+
+  animation: spinner-rotate 700ms linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* DIVIDER */
 
 .section-divider {
   width: 100%;
   height: 1px;
+
   margin: 40px 0;
 
   background-color: var(--border);
 }
+
+/* DANGER ZONE */
 
 .danger-zone {
   width: 100%;
@@ -219,23 +307,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   gap: 18px;
-}
-
-.danger-title {
-  margin: 0;
-
-  color: #bd3f4f;
-  font-size: 18px;
-  font-weight: 700;
 }
 
 .danger-description {
   width: 100%;
   max-width: 620px;
+
   margin: 0;
 
   color: var(--text-muted);
+
   font-size: 14px;
   line-height: 1.7;
 }
@@ -243,20 +326,19 @@
 .danger-zone .form-message {
   width: 100%;
   max-width: 620px;
-  margin: 0;
-  box-sizing: border-box;
 }
 
 .delete-account-button {
   min-height: 44px;
+
   margin-top: 4px;
   padding: 0 20px;
 
-  color: #b84050;
-  background-color: transparent;
-
   border: 1px solid rgba(184, 64, 80, 0.5);
   border-radius: 9px;
+
+  color: #b84050;
+  background-color: transparent;
 
   font: inherit;
   font-size: 14px;
@@ -267,44 +349,67 @@
   transition:
     color 0.2s ease,
     background-color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
+
 .delete-account-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  border-color: #b84050;
+
   color: #ffffff;
   background-color: #b84050;
-  border-color: #b84050;
+}
+
+.delete-account-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.delete-account-button:focus-visible {
+  outline: 3px solid rgba(184, 64, 80, 0.16);
+  outline-offset: 3px;
 }
 
 .delete-account-button:disabled {
-  cursor: not-allowed;
   opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
 }
 
-/* Confirmation dialog */
+/* CONFIRMATION OVERLAY */
 
 .confirmation-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
 
-  padding: 20px;
-
   display: flex;
   align-items: center;
   justify-content: center;
 
+  padding: 20px;
+
   background-color: rgba(37, 49, 66, 0.55);
+
   backdrop-filter: blur(4px);
 }
+
+/* DIALOG */
 
 .confirmation-dialog {
   width: 100%;
   max-width: 450px;
+
   padding: 32px;
 
-  background-color: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
+
+  background-color: var(--surface);
+
   box-shadow: var(--shadow-large);
 
   text-align: center;
@@ -315,15 +420,17 @@
 .confirmation-icon {
   width: 54px;
   height: 54px;
-  margin: 0 auto 18px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
   color: #ffffff;
   background-color: #b84050;
-  border-radius: 50%;
 
   font-size: 26px;
   font-weight: 700;
@@ -333,29 +440,42 @@
   margin: 0 0 12px;
 
   color: var(--text-primary);
+
   font-size: 22px;
   font-weight: 700;
+  line-height: 1.3;
 }
 
 .confirmation-dialog p {
   margin: 0;
 
   color: var(--text-muted);
+
   font-size: 14px;
   line-height: 1.7;
 }
 
-.confirmation-actions {
-  margin-top: 28px;
+/* CONFIRMATION ACTIONS */
 
+.confirmation-actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
   gap: 12px;
+
+  margin-top: 28px;
 }
 
 .cancel-button,
 .confirm-delete-button {
-  min-height: 44px;
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
   padding: 0 18px;
 
   border-radius: 9px;
@@ -365,12 +485,19 @@
   font-weight: 600;
 
   cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .cancel-button {
+  border: 1px solid var(--border-strong);
+
   color: var(--text-secondary);
   background-color: var(--surface-light);
-  border: 1px solid var(--border-strong);
 }
 
 .cancel-button:hover:not(:disabled) {
@@ -379,45 +506,26 @@
 }
 
 .confirm-delete-button {
+  border: 1px solid #b84050;
+
   color: #ffffff;
   background-color: #b84050;
-  border: 1px solid #b84050;
 }
 
 .confirm-delete-button:hover:not(:disabled) {
-  background-color: #9f3442;
   border-color: #9f3442;
+
+  background-color: #9f3442;
 }
 
 .cancel-button:disabled,
 .confirm-delete-button:disabled {
-  cursor: not-allowed;
   opacity: 0.55;
+
+  cursor: not-allowed;
 }
 
-@keyframes message-appear {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes dialog-appear {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
+/* PASSWORD SUCCESS */
 
 .password-success-dialog {
   max-width: 420px;
@@ -426,15 +534,17 @@
 .password-success-icon {
   width: 58px;
   height: 58px;
-  margin: 0 auto 18px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
   color: #ffffff;
   background-color: #2e9d5b;
-  border-radius: 50%;
 
   box-shadow: 0 10px 24px rgba(46, 157, 91, 0.22);
 
@@ -445,14 +555,15 @@
 .success-close-button {
   width: 100%;
   min-height: 46px;
+
   margin-top: 26px;
   padding: 0 24px;
 
+  border: 0;
+  border-radius: 9px;
+
   color: #ffffff;
   background-color: #2e9d5b;
-
-  border: none;
-  border-radius: 9px;
 
   font: inherit;
   font-size: 14px;
@@ -467,23 +578,89 @@
 }
 
 .success-close-button:hover {
-  background-color: #24854b;
-  box-shadow: 0 10px 22px rgba(46, 157, 91, 0.2);
   transform: translateY(-1px);
+
+  background-color: #24854b;
+
+  box-shadow: 0 10px 22px rgba(46, 157, 91, 0.2);
 }
 
 .success-close-button:active {
   transform: translateY(0);
 }
+
+.success-close-button:focus-visible {
+  outline: 3px solid rgba(46, 157, 91, 0.18);
+  outline-offset: 3px;
+}
+
+/* ANIMATIONS */
+
+@keyframes message-appear {
+  from {
+    opacity: 0;
+
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+@keyframes dialog-appear {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ACCESSIBILITY */
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 2px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .settings-card {
+    padding: 32px;
+  }
+}
+
+/* MOBILE */
+
 @media (max-width: 700px) {
   .settings-card {
     min-height: auto;
+
     padding: 26px 20px;
+
     border-radius: 14px;
+  }
+
+  .settings-header {
+    margin-bottom: 28px;
   }
 
   .settings-title {
     font-size: 21px;
+  }
+
+  .settings-description {
+    font-size: 13px;
   }
 
   .password-actions {
@@ -494,11 +671,39 @@
     width: 100%;
   }
 
+  .section-divider {
+    margin: 32px 0;
+  }
+
   .confirmation-dialog {
     padding: 26px 20px;
   }
 
   .confirmation-actions {
     grid-template-columns: 1fr;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 420px) {
+  .settings-card {
+    padding: 22px 16px;
+  }
+
+  .form-field input {
+    height: 48px;
+
+    padding-inline: 13px;
+  }
+
+  .confirmation-overlay {
+    padding: 14px;
+  }
+
+  .confirmation-dialog {
+    padding: 24px 18px;
+
+    border-radius: 16px;
   }
 }

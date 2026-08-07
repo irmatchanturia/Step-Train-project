@@ -1,20 +1,28 @@
 import { DatePipe, SlicePipe } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import {
   AbstractControl,
   FormBuilder,
   ReactiveFormsModule,
   ValidationErrors,
 } from '@angular/forms';
+
 import { Router, RouterLink } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 
 import { Booking, BookingsPage } from '../models/booking-models';
+
 import { BookingsService } from '../service/bookings-service';
 
 function dateRangeValidator(control: AbstractControl): ValidationErrors | null {
   const fromDate = control.get('fromDate')?.value as string;
+
   const toDate = control.get('toDate')?.value as string;
 
   if (fromDate && toDate && fromDate > toDate) {
@@ -29,14 +37,17 @@ function dateRangeValidator(control: AbstractControl): ValidationErrors | null {
 @Component({
   selector: 'app-my-bookings',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, DatePipe, SlicePipe],
+  imports: [ReactiveFormsModule, RouterLink, DatePipe, SlicePipe, TranslatePipe],
   templateUrl: './my-bookings.html',
   styleUrl: './my-bookings.css',
 })
 export class MyBookings implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
+
   private readonly bookingsService = inject(BookingsService);
+
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   private readonly router = inject(Router);
 
   readonly filterForm = this.formBuilder.nonNullable.group(
@@ -52,8 +63,9 @@ export class MyBookings implements OnInit {
   bookings: Booking[] = [];
 
   isLoading = false;
-  errorMessage = '';
-  deleteErrorMessage = '';
+
+  errorMessageKey = '';
+  deleteErrorMessageKey = '';
 
   deletingBookingId: number | null = null;
 
@@ -66,6 +78,7 @@ export class MyBookings implements OnInit {
   selectedBookingId: number | null = null;
 
   readonly pageSize = 10;
+
   readonly loadingItems = [1, 2, 3];
 
   ngOnInit(): void {
@@ -84,8 +97,9 @@ export class MyBookings implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.deleteErrorMessage = '';
+
+    this.errorMessageKey = '';
+    this.deleteErrorMessageKey = '';
 
     const { fromDate, toDate } = this.filterForm.getRawValue();
 
@@ -97,6 +111,7 @@ export class MyBookings implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -111,9 +126,9 @@ export class MyBookings implements OnInit {
           console.error('Failed to load bookings:', error);
 
           if (error.status === 401) {
-            this.errorMessage = 'Your session has expired. Please sign in again.';
+            this.errorMessageKey = 'MY_BOOKINGS.ERRORS.SESSION_EXPIRED';
           } else {
-            this.errorMessage = 'Your bookings could not be loaded. Please try again.';
+            this.errorMessageKey = 'MY_BOOKINGS.ERRORS.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -129,6 +144,7 @@ export class MyBookings implements OnInit {
     }
 
     this.currentPage = 1;
+
     this.loadBookings(1);
   }
 
@@ -142,8 +158,9 @@ export class MyBookings implements OnInit {
       toDate: '',
     });
 
-    this.errorMessage = '';
-    this.deleteErrorMessage = '';
+    this.errorMessageKey = '';
+    this.deleteErrorMessageKey = '';
+
     this.currentPage = 1;
 
     this.loadBookings(1);
@@ -183,7 +200,9 @@ export class MyBookings implements OnInit {
     }
 
     this.selectedBookingId = bookingId;
-    this.errorMessage = '';
+
+    this.deleteErrorMessageKey = '';
+
     this.showDeleteConfirmation = true;
   }
 
@@ -193,7 +212,10 @@ export class MyBookings implements OnInit {
     }
 
     this.showDeleteConfirmation = false;
+
     this.selectedBookingId = null;
+
+    this.deleteErrorMessageKey = '';
   }
 
   confirmDeleteBooking(): void {
@@ -204,19 +226,22 @@ export class MyBookings implements OnInit {
     }
 
     this.deletingBookingId = bookingId;
-    this.errorMessage = '';
+
+    this.deleteErrorMessageKey = '';
 
     this.bookingsService
       .deleteBooking(bookingId)
       .pipe(
         finalize(() => {
           this.deletingBookingId = null;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
       .subscribe({
         next: () => {
           this.showDeleteConfirmation = false;
+
           this.selectedBookingId = null;
 
           this.totalCount = Math.max(0, this.totalCount - 1);
@@ -225,6 +250,7 @@ export class MyBookings implements OnInit {
 
           if (remainingBookings.length === 0 && this.currentPage > 1) {
             this.loadBookings(this.currentPage - 1);
+
             return;
           }
 
@@ -238,7 +264,7 @@ export class MyBookings implements OnInit {
         },
 
         error: () => {
-          this.errorMessage = 'The booking could not be deleted. Please try again.';
+          this.deleteErrorMessageKey = 'MY_BOOKINGS.ERRORS.DELETE_FAILED';
 
           this.changeDetectorRef.markForCheck();
         },
@@ -247,9 +273,13 @@ export class MyBookings implements OnInit {
 
   private updatePaginationState(page: BookingsPage): void {
     this.bookings = page.items;
+
     this.currentPage = page.currentPage;
+
     this.totalPages = Math.max(1, page.totalPages);
+
     this.totalCount = page.totalCount;
+
     this.hasMore = page.hasMore;
   }
 }

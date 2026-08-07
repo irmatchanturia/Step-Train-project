@@ -1,38 +1,39 @@
 <main class="home-page">
-  <!-- HERO SECTION -->
   <section class="hero-section">
     <div class="hero-content">
       <div class="brand-badge">
-        <span class="brand-badge__dot"></span>
+        <span class="brand-badge__dot" aria-hidden="true"></span>
+
         <span>STEP TRAINS</span>
       </div>
 
       <h1 class="hero-title">
-        Travel Smarter,
-        <span>Journey Farther</span>
+        {{ 'HOME.HERO_TITLE' | translate }}
+
+        <span>
+          {{ 'HOME.HERO_TITLE_ACCENT' | translate }}
+        </span>
       </h1>
 
       <p class="hero-description">
-        Search thousands of train routes and book your seats in seconds.
+        {{ 'HOME.HERO_DESCRIPTION' | translate }}
       </p>
+
       <form class="train-search-form" [formGroup]="trainSearchForm" (ngSubmit)="searchTrains()">
         <div class="search-field search-field--select">
-          <label for="departure">From</label>
+          <label for="departure">
+            {{ 'HOME.SEARCH.FROM' | translate }}
+          </label>
 
           <input
             id="departure"
             type="text"
             formControlName="departure"
             list="stations-list"
-            placeholder="Origin city or station"
+            [placeholder]="'HOME.SEARCH.ORIGIN_PLACEHOLDER' | translate"
             autocomplete="off"
           />
         </div>
-        <datalist id="stations-list">
-          @for (station of stations; track station.id) {
-            <option [value]="station.name"></option>
-          }
-        </datalist>
 
         <div class="route-arrow" aria-hidden="true">
           <svg viewBox="0 0 24 24">
@@ -42,38 +43,51 @@
         </div>
 
         <div class="search-field search-field--select">
-          <label for="destination">To</label>
+          <label for="destination">
+            {{ 'HOME.SEARCH.TO' | translate }}
+          </label>
 
           <input
             id="destination"
             type="text"
             formControlName="destination"
             list="stations-list"
-            placeholder="Destination city or station"
+            [placeholder]="'HOME.SEARCH.DESTINATION_PLACEHOLDER' | translate"
             autocomplete="off"
           />
         </div>
+
         <datalist id="stations-list">
           @for (station of stations; track station.id) {
             <option [value]="station.name"></option>
           }
         </datalist>
+
         <button class="search-button" type="submit" [disabled]="isSearching">
           @if (isSearching) {
             <span class="button-spinner" aria-hidden="true"></span>
-            <span>Searching...</span>
+
+            <span>
+              {{ 'HOME.SEARCH.SEARCHING' | translate }}
+            </span>
           } @else {
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="11" cy="11" r="7"></circle>
+
               <path d="m16 16 5 5"></path>
             </svg>
 
-            <span>Search</span>
+            <span>
+              {{ 'HOME.SEARCH.SEARCH' | translate }}
+            </span>
           }
         </button>
       </form>
-      @if (errorMessage) {
-        <p class="error-message">{{ errorMessage }}</p>
+
+      @if (errorMessageKey) {
+        <p class="error-message" role="alert">
+          {{ errorMessageKey | translate }}
+        </p>
       }
 
       @if (filteredTrains.length > 0) {
@@ -82,11 +96,24 @@
             <article class="train-card">
               <img [src]="train.thumbnail" [alt]="train.name" />
 
-              <h2>{{ train.name }}</h2>
+              <h2>
+                {{ train.name }}
+              </h2>
 
-              <p>Train number: {{ train.number }}</p>
-              <p>Coaches: {{ train.coachesCount }}</p>
-              <p>Total seats: {{ train.totalSeats }}</p>
+              <p>
+                {{ 'HOME.TRAIN.NUMBER' | translate }}:
+                {{ train.number }}
+              </p>
+
+              <p>
+                {{ 'HOME.TRAIN.COACHES' | translate }}:
+                {{ train.coachesCount }}
+              </p>
+
+              <p>
+                {{ 'HOME.TRAIN.TOTAL_SEATS' | translate }}:
+                {{ train.totalSeats }}
+              </p>
             </article>
           }
         </section>
@@ -94,42 +121,54 @@
     </div>
   </section>
 
-  <!-- BENEFITS SECTION -->
-  <section class="benefits-section" aria-label="Booking benefits">
+  <section class="benefits-section">
     <div class="benefits-grid">
       <article class="benefit-card">
         <div class="benefit-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
-            <path d="m4 7 8-4 8 4-8 4-8-4Z"></path>
-            <path d="m4 12 8 4 8-4"></path>
-            <path d="m4 17 8 4 8-4"></path>
+            <rect x="4" y="5" width="16" height="14" rx="2"></rect>
+
+            <path d="M8 9h3"></path>
+            <path d="M13 9h3"></path>
+            <path d="M8 13h3"></path>
+            <path d="M13 13h3"></path>
           </svg>
         </div>
 
-        <h2>Multiple Classes</h2>
+        <h2>
+          {{ 'HOME.BENEFITS.MULTIPLE_CLASSES.TITLE' | translate }}
+        </h2>
 
-        <p>Choose from First, Business, or Second class coaches on every train.</p>
+        <p>
+          {{ 'HOME.BENEFITS.MULTIPLE_CLASSES.DESCRIPTION' | translate }}
+        </p>
       </article>
 
       <article class="benefit-card">
         <div class="benefit-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+
             <path d="M8 3v4"></path>
             <path d="M16 3v4"></path>
             <path d="M3 10h18"></path>
           </svg>
         </div>
 
-        <h2>Flexible Dates</h2>
+        <h2>
+          {{ 'HOME.BENEFITS.FLEXIBLE_DATES.TITLE' | translate }}
+        </h2>
 
-        <p>Pick any future travel date when booking and change it before departure.</p>
+        <p>
+          {{ 'HOME.BENEFITS.FLEXIBLE_DATES.DESCRIPTION' | translate }}
+        </p>
       </article>
 
       <article class="benefit-card">
         <div class="benefit-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <rect x="3" y="8" width="18" height="13"></rect>
+
             <path d="M12 8v13"></path>
             <path d="M3 13h18"></path>
             <path d="M12 8H7.5A2.5 2.5 0 1 1 10 5.5L12 8Z"></path>
@@ -137,38 +176,50 @@
           </svg>
         </div>
 
-        <h2>Choose Your Seat</h2>
+        <h2>
+          {{ 'HOME.BENEFITS.CHOOSE_SEAT.TITLE' | translate }}
+        </h2>
 
-        <p>Pick the exact seat you want from a live map of available seats.</p>
+        <p>
+          {{ 'HOME.BENEFITS.CHOOSE_SEAT.DESCRIPTION' | translate }}
+        </p>
       </article>
 
       <article class="benefit-card">
         <div class="benefit-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="9"></circle>
+
             <path d="m8.5 12 2.2 2.2 4.8-5"></path>
           </svg>
         </div>
 
-        <h2>Instant Confirmation</h2>
+        <h2>
+          {{ 'HOME.BENEFITS.INSTANT_CONFIRMATION.TITLE' | translate }}
+        </h2>
 
-        <p>Your booking is confirmed immediately. View and manage all trips in your profile.</p>
+        <p>
+          {{ 'HOME.BENEFITS.INSTANT_CONFIRMATION.DESCRIPTION' | translate }}
+        </p>
       </article>
     </div>
   </section>
 
-  <!-- CTA SECTION -->
   <section class="cta-section">
     <div class="cta-card">
       <div class="cta-content">
-        <h2>Ready to book your journey?</h2>
-
-        <p>Browse all available trains and schedules, then choose your seat.</p>
+        <p>
+          {{ 'HOME.CTA.DESCRIPTION' | translate }}
+        </p>
 
         <div class="cta-actions">
-          <a class="cta-button cta-button--primary" routerLink="/trains"> Browse Trains </a>
+          <a class="cta-button cta-button--primary" routerLink="/trains">
+            {{ 'HOME.CTA.BROWSE_TRAINS' | translate }}
+          </a>
 
-          <a class="cta-button cta-button--secondary" routerLink="/sign-up"> Create Account </a>
+          <a class="cta-button cta-button--secondary" routerLink="/sign-up">
+            {{ 'HOME.CTA.CREATE_ACCOUNT' | translate }}
+          </a>
         </div>
       </div>
     </div>

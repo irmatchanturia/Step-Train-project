@@ -1,27 +1,39 @@
 import { SlicePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { finalize, forkJoin } from 'rxjs';
 
 import { TrainCoach, TrainSchedule } from '../../trains/models/train-details-models';
+
 import { TrainService } from '../../registration/service/trains-service';
 import { BookingStateService } from '../service/booking-state';
 
 @Component({
   selector: 'app-select-date',
   standalone: true,
-  imports: [ReactiveFormsModule, SlicePipe],
+  imports: [ReactiveFormsModule, SlicePipe, TranslatePipe],
   templateUrl: './select-date.html',
   styleUrl: './select-date.css',
 })
 export class SelectDate implements OnInit {
   private readonly route = inject(ActivatedRoute);
+
   private readonly router = inject(Router);
+
   private readonly formBuilder = inject(FormBuilder);
+
   private readonly trainService = inject(TrainService);
+
   private readonly bookingStateService = inject(BookingStateService);
+
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   private trainId: number | null = null;
@@ -36,8 +48,9 @@ export class SelectDate implements OnInit {
   coach: TrainCoach | null = null;
 
   isLoading = false;
-  errorMessage = '';
-  dateErrorMessage = '';
+
+  errorMessageKey = '';
+  dateErrorMessageKey = '';
 
   readonly minimumTravelDate = this.formatLocalDate(new Date());
 
@@ -60,7 +73,7 @@ export class SelectDate implements OnInit {
       trainId <= 0 ||
       scheduleId <= 0
     ) {
-      this.errorMessage = 'Invalid train or schedule ID.';
+      this.errorMessageKey = 'SELECT_DATE.ERRORS.INVALID_IDS';
 
       return;
     }
@@ -96,7 +109,9 @@ export class SelectDate implements OnInit {
 
   loadDateSelectionData(): void {
     const trainId = this.trainId;
+
     const scheduleId = this.scheduleId;
+
     const coachId = this.coachId;
 
     if (trainId === null || scheduleId === null || coachId === null || this.isLoading) {
@@ -104,8 +119,9 @@ export class SelectDate implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.dateErrorMessage = '';
+
+    this.errorMessageKey = '';
+    this.dateErrorMessageKey = '';
 
     forkJoin({
       trainResponse: this.trainService.getTrainById(trainId),
@@ -115,6 +131,7 @@ export class SelectDate implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -127,20 +144,23 @@ export class SelectDate implements OnInit {
             coachesResponse.data.items.find((coach) => coach.id === coachId) ?? null;
 
           if (!selectedSchedule) {
-            this.errorMessage = 'The selected schedule was not found.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.SCHEDULE_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
+
             return;
           }
 
           if (!selectedCoach) {
-            this.errorMessage = 'The selected coach was not found.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.COACH_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
+
             return;
           }
 
           this.schedule = selectedSchedule;
+
           this.coach = selectedCoach;
 
           this.changeDetectorRef.markForCheck();
@@ -150,13 +170,13 @@ export class SelectDate implements OnInit {
           console.error('Failed to load date selection data:', error);
 
           if (error.status === 404) {
-            this.errorMessage = 'Train, schedule or coach was not found.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.NOT_FOUND';
           } else if (error.status === 401) {
-            this.errorMessage = 'Your session has expired. Please sign in again.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.SESSION_EXPIRED';
           } else if (error.status === 0) {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.SERVER_CONNECTION';
           } else {
-            this.errorMessage = 'Travel information could not be loaded. Please try again.';
+            this.errorMessageKey = 'SELECT_DATE.ERRORS.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -171,12 +191,12 @@ export class SelectDate implements OnInit {
   }
 
   continueToSeats(): void {
-    this.dateErrorMessage = '';
+    this.dateErrorMessageKey = '';
 
     if (this.dateForm.invalid) {
       this.dateForm.markAllAsTouched();
 
-      this.dateErrorMessage = 'Please select a travel date.';
+      this.dateErrorMessageKey = 'SELECT_DATE.FORM.DATE_REQUIRED';
 
       return;
     }
@@ -184,13 +204,13 @@ export class SelectDate implements OnInit {
     const selectedDate = this.dateForm.controls.travelDate.value;
 
     if (!this.isValidIsoDate(selectedDate)) {
-      this.dateErrorMessage = 'Please enter a valid travel date.';
+      this.dateErrorMessageKey = 'SELECT_DATE.ERRORS.VALID_DATE_REQUIRED';
 
       return;
     }
 
     if (this.isPastDate(selectedDate)) {
-      this.dateErrorMessage = 'Please select today or a future date.';
+      this.dateErrorMessageKey = 'SELECT_DATE.ERRORS.PAST_DATE';
 
       return;
     }
@@ -210,7 +230,9 @@ export class SelectDate implements OnInit {
     }
 
     const year = Number(match[1]);
+
     const month = Number(match[2]);
+
     const day = Number(match[3]);
 
     const date = new Date(year, month - 1, day);

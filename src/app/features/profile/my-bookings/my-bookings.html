@@ -1,33 +1,43 @@
 <section class="bookings-card">
   <header class="bookings-header">
-    <h1 class="bookings-title">My Bookings</h1>
+    <h1 class="bookings-title">
+      {{ 'MY_BOOKINGS.TITLE' | translate }}
+    </h1>
 
-    <p class="bookings-description">View and manage all your train reservations.</p>
+    <p class="bookings-description">
+      {{ 'MY_BOOKINGS.DESCRIPTION' | translate }}
+    </p>
   </header>
 
   <form class="bookings-filter" [formGroup]="filterForm" (ngSubmit)="applyFilters()">
     <div class="filter-field">
-      <label for="fromDate"> From Date </label>
+      <label for="fromDate">
+        {{ 'MY_BOOKINGS.FILTERS.FROM_DATE' | translate }}
+      </label>
 
       <input id="fromDate" type="date" formControlName="fromDate" />
     </div>
 
     <div class="filter-field">
-      <label for="toDate"> To Date </label>
+      <label for="toDate">
+        {{ 'MY_BOOKINGS.FILTERS.TO_DATE' | translate }}
+      </label>
 
       <input id="toDate" type="date" formControlName="toDate" />
 
       @if (filterForm.touched && filterForm.hasError('invalidDateRange')) {
-        <span class="field-error"> To date cannot be earlier than from date. </span>
+        <span class="field-error" role="alert">
+          {{ 'MY_BOOKINGS.FILTERS.INVALID_DATE_RANGE' | translate }}
+        </span>
       }
     </div>
 
     <div class="filter-actions">
       <button class="filter-button" type="submit" [disabled]="isLoading || filterForm.invalid">
         @if (isLoading && hasActiveFilters) {
-          Filtering...
+          {{ 'MY_BOOKINGS.FILTERS.FILTERING' | translate }}
         } @else {
-          Filter
+          {{ 'MY_BOOKINGS.FILTERS.FILTER' | translate }}
         }
       </button>
 
@@ -37,37 +47,45 @@
         [disabled]="isLoading || !hasActiveFilters"
         (click)="clearFilters()"
       >
-        Clear
+        {{ 'MY_BOOKINGS.FILTERS.CLEAR' | translate }}
       </button>
     </div>
   </form>
 
-  @if (errorMessage) {
+  @if (errorMessageKey) {
     <div class="bookings-message error-message" role="alert">
       <div>
-        <strong> Bookings could not be loaded. </strong>
+        <strong>
+          {{ 'MY_BOOKINGS.ERRORS.LOAD_TITLE' | translate }}
+        </strong>
 
-        <p>{{ errorMessage }}</p>
+        <p>
+          {{ errorMessageKey | translate }}
+        </p>
       </div>
 
       <button class="retry-button" type="button" (click)="loadBookings(currentPage)">
-        Try Again
+        {{ 'MY_BOOKINGS.ERRORS.TRY_AGAIN' | translate }}
       </button>
     </div>
   }
 
-  @if (deleteErrorMessage) {
+  @if (deleteErrorMessageKey && !showDeleteConfirmation) {
     <div class="bookings-message error-message" role="alert">
       <div>
-        <strong> Booking could not be deleted. </strong>
+        <strong>
+          {{ 'MY_BOOKINGS.ERRORS.DELETE_TITLE' | translate }}
+        </strong>
 
-        <p>{{ deleteErrorMessage }}</p>
+        <p>
+          {{ deleteErrorMessageKey | translate }}
+        </p>
       </div>
     </div>
   }
 
   @if (isLoading) {
-    <div class="bookings-loading" aria-live="polite" aria-label="Loading bookings">
+    <div class="bookings-loading">
       @for (item of loadingItems; track $index) {
         <div class="booking-skeleton">
           <div class="skeleton-line skeleton-route"></div>
@@ -76,7 +94,7 @@
         </div>
       }
     </div>
-  } @else if (!errorMessage && bookings.length === 0) {
+  } @else if (!errorMessageKey && bookings.length === 0) {
     <div class="empty-bookings">
       <div class="empty-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24">
@@ -87,20 +105,32 @@
       </div>
 
       @if (hasActiveFilters) {
-        <h2>No bookings found</h2>
+        <h2>
+          {{ 'MY_BOOKINGS.EMPTY.FILTERED_TITLE' | translate }}
+        </h2>
 
-        <p>There are no reservations matching the selected date range.</p>
+        <p>
+          {{ 'MY_BOOKINGS.EMPTY.FILTERED_DESCRIPTION' | translate }}
+        </p>
 
-        <button class="browse-button" type="button" (click)="clearFilters()">Clear Filters</button>
+        <button class="browse-button" type="button" (click)="clearFilters()">
+          {{ 'MY_BOOKINGS.FILTERS.CLEAR_FILTERS' | translate }}
+        </button>
       } @else {
-        <h2>No bookings yet</h2>
+        <h2>
+          {{ 'MY_BOOKINGS.EMPTY.NO_BOOKINGS_TITLE' | translate }}
+        </h2>
 
-        <p>When you book a train, your reservations will appear here.</p>
+        <p>
+          {{ 'MY_BOOKINGS.EMPTY.NO_BOOKINGS_DESCRIPTION' | translate }}
+        </p>
 
-        <a class="browse-button" routerLink="/trains"> Browse Trains </a>
+        <a class="browse-button" routerLink="/trains">
+          {{ 'MY_BOOKINGS.EMPTY.BROWSE_TRAINS' | translate }}
+        </a>
       }
     </div>
-  } @else if (!errorMessage) {
+  } @else if (!errorMessageKey) {
     <div class="bookings-list">
       @for (booking of bookings; track booking.id) {
         <article class="booking-item">
@@ -125,17 +155,17 @@
                 {{ booking.trainName }}
               </span>
 
-              <span aria-hidden="true"> • </span>
+              <span aria-hidden="true">•</span>
 
               <span> #{{ booking.trainNumber }} </span>
 
-              <span aria-hidden="true"> • </span>
+              <span aria-hidden="true">•</span>
 
               <time>
                 {{ booking.departureTime | slice: 0 : 5 }}
               </time>
 
-              <span aria-hidden="true"> • </span>
+              <span aria-hidden="true">•</span>
 
               <time [attr.datetime]="booking.travelDate">
                 {{ booking.travelDate | date: 'MMM d, y' }}
@@ -148,9 +178,15 @@
               {{ booking.coachClass }}
             </span>
 
-            <strong> Seat {{ booking.seatNumber }} </strong>
+            <strong>
+              {{ 'MY_BOOKINGS.BOOKING.SEAT' | translate }}
+              {{ booking.seatNumber }}
+            </strong>
 
-            <span> Coach {{ booking.coachNumber }} </span>
+            <span>
+              {{ 'MY_BOOKINGS.BOOKING.COACH' | translate }}
+              {{ booking.coachNumber }}
+            </span>
           </div>
 
           <div class="booking-price">₾{{ booking.price }}</div>
@@ -162,7 +198,7 @@
               [disabled]="deletingBookingId !== null"
               (click)="viewBookingDetails(booking.id)"
             >
-              Details
+              {{ 'MY_BOOKINGS.BOOKING.DETAILS' | translate }}
             </button>
 
             <button
@@ -172,9 +208,9 @@
               (click)="openDeleteConfirmation(booking.id)"
             >
               @if (deletingBookingId === booking.id) {
-                Deleting...
+                {{ 'MY_BOOKINGS.BOOKING.DELETING' | translate }}
               } @else {
-                Delete
+                {{ 'MY_BOOKINGS.BOOKING.DELETE' | translate }}
               }
             </button>
           </div>
@@ -184,30 +220,41 @@
 
     <footer class="bookings-pagination">
       <p class="pagination-summary">
-        Page
-        <strong>{{ currentPage }}</strong>
-        of
-        <strong>{{ totalPages }}</strong>
+        {{ 'MY_BOOKINGS.PAGINATION.PAGE' | translate }}
+
+        <strong>
+          {{ currentPage }}
+        </strong>
+
+        {{ 'MY_BOOKINGS.PAGINATION.OF' | translate }}
+
+        <strong>
+          {{ totalPages }}
+        </strong>
 
         <span aria-hidden="true">•</span>
 
         {{ totalCount }}
+
         @if (totalCount === 1) {
-          booking
+          {{ 'MY_BOOKINGS.PAGINATION.BOOKING' | translate }}
         } @else {
-          bookings
+          {{ 'MY_BOOKINGS.PAGINATION.BOOKINGS' | translate }}
         }
       </p>
 
       @if (totalPages > 1) {
-        <nav class="pagination-actions" aria-label="Bookings pagination">
+        <nav
+          class="pagination-actions"
+          [attr.aria-label]="'MY_BOOKINGS.PAGINATION.ARIA_LABEL' | translate"
+        >
           <button
             class="pagination-button"
             type="button"
             [disabled]="currentPage === 1 || isLoading || deletingBookingId !== null"
             (click)="goToPreviousPage()"
           >
-            Previous
+            {{ 'MY_BOOKINGS.PAGINATION.PREVIOUS' | translate }}
           </button>
 
           <span class="pagination-current"> {{ currentPage }} / {{ totalPages }} </span>
@@ -218,72 +265,77 @@
             [disabled]="!hasMore || isLoading || deletingBookingId !== null"
             (click)="goToNextPage()"
           >
-            Next
+            {{ 'MY_BOOKINGS.PAGINATION.NEXT' | translate }}
           </button>
         </nav>
       }
     </footer>
   }
-  @if (showDeleteConfirmation) {
-    <div class="confirmation-overlay" role="presentation" (click)="closeDeleteConfirmation()">
-      <section
-        class="confirmation-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="delete-dialog-title"
-        aria-describedby="delete-dialog-description"
-        (click)="$event.stopPropagation()"
-      >
-        <div class="confirmation-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 6h18"></path>
-            <path d="M8 6V4h8v2"></path>
-            <path d="M19 6l-1 14H6L5 6"></path>
-            <path d="M10 11v5"></path>
-            <path d="M14 11v5"></path>
-          </svg>
-        </div>
-
-        <div class="confirmation-content">
-          <h2 id="delete-dialog-title">Delete this booking?</h2>
-
-          <p id="delete-dialog-description">
-            This booking will be permanently deleted. This action cannot be undone.
-          </p>
-        </div>
-
-        @if (deleteErrorMessage) {
-          <div class="confirmation-error" role="alert">
-            {{ deleteErrorMessage }}
-          </div>
-        }
-
-        <div class="confirmation-actions">
-          <button
-            class="confirmation-cancel-button"
-            type="button"
-            [disabled]="deletingBookingId !== null"
-            (click)="closeDeleteConfirmation()"
-          >
-            Cancel
-          </button>
-
-          <button
-            class="confirmation-delete-button"
-            type="button"
-            [disabled]="deletingBookingId !== null"
-            (click)="confirmDeleteBooking()"
-          >
-            @if (deletingBookingId !== null) {
-              <span class="delete-spinner" aria-hidden="true"></span>
-
-              Deleting...
-            } @else {
-              Yes, Delete
-            }
-          </button>
-        </div>
-      </section>
-    </div>
-  }
 </section>
+
+@if (showDeleteConfirmation) {
+  <div class="confirmation-overlay" role="presentation" (click)="closeDeleteConfirmation()">
+    <section
+      class="confirmation-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-dialog-title"
+      aria-describedby="delete-dialog-description"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="confirmation-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 7h16"></path>
+
+          <path d="M9 7V4h6v3"></path>
+
+          <path d="M7 7l1 13h8l1-13"></path>
+
+          <path d="M10 11v5M14 11v5"></path>
+        </svg>
+      </div>
+
+      <div class="confirmation-content">
+        <h2 id="delete-dialog-title">
+          {{ 'MY_BOOKINGS.DELETE_MODAL.TITLE' | translate }}
+        </h2>
+
+        <p id="delete-dialog-description">
+          {{ 'MY_BOOKINGS.DELETE_MODAL.DESCRIPTION' | translate }}
+        </p>
+      </div>
+
+      @if (deleteErrorMessageKey) {
+        <div class="confirmation-error" role="alert">
+          {{ deleteErrorMessageKey | translate }}
+        </div>
+      }
+
+      <div class="confirmation-actions">
+        <button
+          class="confirmation-cancel-button"
+          type="button"
+          [disabled]="deletingBookingId !== null"
+          (click)="closeDeleteConfirmation()"
+        >
+          {{ 'MY_BOOKINGS.DELETE_MODAL.CANCEL' | translate }}
+        </button>
+
+        <button
+          class="confirmation-delete-button"
+          type="button"
+          [disabled]="deletingBookingId !== null"
+          (click)="confirmDeleteBooking()"
+        >
+          @if (deletingBookingId !== null) {
+            <span class="delete-spinner" aria-hidden="true"></span>
+
+            {{ 'MY_BOOKINGS.DELETE_MODAL.DELETING' | translate }}
+          } @else {
+            {{ 'MY_BOOKINGS.DELETE_MODAL.CONFIRM' | translate }}
+          }
+        </button>
+      </div>
+    </section>
+  </div>
+}

@@ -1,22 +1,30 @@
-import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { Train } from '../../../registration/models/trains.models';
 import { Station } from '../../../registration/models/stations.model';
 import { TrainService } from '../../../registration/service/trains-service';
-import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-train',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './train.html',
   styleUrl: './train.css',
 })
 export class TrainComponent implements OnInit {
   private readonly router = inject(Router);
+  private readonly trainService = inject(TrainService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
+
   stations: Station[] = [];
   allTrains: Train[] = [];
   filteredTrains: Train[] = [];
-  errorMessage = '';
+
+  errorMessageKey = '';
   isLoading = true;
 
   filtersForm = new FormGroup({
@@ -32,10 +40,7 @@ export class TrainComponent implements OnInit {
       nonNullable: true,
     }),
   });
-  constructor(
-    private trainService: TrainService,
-    private changeDetector: ChangeDetectorRef,
-  ) {}
+
   ngOnInit(): void {
     this.loadStations();
     this.loadTrains();
@@ -45,6 +50,7 @@ export class TrainComponent implements OnInit {
     this.trainService.getStations().subscribe({
       next: (response) => {
         this.stations = response.data;
+
         this.changeDetector.markForCheck();
       },
     });
@@ -52,19 +58,23 @@ export class TrainComponent implements OnInit {
 
   loadTrains(): void {
     this.isLoading = true;
-    this.errorMessage = '';
+    this.errorMessageKey = '';
 
     this.trainService.getTrains().subscribe({
       next: (response) => {
         this.allTrains = response.data.items;
         this.filteredTrains = response.data.items;
+
         this.isLoading = false;
+
         this.changeDetector.markForCheck();
       },
 
       error: () => {
-        this.errorMessage = 'Failed to load trains. Please try again.';
+        this.errorMessageKey = 'TRAINS.ERRORS.LOAD_FAILED';
+
         this.isLoading = false;
+
         this.changeDetector.markForCheck();
       },
     });
@@ -75,15 +85,20 @@ export class TrainComponent implements OnInit {
 
     this.filteredTrains = this.allTrains;
 
-    this.errorMessage = '';
+    this.errorMessageKey = '';
+    this.isLoading = false;
   }
+
   applyFilters(): void {
     const formValues = this.filtersForm.getRawValue();
+
     const trainNumber = formValues.trainNumber.trim();
+
     const origin = formValues.origin.trim();
+
     const destination = formValues.destination.trim();
 
-    this.errorMessage = '';
+    this.errorMessageKey = '';
 
     if (trainNumber.length > 0) {
       this.isLoading = true;
@@ -91,13 +106,17 @@ export class TrainComponent implements OnInit {
       this.trainService.searchTrains(trainNumber).subscribe({
         next: (response) => {
           this.filteredTrains = response.data.items;
+
           this.isLoading = false;
+
           this.changeDetector.markForCheck();
         },
 
         error: () => {
-          this.errorMessage = 'Failed to search trains. Please try again.';
+          this.errorMessageKey = 'TRAINS.ERRORS.SEARCH_FAILED';
+
           this.isLoading = false;
+
           this.changeDetector.markForCheck();
         },
       });
@@ -111,13 +130,17 @@ export class TrainComponent implements OnInit {
       this.trainService.filterTrains(origin, destination).subscribe({
         next: (response) => {
           this.filteredTrains = response.data.items;
+
           this.isLoading = false;
+
           this.changeDetector.markForCheck();
         },
 
         error: () => {
-          this.errorMessage = 'Failed to filter trains. Please try again.';
+          this.errorMessageKey = 'TRAINS.ERRORS.FILTER_FAILED';
+
           this.isLoading = false;
+
           this.changeDetector.markForCheck();
         },
       });

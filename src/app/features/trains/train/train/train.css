@@ -36,55 +36,59 @@ select {
   font: inherit;
 }
 
+/* PAGE */
+
 .trains-page {
   min-height: 100vh;
+
   padding: 65px 24px 100px;
+
   color: var(--text-primary);
+
   background:
     radial-gradient(circle at 10% 5%, rgba(127, 145, 168, 0.16), transparent 30%),
     linear-gradient(180deg, var(--background-light) 0%, var(--background) 100%);
 }
 
 .trains-container {
-  width: min(100%, 1180px);
+  width: min(100%, 1240px);
+
   margin: 0 auto;
 }
 
 /* PAGE HEADER */
 
 .page-header {
-  max-width: 700px;
-}
-
-.page-eyebrow {
-  display: inline-block;
-  margin-bottom: 17px;
-  color: var(--primary-dark);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  max-width: 760px;
 }
 
 .page-header h1 {
   margin: 0;
+
   color: var(--text-primary);
+
   font-size: clamp(36px, 5vw, 54px);
   font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -1.5px;
+
+  letter-spacing: -0.5px;
 }
 
 .page-header p {
   margin: 16px 0 0;
+
   color: var(--text-secondary);
+
   font-size: 16px;
   line-height: 1.7;
 }
 
 .page-divider {
+  width: 100%;
   height: 1px;
+
   margin: 46px 0 38px;
+
   background: var(--border);
 }
 
@@ -92,8 +96,13 @@ select {
 
 .trains-layout {
   display: grid;
-  grid-template-columns: 262px minmax(0, 1fr);
+
+  grid-template-columns:
+    290px
+    minmax(0, 1fr);
+
   align-items: start;
+
   gap: 30px;
 }
 
@@ -106,26 +115,36 @@ select {
 
 .filters-form {
   display: grid;
+
   gap: 18px;
 }
 
 .filter-card {
-  padding: 28px;
+  padding: 26px;
+
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.86);
+
+  background: rgba(255, 255, 255, 0.9);
+
   box-shadow: var(--shadow-small);
+
   backdrop-filter: blur(12px);
 }
 
 .filter-card h2 {
-  margin: 0 0 25px;
+  margin: 0 0 24px;
+
   color: var(--primary-dark);
-  font-size: 13px;
+
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
+  line-height: 1.3;
+
+  letter-spacing: 0.1px;
 }
+
+/* FORM FIELDS */
 
 .form-field {
   margin-bottom: 20px;
@@ -133,24 +152,35 @@ select {
 
 .form-field label {
   display: block;
+
   margin-bottom: 9px;
+
   color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
+
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+
+  letter-spacing: 0.1px;
 }
 
 .form-field input,
 .form-field select {
   width: 100%;
-  height: 45px;
+  height: 46px;
+
   padding: 0 14px;
+
   border: 1px solid var(--border-strong);
   border-radius: 9px;
+
   outline: none;
+
   color: var(--text-primary);
   background: var(--surface);
+
+  font-size: 14px;
+
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease,
@@ -159,12 +189,21 @@ select {
 
 .form-field input::placeholder {
   color: var(--text-muted);
+
+  opacity: 1;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+  border-color: var(--primary);
 }
 
 .form-field input:focus,
 .form-field select:focus {
   border-color: var(--primary-dark);
+
   background: #ffffff;
+
   box-shadow: 0 0 0 3px rgba(101, 120, 143, 0.14);
 }
 
@@ -172,11 +211,15 @@ select {
   cursor: pointer;
 }
 
+/* BUTTONS */
+
 .primary-button,
 .secondary-button,
 .clear-button {
-  border: 0;
+  font: inherit;
+
   cursor: pointer;
+
   transition:
     transform 170ms ease,
     background-color 170ms ease,
@@ -187,53 +230,102 @@ select {
 
 .primary-button {
   width: 100%;
-  min-height: 45px;
+  min-height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 0 18px;
+
+  border: 1px solid var(--primary-dark);
   border-radius: 9px;
+
   color: #ffffff;
   background: var(--primary-dark);
+
+  font-size: 14px;
   font-weight: 700;
+
+  text-align: center;
+
   box-shadow: 0 10px 24px rgba(101, 120, 143, 0.22);
 }
 
-.primary-button:hover {
+.primary-button:hover:not(:disabled) {
   transform: translateY(-2px);
+
+  border-color: var(--primary-darker);
+
   background: var(--primary-darker);
+
   box-shadow: 0 14px 28px rgba(86, 107, 132, 0.26);
 }
 
-.primary-button:active {
+.primary-button:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
 }
 
 .secondary-button {
   min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
   padding: 0 22px;
+
   border: 1px solid var(--border-strong);
   border-radius: 9px;
+
   color: var(--primary-dark);
   background: var(--surface);
+
+  font-size: 14px;
   font-weight: 700;
 }
 
 .secondary-button:hover {
   border-color: var(--primary-dark);
+
   background: var(--primary-light);
 }
 
 .clear-button {
   width: 100%;
-  margin-top: 17px;
+
+  margin-top: 14px;
   padding: 8px;
+
+  border: 0;
+
   color: var(--primary-dark);
   background: transparent;
+
   font-size: 14px;
   font-weight: 700;
 }
 
-.clear-button:hover {
+.clear-button:hover:not(:disabled) {
   color: var(--primary-darker);
+
   text-decoration: underline;
+}
+
+.clear-button:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
 }
 
 .primary-button:focus-visible,
@@ -251,21 +343,35 @@ select {
 
 .results-header {
   min-height: 29px;
+
   display: flex;
   align-items: center;
+
   margin-bottom: 15px;
 }
 
 .results-header p {
   margin: 0;
+
   color: var(--text-secondary);
+
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
+
+.results-header strong {
+  color: var(--text-primary);
+
+  font-weight: 800;
+}
+
+/* TRAIN GRID */
 
 .train-grid {
   display: grid;
+
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
   gap: 18px;
 }
 
@@ -274,17 +380,26 @@ select {
 .train-card {
   min-width: 0;
   min-height: 340px;
+
   display: flex;
   flex-direction: column;
+
   padding: 0;
+
   overflow: hidden;
+
   border: 1px solid var(--border);
   border-radius: 18px;
+
   color: inherit;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+
   box-shadow: var(--shadow-small);
+
   text-align: left;
+
   cursor: pointer;
+
   transition:
     transform 190ms ease,
     border-color 190ms ease,
@@ -293,7 +408,9 @@ select {
 
 .train-card:hover {
   transform: translateY(-6px);
+
   border-color: var(--border-strong);
+
   box-shadow: var(--shadow-medium);
 }
 
@@ -302,19 +419,28 @@ select {
   outline-offset: 4px;
 }
 
+/* IMAGE */
+
 .train-card__image-container {
   position: relative;
+
   width: 100%;
+
   aspect-ratio: 16 / 9;
+
   overflow: hidden;
+
   background: var(--primary-light);
 }
 
 .train-card__image {
   width: 100%;
   height: 100%;
+
   display: block;
+
   object-fit: cover;
+
   transition: transform 300ms ease;
 }
 
@@ -322,10 +448,14 @@ select {
   transform: scale(1.045);
 }
 
+/* CARD CONTENT */
+
 .train-card__content {
   flex: 1;
+
   display: flex;
   flex-direction: column;
+
   padding: 18px;
 }
 
@@ -333,67 +463,78 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 12px;
+
   margin-bottom: 12px;
 }
 
 .train-number {
   color: var(--text-muted);
+
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
+
+  letter-spacing: 0.5px;
 }
 
 .coach-badge {
+  max-width: 60%;
+
   flex-shrink: 0;
+
   padding: 5px 9px;
+
+  overflow: hidden;
+
   border-radius: 999px;
+
   color: var(--primary-dark);
   background: var(--primary-light);
+
   font-size: 11px;
   font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .train-card h2 {
   margin: 0;
+
   overflow: hidden;
+
   color: var(--text-primary);
+
   font-size: 18px;
   font-weight: 800;
   line-height: 1.35;
+
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.train-route {
-  margin: 8px 0 0;
-  overflow: hidden;
-  color: var(--text-secondary);
-  font-size: 13px;
-  line-height: 1.5;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.train-route span {
-  margin: 0 5px;
-  color: var(--primary);
 }
 
 .train-card__footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 16px;
+
   margin-top: auto;
   padding-top: 22px;
 }
 
 .seat-count {
+  min-width: 0;
+
   display: inline-flex;
   align-items: center;
+
   gap: 7px;
+
   color: var(--text-muted);
+
   font-size: 12px;
   font-weight: 600;
 }
@@ -401,7 +542,11 @@ select {
 .seat-count svg {
   width: 18px;
   height: 18px;
+
+  flex-shrink: 0;
+
   fill: none;
+
   stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
@@ -409,9 +554,13 @@ select {
 }
 
 .details-arrow {
+  flex-shrink: 0;
+
   color: var(--primary-dark);
+
   font-size: 21px;
   line-height: 1;
+
   transition: transform 180ms ease;
 }
 
@@ -419,37 +568,50 @@ select {
   transform: translateX(4px);
 }
 
-/* LOADING, ERROR AND EMPTY STATES */
+/* LOADING / ERROR / EMPTY */
 
 .status-message {
   min-height: 330px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   grid-column: 1 / -1;
+
   padding: 45px 24px;
+
   border: 1px dashed var(--border-strong);
   border-radius: 18px;
+
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.62);
+
   text-align: center;
 }
 
 .status-message h2 {
   margin: 0;
+
   color: var(--text-primary);
+
   font-size: 22px;
+  font-weight: 700;
 }
 
 .status-message p {
   max-width: 480px;
+
   margin: 12px 0 0;
+
+  font-size: 14px;
   line-height: 1.7;
 }
 
 .status-message--error {
   border-color: rgba(168, 70, 70, 0.25);
+
   background: var(--error-background);
 }
 
@@ -460,16 +622,22 @@ select {
 .status-button {
   width: auto;
   min-width: 150px;
+
   margin-top: 24px;
 }
+
+/* SPINNER */
 
 .loading-spinner {
   width: 36px;
   height: 36px;
+
   margin-bottom: 15px;
+
   border: 4px solid var(--primary-light);
   border-top-color: var(--primary-dark);
   border-radius: 50%;
+
   animation: spinner-rotation 700ms linear infinite;
 }
 
@@ -479,92 +647,35 @@ select {
   }
 }
 
-.train-card {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
+/* ACCESSIBILITY */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline-offset: 2px;
 }
 
-.train-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-medium);
-}
+/* DESKTOP / SMALL LAPTOP */
 
-.train-card:focus-visible {
-  outline: 3px solid var(--primary-light);
-  outline-offset: 3px;
-}
+@media (max-width: 1120px) {
+  .trains-container {
+    max-width: 1000px;
+  }
 
-.coach-list {
-  display: grid;
-  gap: 16px;
-}
+  .trains-layout {
+    grid-template-columns:
+      270px
+      minmax(0, 1fr);
+  }
 
-.coach-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-
-  min-height: 70px;
-  padding: 20px 30px;
-
-  border: 1px solid var(--border);
-  border-radius: 17px;
-
-  background: var(--surface);
-  box-shadow: var(--shadow-small);
-
-  transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.coach-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-medium);
-  transform: translateY(-1px);
-}
-
-.coach-main-information {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.coach-number {
-  color: var(--text-primary);
-
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.coach-class {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 26px;
-  padding: 0 11px;
-
-  border-radius: 999px;
-
-  color: var(--primary-dark);
-  background: var(--primary-light);
-
-  font-size: 12px;
-}
-/* RESPONSIVE */
-
-@media (max-width: 1050px) {
   .train-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 760px) {
+/* TABLET */
+
+@media (max-width: 800px) {
   .trains-page {
     padding: 45px 18px 75px;
   }
@@ -590,7 +701,9 @@ select {
   }
 }
 
-@media (max-width: 580px) {
+/* MOBILE */
+
+@media (max-width: 600px) {
   .trains-page {
     padding: 35px 14px 60px;
   }
@@ -599,8 +712,11 @@ select {
     font-size: 38px;
   }
 
-  .filters-form,
-  .train-grid {
+  .page-header p {
+    font-size: 15px;
+  }
+
+  .filters-form {
     grid-template-columns: 1fr;
   }
 
@@ -608,7 +724,35 @@ select {
     padding: 23px;
   }
 
+  .train-grid {
+    grid-template-columns: 1fr;
+  }
+
   .train-card {
     min-height: 325px;
+  }
+}
+
+/* VERY SMALL MOBILE */
+
+@media (max-width: 380px) {
+  .trains-page {
+    padding-inline: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 34px;
+  }
+
+  .filter-card {
+    padding: 20px 18px;
+  }
+
+  .train-card__content {
+    padding: 16px;
+  }
+
+  .train-card__meta {
+    gap: 8px;
   }
 }

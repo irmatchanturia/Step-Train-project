@@ -1,24 +1,30 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { finalize } from 'rxjs';
+
 import { TrainService } from '../../registration/service/trains-service';
 import { Train } from '../../registration/models/trains.models';
-import { finalize } from 'rxjs';
 import { Station } from '../../registration/models/stations.model';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, TranslatePipe],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
-  private trainService = inject(TrainService);
+  private readonly trainService = inject(TrainService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  errorMessage = '';
+  errorMessageKey = '';
+
   filteredTrains: Train[] = [];
   stations: Station[] = [];
+
   isSearching = false;
 
   trainSearchForm = new FormGroup({
@@ -31,26 +37,33 @@ export class Home implements OnInit {
     }),
   });
 
+  ngOnInit(): void {
+    this.loadStations();
+  }
+
   searchTrains(): void {
     const { departure, destination } = this.trainSearchForm.getRawValue();
+
     const origin = departure.trim();
     const destinationValue = destination.trim();
 
-    this.errorMessage = '';
+    this.errorMessageKey = '';
     this.filteredTrains = [];
+
     if (!origin || !destinationValue) {
-      this.errorMessage = 'Please enter both origin and destination.';
+      this.errorMessageKey = 'HOME.ERRORS.BOTH_REQUIRED';
       return;
     }
+
     if (origin.toLowerCase() === destinationValue.toLowerCase()) {
-      this.errorMessage = 'Origin and destination must be different.';
+      this.errorMessageKey = 'HOME.ERRORS.SAME_STATION';
       return;
     }
+
     this.isSearching = true;
 
     this.trainService
       .filterTrains(origin, destinationValue)
-
       .pipe(
         finalize(() => {
           this.isSearching = false;
@@ -60,14 +73,16 @@ export class Home implements OnInit {
       .subscribe({
         next: (response) => {
           this.filteredTrains = response.data.items;
+
           if (this.filteredTrains.length === 0) {
-            this.errorMessage = 'No trains found for this route.';
+            this.errorMessageKey = 'HOME.ERRORS.NO_TRAINS';
           }
         },
+
         error: (error) => {
           console.error('Train search failed:', error);
 
-          this.errorMessage = 'Something went wrong while searching for trains.';
+          this.errorMessageKey = 'HOME.ERRORS.SEARCH_FAILED';
         },
       });
   }
@@ -83,13 +98,10 @@ export class Home implements OnInit {
       error: (error) => {
         console.error('Failed to load stations:', error);
 
-        this.errorMessage = 'Could not load stations.';
+        this.errorMessageKey = 'HOME.ERRORS.STATIONS_FAILED';
+
         this.changeDetectorRef.detectChanges();
       },
     });
-  }
-
-  ngOnInit(): void {
-    this.loadStations();
   }
 }

@@ -3,47 +3,66 @@
     <div class="brand-content">
       <div class="brand-logo" aria-hidden="true">
         <svg viewBox="0 0 24 24">
-          <path d="M8 7V5.5C8 4.12 9.12 3 10.5 3h3C14.88 3 16 4.12 16 5.5V7" />
-          <rect x="4" y="7" width="16" height="12" rx="2" />
-          <path d="M9 7v12M15 7v12" />
+          <rect x="4" y="7" width="16" height="12" rx="2"></rect>
+
+          <path d="M9 7v12M15 7v12"></path>
+
+          <path d="M8 7V5.8A2.8 2.8 0 0 1 10.8 3h2.4A2.8 2.8 0 0 1 16 5.8V7"></path>
         </svg>
       </div>
 
-      <h1>STEP TRAINS</h1>
+      <h1>
+        {{ 'SIGN_UP.BRAND.TITLE' | translate }}
+      </h1>
 
       <p class="brand-description">
-        Your trusted platform for booking train tickets across the country.
+        {{ 'SIGN_UP.BRAND.DESCRIPTION' | translate }}
       </p>
 
       <div class="benefits">
         <article class="benefit-item">
-          <div class="benefit-icon">✓</div>
+          <div class="benefit-icon" aria-hidden="true">✓</div>
 
           <div>
-            <h2>Easy Booking</h2>
-            <p>Book your train tickets in just a few clicks</p>
+            <h2>
+              {{ 'SIGN_UP.BRAND.EASY_BOOKING.TITLE' | translate }}
+            </h2>
+
+            <p>
+              {{ 'SIGN_UP.BRAND.EASY_BOOKING.DESCRIPTION' | translate }}
+            </p>
           </div>
         </article>
 
         <article class="benefit-item">
-          <div class="benefit-icon lightning">ϟ</div>
+          <div class="benefit-icon lightning" aria-hidden="true">ϟ</div>
 
           <div>
-            <h2>Instant Confirmation</h2>
-            <p>Get your tickets confirmed right away</p>
+            <h2>
+              {{ 'SIGN_UP.BRAND.INSTANT_CONFIRMATION.TITLE' | translate }}
+            </h2>
+
+            <p>
+              {{ 'SIGN_UP.BRAND.INSTANT_CONFIRMATION.DESCRIPTION' | translate }}
+            </p>
           </div>
         </article>
 
         <article class="benefit-item">
-          <div class="benefit-icon">
+          <div class="benefit-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
-              <path d="M12 3 19 6v5c0 4.5-2.8 8-7 10-4.2-2-7-5.5-7-10V6l7-3Z" />
+              <path d="M12 3 19 6v5c0 4.5-2.8 8-7 10-4.2-2-7-5.5-7-10V6l7-3Z"></path>
             </svg>
           </div>
 
           <div>
-            <h2>Secure Payments</h2>
-            <p>Your payment information is always protected</p>
+            <h2>
+              {{ 'SIGN_UP.BRAND.SECURE_PAYMENTS.TITLE' | translate }}
+            </h2>
+
+            <p>
+              {{ 'SIGN_UP.BRAND.SECURE_PAYMENTS.DESCRIPTION' | translate }}
+            </p>
           </div>
         </article>
       </div>
@@ -54,29 +73,39 @@
     <div class="form-container">
       <div class="user-logo" aria-hidden="true">
         <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="8" r="3" />
-          <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20" />
+          <circle cx="12" cy="8" r="3"></circle>
+
+          <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20"></path>
+
+          <path d="M19 8v6M16 11h6"></path>
         </svg>
       </div>
 
-      <div class="form-heading">
-        <h2>Create your account</h2>
-        <p>Join thousands of travelers today</p>
-      </div>
+      <header class="form-heading">
+        <h2>
+          {{ 'SIGN_UP.FORM.TITLE' | translate }}
+        </h2>
+
+        <p>
+          {{ 'SIGN_UP.FORM.DESCRIPTION' | translate }}
+        </p>
+      </header>
 
       <form class="register-form" [formGroup]="registrationForm" (ngSubmit)="signUp()" novalidate>
         <div class="name-fields">
           <div class="field-wrapper">
             <label class="input-group">
-              <svg class="input-icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="3" />
-                <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20" />
+              <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3"></circle>
+
+                <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20"></path>
               </svg>
 
               <input
                 type="text"
                 formControlName="firstName"
-                placeholder="First name"
+                [placeholder]="'SIGN_UP.FORM.FIRST_NAME' | translate"
+                [attr.aria-label]="'SIGN_UP.FORM.FIRST_NAME' | translate"
                 autocomplete="given-name"
               />
             </label>
@@ -85,21 +114,25 @@
               registrationForm.controls.firstName.touched &&
               registrationForm.controls.firstName.hasError('required')
             ) {
-              <p class="field-error">First name is required.</p>
+              <p class="field-error">
+                {{ 'SIGN_UP.VALIDATION.FIRST_NAME_REQUIRED' | translate }}
+              </p>
             }
           </div>
 
           <div class="field-wrapper">
             <label class="input-group">
-              <svg class="input-icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="8" r="3" />
-                <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20" />
+              <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="8" r="3"></circle>
+
+                <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20"></path>
               </svg>
 
               <input
                 type="text"
                 formControlName="lastName"
-                placeholder="Last name"
+                [placeholder]="'SIGN_UP.FORM.LAST_NAME' | translate"
+                [attr.aria-label]="'SIGN_UP.FORM.LAST_NAME' | translate"
                 autocomplete="family-name"
               />
             </label>
@@ -108,22 +141,26 @@
               registrationForm.controls.lastName.touched &&
               registrationForm.controls.lastName.hasError('required')
             ) {
-              <p class="field-error">Last name is required.</p>
+              <p class="field-error">
+                {{ 'SIGN_UP.VALIDATION.LAST_NAME_REQUIRED' | translate }}
+              </p>
             }
           </div>
         </div>
 
         <div class="field-wrapper">
           <label class="input-group">
-            <svg class="input-icon" viewBox="0 0 24 24">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="m4 7 8 6 8-6" />
+            <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+
+              <path d="m4 7 8 6 8-6"></path>
             </svg>
 
             <input
               type="email"
               formControlName="email"
-              placeholder="Email address"
+              [placeholder]="'SIGN_UP.FORM.EMAIL' | translate"
+              [attr.aria-label]="'SIGN_UP.FORM.EMAIL' | translate"
               autocomplete="email"
             />
           </label>
@@ -132,28 +169,32 @@
             registrationForm.controls.email.touched &&
             registrationForm.controls.email.hasError('required')
           ) {
-            <p class="field-error">Email address is required.</p>
-          }
-
-          @if (
+            <p class="field-error">
+              {{ 'SIGN_UP.VALIDATION.EMAIL_REQUIRED' | translate }}
+            </p>
+          } @else if (
             registrationForm.controls.email.touched &&
             registrationForm.controls.email.hasError('email')
           ) {
-            <p class="field-error">Please enter a valid email address.</p>
+            <p class="field-error">
+              {{ 'SIGN_UP.VALIDATION.EMAIL_INVALID' | translate }}
+            </p>
           }
         </div>
 
         <div class="field-wrapper">
           <label class="input-group">
-            <svg class="input-icon" viewBox="0 0 24 24">
-              <rect x="5" y="10" width="14" height="11" rx="2" />
-              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+            <svg class="input-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="10" width="14" height="11" rx="2"></rect>
+
+              <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
             </svg>
 
             <input
               type="password"
               formControlName="password"
-              placeholder="Password (Min. 8 characters, uppercase and symbol)"
+              [placeholder]="'SIGN_UP.FORM.PASSWORD' | translate"
+              [attr.aria-label]="'SIGN_UP.FORM.PASSWORD' | translate"
               autocomplete="new-password"
             />
           </label>
@@ -162,48 +203,66 @@
             registrationForm.controls.password.touched &&
             registrationForm.controls.password.hasError('required')
           ) {
-            <p class="field-error">Password is required.</p>
-          }
-
-          @if (
+            <p class="field-error">
+              {{ 'SIGN_UP.VALIDATION.PASSWORD_REQUIRED' | translate }}
+            </p>
+          } @else if (
             registrationForm.controls.password.touched &&
             registrationForm.controls.password.hasError('pattern')
           ) {
             <p class="field-error">
-              Password must contain at least 8 characters, one uppercase letter and one special
-              symbol.
+              {{ 'SIGN_UP.VALIDATION.PASSWORD_PATTERN' | translate }}
             </p>
           }
         </div>
 
+        @if (errorMessageKey) {
+          <p class="form-message error-message" role="alert">
+            {{ errorMessageKey | translate }}
+          </p>
+        }
+
+        @if (backendErrorMessage) {
+          <p class="form-message error-message" role="alert">
+            {{ backendErrorMessage }}
+          </p>
+        }
+
+        @if (successMessageKey) {
+          <p class="form-message success-message" role="status">
+            {{ successMessageKey | translate }}
+          </p>
+        }
+
         <button class="create-account-button" type="submit" [disabled]="isLoading">
-          <svg viewBox="0 0 24 24">
-            <path d="M10 17l5-5-5-5" />
-            <path d="M15 12H3" />
-            <path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5" />
-          </svg>
+          @if (isLoading) {
+            <span class="button-loader" aria-hidden="true"></span>
+          } @else {
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 17l5-5-5-5"></path>
+              <path d="M15 12H3"></path>
+              <path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path>
+            </svg>
+          }
 
           <span>
-            {{ isLoading ? 'Creating account...' : 'Create Account' }}
+            @if (isLoading) {
+              {{ 'SIGN_UP.FORM.CREATING_ACCOUNT' | translate }}
+            } @else {
+              {{ 'SIGN_UP.FORM.CREATE_ACCOUNT' | translate }}
+            }
           </span>
         </button>
-
-        @if (errorMessage) {
-          <p class="error-message">
-            {{ errorMessage }}
-          </p>
-        }
-
-        @if (successMessage) {
-          <p class="success-message">
-            {{ successMessage }}
-          </p>
-        }
       </form>
 
       <p class="sign-in-text">
-        Already have an account?
-        <a routerLink="/sign-in">Sign In</a>
+        <span>
+          {{ 'SIGN_UP.FORM.ALREADY_HAVE_ACCOUNT' | translate }}
+        </span>
+
+        <a routerLink="/sign-in">
+          {{ 'SIGN_UP.FORM.SIGN_IN' | translate }}
+        </a>
       </p>
     </div>
   </section>

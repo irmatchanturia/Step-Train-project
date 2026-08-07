@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 
 import { ToastService } from '../../../../shared/service/toast-service';
@@ -10,32 +10,39 @@ import { AuthService } from '../../service/auth';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
 export class SignIn {
+  private readonly authService = inject(AuthService);
+
+  private readonly router = inject(Router);
+
+  private readonly route = inject(ActivatedRoute);
+
+  private readonly toastService = inject(ToastService);
+
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
+  private readonly translateService = inject(TranslateService);
+
   email = '';
   password = '';
   rememberMe = false;
 
-  errorMessage = '';
-  successMessage = '';
+  errorMessageKey = '';
+  backendErrorMessage = '';
+
   isLoading = false;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private toastService: ToastService,
-    private changeDetectorRef: ChangeDetectorRef,
-  ) {}
-
   signIn(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.errorMessageKey = '';
+    this.backendErrorMessage = '';
 
     if (!this.email.trim() || !this.password) {
-      this.errorMessage = 'გთხოვთ, შეავსოთ ყველა ველი.';
+      this.errorMessageKey = 'SIGN_IN.MESSAGES.ALL_FIELDS_REQUIRED';
+
       return;
     }
 
@@ -51,6 +58,7 @@ export class SignIn {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -58,33 +66,49 @@ export class SignIn {
         next: (response) => {
           const { accessToken, refreshToken } = response.data;
 
-          console.log('Remember me:', this.rememberMe);
-
           this.authService.saveTokens(accessToken, refreshToken, this.rememberMe);
 
-          console.log('AuthService can read token:', Boolean(this.authService.getAccessToken()));
+          const successMessage = this.translateService.instant('SIGN_IN.MESSAGES.LOGIN_SUCCESS');
 
-          this.toastService.success('Login successful!');
+          this.toastService.success(successMessage);
 
-          void this.router.navigate(['/']);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+
+          if (returnUrl) {
+            void this.router.navigateByUrl(returnUrl);
+          } else {
+            void this.router.navigate(['/']);
+          }
         },
 
         error: (error: HttpErrorResponse) => {
           console.error('Login error:', error);
+
           console.error('Backend response:', error.error);
 
           if (error.status === 401) {
-            this.errorMessage = 'ელფოსტა ან პაროლი არასწორია.';
+            this.errorMessageKey = 'SIGN_IN.MESSAGES.INVALID_CREDENTIALS';
           } else if (error.status === 0) {
-            this.errorMessage = 'სერვერთან დაკავშირება ვერ მოხერხდა.';
+            this.errorMessageKey = 'SIGN_IN.MESSAGES.SERVER_CONNECTION';
           } else {
-            this.errorMessage =
-              this.extractBackendMessage(error) ?? 'ავტორიზაცია ვერ მოხერხდა. სცადეთ თავიდან.';
+            const backendMessage = this.extractBackendMessage(error);
+
+            if (backendMessage) {
+              this.backendErrorMessage = backendMessage;
+            } else {
+              this.errorMessageKey = 'SIGN_IN.MESSAGES.LOGIN_FAILED';
+            }
           }
 
           this.changeDetectorRef.markForCheck();
         },
       });
+  }
+
+  onRememberMeChange(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+
+    this.rememberMe = checkbox.checked;
   }
 
   private extractBackendMessage(error: HttpErrorResponse): string | null {
@@ -93,13 +117,5 @@ export class SignIn {
     }
 
     return error.error?.message ?? error.error?.title ?? error.error?.data?.message ?? null;
-  }
-
-  onRememberMeChange(event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-
-    this.rememberMe = checkbox.checked;
-
-    console.log('Checkbox changed:', this.rememberMe);
   }
 }

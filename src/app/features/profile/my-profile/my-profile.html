@@ -1,13 +1,19 @@
 <section class="profile-card">
-  <div class="profile-card-header">
-    <h1 class="profile-title">Personal Information</h1>
+  <header class="profile-card-header">
+    <h1 class="profile-title">
+      {{ 'MY_PROFILE.TITLE' | translate }}
+    </h1>
 
-    <p class="profile-description">Update your name, contact details and date of birth.</p>
-  </div>
+    <p class="profile-description">
+      {{ 'MY_PROFILE.DESCRIPTION' | translate }}
+    </p>
+  </header>
 
   <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
     <div class="form-field">
-      <label for="pictureUrl">Picture URL</label>
+      <label for="pictureUrl">
+        {{ 'MY_PROFILE.FORM.PICTURE_URL' | translate }}
+      </label>
 
       <input
         id="pictureUrl"
@@ -20,13 +26,15 @@
 
     <div class="form-row">
       <div class="form-field">
-        <label for="firstName">First Name</label>
+        <label for="firstName">
+          {{ 'MY_PROFILE.FORM.FIRST_NAME' | translate }}
+        </label>
 
         <input
           id="firstName"
           type="text"
           formControlName="firstName"
-          placeholder="Enter your first name"
+          [placeholder]="'MY_PROFILE.FORM.FIRST_NAME_PLACEHOLDER' | translate"
           autocomplete="given-name"
         />
 
@@ -34,18 +42,22 @@
           profileForm.controls.firstName.touched &&
           profileForm.controls.firstName.hasError('required')
         ) {
-          <span class="field-error"> First name is required. </span>
+          <span class="field-error" role="alert">
+            {{ 'MY_PROFILE.VALIDATION.FIRST_NAME_REQUIRED' | translate }}
+          </span>
         }
       </div>
 
       <div class="form-field">
-        <label for="lastName">Last Name</label>
+        <label for="lastName">
+          {{ 'MY_PROFILE.FORM.LAST_NAME' | translate }}
+        </label>
 
         <input
           id="lastName"
           type="text"
           formControlName="lastName"
-          placeholder="Enter your last name"
+          [placeholder]="'MY_PROFILE.FORM.LAST_NAME_PLACEHOLDER' | translate"
           autocomplete="family-name"
         />
 
@@ -53,77 +65,99 @@
           profileForm.controls.lastName.touched &&
           profileForm.controls.lastName.hasError('required')
         ) {
-          <span class="field-error"> Last name is required. </span>
+          <span class="field-error" role="alert">
+            {{ 'MY_PROFILE.VALIDATION.LAST_NAME_REQUIRED' | translate }}
+          </span>
         }
       </div>
     </div>
 
     <div class="form-field">
-      <label for="email">Email Address</label>
+      <label for="email">
+        {{ 'MY_PROFILE.FORM.EMAIL' | translate }}
+      </label>
 
       <input
         id="email"
         type="email"
         formControlName="email"
-        placeholder="Enter your email address"
+        [placeholder]="'MY_PROFILE.FORM.EMAIL_PLACEHOLDER' | translate"
         autocomplete="email"
       />
 
       @if (profileForm.controls.email.touched && profileForm.controls.email.hasError('required')) {
-        <span class="field-error"> Email address is required. </span>
+        <span class="field-error" role="alert">
+          {{ 'MY_PROFILE.VALIDATION.EMAIL_REQUIRED' | translate }}
+        </span>
       } @else if (
         profileForm.controls.email.touched && profileForm.controls.email.hasError('email')
       ) {
-        <span class="field-error"> Enter a valid email address. </span>
+        <span class="field-error" role="alert">
+          {{ 'MY_PROFILE.VALIDATION.EMAIL_INVALID' | translate }}
+        </span>
       }
     </div>
 
     <div class="form-field">
-      <label for="phoneNumber">Phone Number</label>
+      <label for="phoneNumber">
+        {{ 'MY_PROFILE.FORM.PHONE_NUMBER' | translate }}
+      </label>
 
       <input
         id="phoneNumber"
         type="tel"
         formControlName="phoneNumber"
-        placeholder="e.g. +995 555 01 01 01"
+        [placeholder]="'MY_PROFILE.FORM.PHONE_PLACEHOLDER' | translate"
         autocomplete="tel"
       />
     </div>
 
     <div class="form-field">
-      <label for="address">Address</label>
+      <label for="address">
+        {{ 'MY_PROFILE.FORM.ADDRESS' | translate }}
+      </label>
 
       <input
         id="address"
         type="text"
         formControlName="address"
-        placeholder="Enter your address"
+        [placeholder]="'MY_PROFILE.FORM.ADDRESS_PLACEHOLDER' | translate"
         autocomplete="street-address"
       />
     </div>
 
     <div class="form-field">
-      <label for="dob">Date of Birth</label>
+      <label for="dob">
+        {{ 'MY_PROFILE.FORM.DATE_OF_BIRTH' | translate }}
+      </label>
 
       <input id="dob" type="date" formControlName="dob" autocomplete="bday" />
     </div>
-    @if (successMessage) {
-      <p class="form-message success-message">
-        {{ successMessage }}
+
+    @if (successMessageKey) {
+      <p class="form-message success-message" role="status" aria-live="polite">
+        {{ successMessageKey | translate }}
       </p>
     }
 
-    @if (errorMessage) {
-      <p class="form-message error-message">
-        {{ errorMessage }}
+    @if (errorMessageKey) {
+      <p class="form-message error-message" role="alert" aria-live="polite">
+        {{ errorMessageKey | translate }}
       </p>
     }
+
     <div class="form-actions">
       <button class="save-button" type="submit" [disabled]="profileForm.invalid || isSaving">
         @if (isSaving) {
-          Saving...
+          <span class="button-loader" aria-hidden="true"></span>
+
+          <span>
+            {{ 'MY_PROFILE.FORM.SAVING' | translate }}
+          </span>
         } @else {
-          Save Changes
+          <span>
+            {{ 'MY_PROFILE.FORM.SAVE_CHANGES' | translate }}
+          </span>
         }
       </button>
     </div>

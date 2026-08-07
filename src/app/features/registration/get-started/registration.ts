@@ -1,20 +1,28 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 import { AuthService } from '../service/auth';
 import { ToastService } from '../../../shared/service/toast-service';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './registration.html',
   styleUrl: './registration.css',
 })
 export class SignUp {
-  errorMessage = '';
-  successMessage = '';
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
+  private readonly translateService = inject(TranslateService);
+
+  errorMessageKey = '';
+  backendErrorMessage = '';
+  successMessageKey = '';
+
   isLoading = false;
 
   registrationForm = new FormGroup({
@@ -39,19 +47,16 @@ export class SignUp {
     }),
   });
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private toastService: ToastService,
-  ) {}
-
   signUp(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.errorMessageKey = '';
+    this.backendErrorMessage = '';
+    this.successMessageKey = '';
 
     if (this.registrationForm.invalid) {
       this.registrationForm.markAllAsTouched();
-      this.errorMessage = 'გთხოვთ, სწორად შეავსოთ ყველა ველი.';
+
+      this.errorMessageKey = 'SIGN_UP.MESSAGES.FORM_INVALID';
+
       return;
     }
 
@@ -65,7 +70,8 @@ export class SignUp {
     };
 
     if (!userData.firstName || !userData.lastName || !userData.email) {
-      this.errorMessage = 'გთხოვთ, შეავსოთ ყველა ველი.';
+      this.errorMessageKey = 'SIGN_UP.MESSAGES.ALL_FIELDS_REQUIRED';
+
       return;
     }
 
@@ -73,15 +79,25 @@ export class SignUp {
 
     this.authService.signUp(userData).subscribe({
       next: () => {
-        this.toastService.success('Registration completed successfully!');
+        this.isLoading = false;
 
-        this.router.navigate(['/signIn']);
+        const successMessage = this.translateService.instant(
+          'SIGN_UP.MESSAGES.REGISTRATION_SUCCESS',
+        );
+
+        this.toastService.success(successMessage);
+
+        void this.router.navigate(['/sign-in']);
       },
 
       error: (error: HttpErrorResponse) => {
         this.isLoading = false;
 
-        this.errorMessage = error.error?.message ?? 'რეგისტრაციისას დაფიქსირდა შეცდომა.';
+        if (error.error?.message) {
+          this.backendErrorMessage = error.error.message;
+        } else {
+          this.errorMessageKey = 'SIGN_UP.MESSAGES.REGISTRATION_FAILED';
+        }
       },
     });
   }

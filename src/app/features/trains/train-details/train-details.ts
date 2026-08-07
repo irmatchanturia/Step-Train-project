@@ -2,6 +2,7 @@ import { SlicePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 
 import { TrainCoach, TrainDetailsModel, TrainSchedule } from '../models/train-details-models';
@@ -14,7 +15,7 @@ type TrainDetailsTab = 'schedules' | 'coaches';
 @Component({
   selector: 'app-train-details',
   standalone: true,
-  imports: [RouterLink, SlicePipe],
+  imports: [RouterLink, SlicePipe, TranslatePipe],
   templateUrl: './train-details.html',
   styleUrl: './train-details.css',
 })
@@ -24,26 +25,26 @@ export class TrainDetails implements OnInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+
   private trainId: number | null = null;
-
-  showAuthenticationModal = false;
-
   private pendingBookingUrl: string | null = null;
+  private coachesLoaded = false;
+
   train: TrainDetailsModel | null = null;
 
   activeTab: TrainDetailsTab = 'schedules';
 
   isLoading = false;
-  errorMessage = '';
+  errorMessageKey = '';
 
   readonly loadingRows = [1, 2];
 
   coaches: TrainCoach[] = [];
 
   isCoachesLoading = false;
-  coachesErrorMessage = '';
+  coachesErrorMessageKey = '';
 
-  private coachesLoaded = false;
+  showAuthenticationModal = false;
 
   readonly currencySymbol = '₾';
 
@@ -53,11 +54,13 @@ export class TrainDetails implements OnInit {
     const trainId = Number(idParameter);
 
     if (!idParameter || !Number.isInteger(trainId) || trainId <= 0) {
-      this.errorMessage = 'Invalid train ID.';
+      this.errorMessageKey = 'TRAIN_DETAILS.ERRORS.INVALID_ID';
+
       return;
     }
 
     this.trainId = trainId;
+
     this.loadTrainDetails();
   }
 
@@ -69,19 +72,21 @@ export class TrainDetails implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
+    this.errorMessageKey = '';
 
     this.trainService
       .getTrainById(trainId)
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
       .subscribe({
         next: (response) => {
           this.train = response.data;
+
           this.changeDetectorRef.markForCheck();
         },
 
@@ -89,11 +94,11 @@ export class TrainDetails implements OnInit {
           console.error('Failed to load train details:', error);
 
           if (error.status === 404) {
-            this.errorMessage = 'Train was not found.';
+            this.errorMessageKey = 'TRAIN_DETAILS.ERRORS.TRAIN_NOT_FOUND';
           } else if (error.status === 0) {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessageKey = 'TRAIN_DETAILS.ERRORS.SERVER_CONNECTION';
           } else {
-            this.errorMessage = 'Train details could not be loaded. Please try again.';
+            this.errorMessageKey = 'TRAIN_DETAILS.ERRORS.TRAIN_LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -117,13 +122,14 @@ export class TrainDetails implements OnInit {
     }
 
     this.isCoachesLoading = true;
-    this.coachesErrorMessage = '';
+    this.coachesErrorMessageKey = '';
 
     this.trainService
       .getCoachesByTrainId(trainId, 10, 1)
       .pipe(
         finalize(() => {
           this.isCoachesLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -139,15 +145,16 @@ export class TrainDetails implements OnInit {
           console.error('Failed to load train coaches:', error);
 
           if (error.status === 404) {
-            this.coachesErrorMessage = 'Coaches were not found for this train.';
+            this.coachesErrorMessageKey = 'TRAIN_DETAILS.ERRORS.COACHES_NOT_FOUND';
           } else {
-            this.coachesErrorMessage = 'Coaches could not be loaded. Please try again.';
+            this.coachesErrorMessageKey = 'TRAIN_DETAILS.ERRORS.COACHES_LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
         },
       });
   }
+
   bookSchedule(schedule: TrainSchedule): void {
     if (!this.train) {
       return;
@@ -166,6 +173,7 @@ export class TrainDetails implements OnInit {
 
     void this.router.navigateByUrl(bookingUrl);
   }
+
   closeAuthenticationModal(): void {
     this.showAuthenticationModal = false;
     this.pendingBookingUrl = null;

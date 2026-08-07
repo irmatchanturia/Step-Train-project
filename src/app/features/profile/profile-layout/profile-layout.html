@@ -3,9 +3,9 @@
     <app-aside [user]="profileService.currentUser()" [isLoading]="isLoading"></app-aside>
 
     <section class="profile-content">
-      @if (errorMessage) {
+      @if (errorMessageKey) {
         <p class="profile-error">
-          {{ errorMessage }}
+          {{ errorMessageKey | translate }}
         </p>
       }
 

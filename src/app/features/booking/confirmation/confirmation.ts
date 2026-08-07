@@ -1,14 +1,19 @@
 import { SlicePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
 import { finalize, forkJoin } from 'rxjs';
+
 import {
   SeatAvailability,
   TrainCoach,
   TrainDetailsModel,
   TrainSchedule,
 } from '../../trains/models/train-details-models';
+
 import { TrainService } from '../../registration/service/trains-service';
 import { BookingsService } from '../../profile/service/bookings-service';
 import { CreateBookingRequest } from '../../booking/models/create-booking-models';
@@ -17,7 +22,7 @@ import { BookingStateService } from '../service/booking-state';
 @Component({
   selector: 'app-confirmation',
   standalone: true,
-  imports: [SlicePipe],
+  imports: [SlicePipe, TranslatePipe],
   templateUrl: './confirmation.html',
   styleUrl: './confirmation.css',
 })
@@ -51,8 +56,13 @@ export class Confirmation implements OnInit {
   isLoading = false;
   isSubmitting = false;
 
-  errorMessage = '';
-  submitErrorMessage = '';
+  errorMessageKey = '';
+
+  errorMessageParams: {
+    seatNumber?: string;
+  } = {};
+
+  submitErrorMessageKey = '';
 
   bookingId: number | null = null;
 
@@ -75,7 +85,7 @@ export class Confirmation implements OnInit {
       trainId <= 0 ||
       scheduleId <= 0
     ) {
-      this.errorMessage = 'Invalid train or schedule ID.';
+      this.errorMessageKey = 'CONFIRMATION.ERRORS.INVALID_IDS';
 
       return;
     }
@@ -125,7 +135,9 @@ export class Confirmation implements OnInit {
 
   loadConfirmationData(): void {
     const trainId = this.trainId;
+
     const scheduleId = this.scheduleId;
+
     const coachId = this.coachId;
 
     if (
@@ -139,8 +151,10 @@ export class Confirmation implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.submitErrorMessage = '';
+
+    this.errorMessageKey = '';
+    this.errorMessageParams = {};
+    this.submitErrorMessageKey = '';
 
     forkJoin({
       trainResponse: this.trainService.getTrainById(trainId),
@@ -167,7 +181,7 @@ export class Confirmation implements OnInit {
             coachesResponse.data.items.find((coach) => coach.id === coachId) ?? null;
 
           if (!selectedSchedule) {
-            this.errorMessage = 'The selected schedule was not found.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.SCHEDULE_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
 
@@ -175,7 +189,7 @@ export class Confirmation implements OnInit {
           }
 
           if (!selectedCoach) {
-            this.errorMessage = 'The selected coach was not found.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.COACH_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
 
@@ -187,8 +201,7 @@ export class Confirmation implements OnInit {
           const selectedSeats = seatsResponse.data.filter((seat) => selectedSeatIdSet.has(seat.id));
 
           if (selectedSeats.length !== this.selectedSeatIds.length) {
-            this.errorMessage =
-              'One or more selected seats could not be found. Please select your seats again.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.SEATS_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
 
@@ -198,7 +211,11 @@ export class Confirmation implements OnInit {
           const unavailableSeat = selectedSeats.find((seat) => !seat.isAvailable);
 
           if (unavailableSeat) {
-            this.errorMessage = `Seat ${unavailableSeat.number} is no longer available. Please select another seat.`;
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.SEAT_UNAVAILABLE';
+
+            this.errorMessageParams = {
+              seatNumber: unavailableSeat.number,
+            };
 
             this.changeDetectorRef.markForCheck();
 
@@ -206,7 +223,9 @@ export class Confirmation implements OnInit {
           }
 
           this.train = train;
+
           this.schedule = selectedSchedule;
+
           this.coach = selectedCoach;
 
           this.selectedSeats = [...selectedSeats].sort((firstSeat, secondSeat) =>
@@ -222,13 +241,13 @@ export class Confirmation implements OnInit {
           console.error('Failed to load confirmation data:', error);
 
           if (error.status === 401) {
-            this.errorMessage = 'Your session has expired. Please sign in again.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.SESSION_EXPIRED';
           } else if (error.status === 404) {
-            this.errorMessage = 'Booking information could not be found.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.BOOKING_INFO_NOT_FOUND';
           } else if (error.status === 0) {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.SERVER_CONNECTION';
           } else {
-            this.errorMessage = 'Booking information could not be loaded. Please try again.';
+            this.errorMessageKey = 'CONFIRMATION.ERRORS.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -250,7 +269,8 @@ export class Confirmation implements OnInit {
     }
 
     this.isSubmitting = true;
-    this.submitErrorMessage = '';
+
+    this.submitErrorMessageKey = '';
 
     const request: CreateBookingRequest = {
       scheduleId,
@@ -271,9 +291,6 @@ export class Confirmation implements OnInit {
 
           this.bookingStateService.clearDraft();
 
-          /*
-           * Success გვერდს მაშინვე დახატავს.
-           */
           this.changeDetectorRef.detectChanges();
         },
 
@@ -281,15 +298,15 @@ export class Confirmation implements OnInit {
           console.error('Failed to create booking:', error);
 
           if (error.status === 400) {
-            this.submitErrorMessage = 'The selected booking information is invalid.';
+            this.submitErrorMessageKey = 'CONFIRMATION.ERRORS.INVALID_BOOKING';
           } else if (error.status === 401) {
-            this.submitErrorMessage = 'Your session has expired. Please sign in again.';
+            this.submitErrorMessageKey = 'CONFIRMATION.ERRORS.SESSION_EXPIRED';
           } else if (error.status === 409) {
-            this.submitErrorMessage = 'One or more selected seats are no longer available.';
+            this.submitErrorMessageKey = 'CONFIRMATION.ERRORS.SEATS_NO_LONGER_AVAILABLE';
           } else if (error.status === 0) {
-            this.submitErrorMessage = 'Could not connect to the server.';
+            this.submitErrorMessageKey = 'CONFIRMATION.ERRORS.SERVER_CONNECTION';
           } else {
-            this.submitErrorMessage = 'Your booking could not be created. Please try again.';
+            this.submitErrorMessageKey = 'CONFIRMATION.ERRORS.CREATE_FAILED';
           }
 
           this.changeDetectorRef.detectChanges();

@@ -1,30 +1,41 @@
 <footer class="site-footer">
-  <div class="footer-content">
-    <div class="footer-brand-section">
-      <a class="footer-brand" routerLink="/" aria-label="STEP TRAINS home">
-        <span class="footer-brand__icon" aria-hidden="true">↝</span>
-        <span>STEP TRAINS</span>
-      </a>
+  <div class="footer-main">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <p>
+          {{ 'FOOTER.DESCRIPTION' | translate }}
+        </p>
+      </div>
 
-      <p>A simple way to discover train routes and plan your next journey.</p>
+      <nav class="footer-navigation" aria-label="Footer navigation">
+        <a routerLink="/">
+          {{ 'FOOTER.HOME' | translate }}
+        </a>
+
+        <a routerLink="/trains">
+          {{ 'FOOTER.TRAINS' | translate }}
+        </a>
+
+        <a routerLink="/sign-in">
+          {{ 'FOOTER.SIGN_IN' | translate }}
+        </a>
+
+        <a routerLink="/sign-up">
+          {{ 'FOOTER.CREATE_ACCOUNT' | translate }}
+        </a>
+      </nav>
+
+      <a class="footer-action" routerLink="/trains">
+        {{ 'FOOTER.BROWSE_TRAINS' | translate }}
+
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
 
-    <nav class="footer-navigation" aria-label="Footer navigation">
-      <a routerLink="/">Home</a>
-      <a routerLink="/trains">Trains</a>
-      <a routerLink="/sign-in">Sign In</a>
-      <a routerLink="/sign-up">Create Account</a>
-    </nav>
-
-    <a class="footer-action" routerLink="/trains">
-      Browse Trains
-      <span aria-hidden="true">→</span>
-    </a>
-  </div>
-
-  <div class="footer-bottom">
-    <p>© {{ currentYear }} STEP TRAINS. All rights reserved.</p>
-
-    <p>Travel smarter. Journey farther.</p>
+    <div class="footer-bottom">
+      <p>
+        {{ 'FOOTER.TAGLINE' | translate }}
+      </p>
+    </div>
   </div>
 </footer>

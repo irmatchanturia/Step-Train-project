@@ -1,31 +1,57 @@
 <header class="site-header">
   <a class="brand" routerLink="/">
-    <span class="brand-icon">↝</span>
-    <span>STEPTRAINS</span>
+    <span class="brand-icon">🚆</span>
+    <span>Step Trains</span>
   </a>
 
-  <nav class="main-navigation" aria-label="Main navigation">
+  <nav class="main-navigation">
     <a
       class="nav-link"
       routerLink="/"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      Home
+      {{ 'HEADER.HOME' | translate }}
     </a>
 
-    <a class="nav-link" routerLink="/trains" routerLinkActive="active"> Trains </a>
+    <a class="nav-link" routerLink="/trains" routerLinkActive="active">
+      {{ 'HEADER.TRAINS' | translate }}
+    </a>
 
     @if (isAuthenticated()) {
-      <a class="nav-link" routerLink="/profile" routerLinkActive="active"> My Profile </a>
+      <a class="nav-link" routerLink="/profile" routerLinkActive="active">
+        {{ 'HEADER.MY_PROFILE' | translate }}
+      </a>
     }
   </nav>
 
-  @if (!isAuthenticated()) {
-    <div class="header-actions">
-      <a class="sign-in-link" routerLink="/sign-in"> Sign In </a>
+  <div class="header-actions">
+    <div class="language-switcher">
+      <button
+        type="button"
+        [class.active]="selectedLanguage === 'ka'"
+        (click)="switchLanguage('ka')"
+      >
+        KA
+      </button>
 
-      <a class="get-started-button" routerLink="/sign-up"> Get Started </a>
+      <button
+        type="button"
+        [class.active]="selectedLanguage === 'en'"
+        (click)="switchLanguage('en')"
+      >
+        EN
+      </button>
     </div>
-  }
+
+    @if (!isAuthenticated()) {
+      <a class="sign-in-link" routerLink="/sign-in">
+        {{ 'HEADER.SIGN_IN' | translate }}
+      </a>
+
+      <a class="get-started-button" routerLink="/sign-up">
+        {{ 'HEADER.GET_STARTED' | translate }}
+      </a>
+    }
+  </div>
 </header>

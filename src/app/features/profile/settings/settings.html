@@ -1,22 +1,26 @@
 <section class="settings-card">
   <header class="settings-header">
-    <h1 class="settings-title">Security Settings</h1>
+    <h1 class="settings-title">
+      {{ 'SETTINGS.TITLE' | translate }}
+    </h1>
 
-    <p class="settings-description">Manage your password and account.</p>
+    <p class="settings-description">
+      {{ 'SETTINGS.DESCRIPTION' | translate }}
+    </p>
   </header>
 
   <section class="password-section">
-    <h2 class="section-title">Change Password</h2>
-
     <form class="password-form" [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
       <div class="form-field">
-        <label for="currentPassword"> Current Password </label>
+        <label for="currentPassword">
+          {{ 'SETTINGS.PASSWORD.CURRENT_PASSWORD' | translate }}
+        </label>
 
         <input
           id="currentPassword"
           type="password"
           formControlName="currentPassword"
-          placeholder="Enter your current password"
+          [placeholder]="'SETTINGS.PASSWORD.CURRENT_PASSWORD_PLACEHOLDER' | translate"
           autocomplete="current-password"
         />
 
@@ -24,18 +28,22 @@
           passwordForm.controls.currentPassword.touched &&
           passwordForm.controls.currentPassword.hasError('required')
         ) {
-          <span class="field-error"> Current password is required. </span>
+          <span class="field-error" role="alert">
+            {{ 'SETTINGS.PASSWORD.CURRENT_PASSWORD_REQUIRED' | translate }}
+          </span>
         }
       </div>
 
       <div class="form-field">
-        <label for="newPassword"> New Password </label>
+        <label for="newPassword">
+          {{ 'SETTINGS.PASSWORD.NEW_PASSWORD' | translate }}
+        </label>
 
         <input
           id="newPassword"
           type="password"
           formControlName="newPassword"
-          placeholder="Enter your new password"
+          [placeholder]="'SETTINGS.PASSWORD.NEW_PASSWORD_PLACEHOLDER' | translate"
           autocomplete="new-password"
         />
 
@@ -43,18 +51,28 @@
           passwordForm.controls.newPassword.touched &&
           passwordForm.controls.newPassword.hasError('required')
         ) {
-          <span class="field-error"> New password is required. </span>
+          <span class="field-error" role="alert">
+            {{ 'SETTINGS.PASSWORD.NEW_PASSWORD_REQUIRED' | translate }}
+          </span>
         } @else if (
           passwordForm.controls.newPassword.touched &&
           passwordForm.controls.newPassword.hasError('minlength')
         ) {
-          <span class="field-error"> Password must contain at least 8 characters. </span>
+          <span class="field-error" role="alert">
+            {{ 'SETTINGS.PASSWORD.MIN_LENGTH' | translate }}
+          </span>
         }
       </div>
 
-      @if (passwordErrorMessage) {
-        <div class="form-message error-message" role="alert">
-          {{ passwordErrorMessage }}
+      @if (passwordErrorMessageKey) {
+        <div class="form-message error-message" role="alert" aria-live="polite">
+          {{ passwordErrorMessageKey | translate }}
+        </div>
+      }
+
+      @if (passwordBackendErrorMessage) {
+        <div class="form-message error-message" role="alert" aria-live="polite">
+          {{ passwordBackendErrorMessage }}
         </div>
       }
 
@@ -65,9 +83,15 @@
           [disabled]="passwordForm.invalid || isUpdatingPassword"
         >
           @if (isUpdatingPassword) {
-            Updating...
+            <span class="button-spinner" aria-hidden="true"></span>
+
+            <span>
+              {{ 'SETTINGS.PASSWORD.UPDATING' | translate }}
+            </span>
           } @else {
-            Update Password
+            <span>
+              {{ 'SETTINGS.PASSWORD.UPDATE_PASSWORD' | translate }}
+            </span>
           }
         </button>
       </div>
@@ -77,16 +101,13 @@
   <div class="section-divider"></div>
 
   <section class="danger-zone">
-    <h2 class="danger-title">Danger Zone</h2>
-
     <p class="danger-description">
-      Once you delete your account, all data will be permanently removed. This action cannot be
-      undone.
+      {{ 'SETTINGS.DANGER_ZONE.DESCRIPTION' | translate }}
     </p>
 
-    @if (deleteErrorMessage) {
-      <div class="form-message error-message" role="alert">
-        {{ deleteErrorMessage }}
+    @if (deleteErrorMessageKey) {
+      <div class="form-message error-message" role="alert" aria-live="polite">
+        {{ deleteErrorMessageKey | translate }}
       </div>
     }
 
@@ -96,7 +117,7 @@
       [disabled]="isDeletingAccount"
       (click)="openDeleteConfirmation()"
     >
-      Delete Account
+      {{ 'SETTINGS.DANGER_ZONE.DELETE_ACCOUNT' | translate }}
     </button>
   </section>
 </section>
@@ -108,15 +129,17 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="delete-dialog-title"
+      aria-describedby="delete-dialog-description"
       (click)="$event.stopPropagation()"
     >
       <div class="confirmation-icon" aria-hidden="true">!</div>
 
-      <h2 id="delete-dialog-title">Delete your account?</h2>
+      <h2 id="delete-dialog-title">
+        {{ 'SETTINGS.DELETE_MODAL.TITLE' | translate }}
+      </h2>
 
-      <p>
-        Your profile, bookings and account data will be permanently removed. You will not be able to
-        restore them.
+      <p id="delete-dialog-description">
+        {{ 'SETTINGS.DELETE_MODAL.DESCRIPTION' | translate }}
       </p>
 
       <div class="confirmation-actions">
@@ -126,7 +149,7 @@
           [disabled]="isDeletingAccount"
           (click)="closeDeleteConfirmation()"
         >
-          Cancel
+          {{ 'SETTINGS.DELETE_MODAL.CANCEL' | translate }}
         </button>
 
         <button
@@ -136,15 +159,22 @@
           (click)="confirmDeleteAccount()"
         >
           @if (isDeletingAccount) {
-            Deleting...
+            <span class="delete-spinner" aria-hidden="true"></span>
+
+            <span>
+              {{ 'SETTINGS.DELETE_MODAL.DELETING' | translate }}
+            </span>
           } @else {
-            Delete Account
+            <span>
+              {{ 'SETTINGS.DELETE_MODAL.DELETE_ACCOUNT' | translate }}
+            </span>
           }
         </button>
       </div>
     </section>
   </div>
 }
+
 @if (showPasswordSuccessPopup) {
   <div class="confirmation-overlay" role="presentation" (click)="closePasswordSuccessPopup()">
     <section
@@ -156,12 +186,16 @@
     >
       <div class="password-success-icon" aria-hidden="true">✓</div>
 
-      <h2 id="password-success-title">Password Updated</h2>
+      <h2 id="password-success-title">
+        {{ 'SETTINGS.SUCCESS.TITLE' | translate }}
+      </h2>
 
-      <p>Your password has been changed successfully.</p>
+      <p>
+        {{ 'SETTINGS.SUCCESS.DESCRIPTION' | translate }}
+      </p>
 
       <button class="success-close-button" type="button" (click)="closePasswordSuccessPopup()">
-        Done
+        {{ 'SETTINGS.SUCCESS.DONE' | translate }}
       </button>
     </section>
   </div>

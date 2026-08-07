@@ -1,37 +1,49 @@
 import { SlicePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { finalize, forkJoin } from 'rxjs';
 
 import { TrainCoach, TrainSchedule } from '../../trains/models/train-details-models';
+
 import { TrainService } from '../../registration/service/trains-service';
 import { BookingStateService } from '../service/booking-state';
 
 @Component({
   selector: 'app-select-coach',
   standalone: true,
-  imports: [SlicePipe],
+  imports: [SlicePipe, TranslatePipe],
   templateUrl: './select-coach.html',
   styleUrl: './select-coach.css',
 })
 export class SelectCoach implements OnInit {
   private readonly route = inject(ActivatedRoute);
+
   private readonly router = inject(Router);
+
   private readonly trainService = inject(TrainService);
+
   private readonly bookingStateService = inject(BookingStateService);
+
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   private trainId: number | null = null;
   private scheduleId: number | null = null;
 
   schedule: TrainSchedule | null = null;
+
   coaches: TrainCoach[] = [];
 
   selectedCoachId: number | null = null;
 
   isLoading = false;
-  errorMessage = '';
+
+  errorMessageKey = '';
 
   readonly loadingItems = [1, 2, 3];
 
@@ -43,6 +55,7 @@ export class SelectCoach implements OnInit {
     const scheduleIdParameter = parentRoute?.snapshot.paramMap.get('scheduleId');
 
     const trainId = Number(trainIdParameter);
+
     const scheduleId = Number(scheduleIdParameter);
 
     if (
@@ -53,7 +66,7 @@ export class SelectCoach implements OnInit {
       trainId <= 0 ||
       scheduleId <= 0
     ) {
-      this.errorMessage = 'Invalid train or schedule ID.';
+      this.errorMessageKey = 'SELECT_COACH.ERRORS.INVALID_IDS';
 
       return;
     }
@@ -70,6 +83,7 @@ export class SelectCoach implements OnInit {
 
   loadCoachSelectionData(): void {
     const trainId = this.trainId;
+
     const scheduleId = this.scheduleId;
 
     if (trainId === null || scheduleId === null || this.isLoading) {
@@ -77,7 +91,9 @@ export class SelectCoach implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
+
+    this.errorMessageKey = '';
+
     this.schedule = null;
     this.coaches = [];
 
@@ -89,6 +105,7 @@ export class SelectCoach implements OnInit {
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -98,19 +115,17 @@ export class SelectCoach implements OnInit {
             trainResponse.data.schedules.find((schedule) => schedule.id === scheduleId) ?? null;
 
           if (!selectedSchedule) {
-            this.errorMessage = 'The selected schedule was not found.';
+            this.errorMessageKey = 'SELECT_COACH.ERRORS.SCHEDULE_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
+
             return;
           }
 
           this.schedule = selectedSchedule;
+
           this.coaches = coachesResponse.data.items;
 
-          /*
-           * ვამოწმებთ, რომ sessionStorage-დან
-           * აღდგენილი coach ისევ არსებობს.
-           */
           if (
             this.selectedCoachId !== null &&
             !this.coaches.some((coach) => coach.id === this.selectedCoachId)
@@ -125,11 +140,11 @@ export class SelectCoach implements OnInit {
           console.error('Failed to load coach selection data:', error);
 
           if (error.status === 404) {
-            this.errorMessage = 'Train, schedule or coaches were not found.';
+            this.errorMessageKey = 'SELECT_COACH.ERRORS.NOT_FOUND';
           } else if (error.status === 0) {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessageKey = 'SELECT_COACH.ERRORS.SERVER_CONNECTION';
           } else {
-            this.errorMessage = 'Coach information could not be loaded. Please try again.';
+            this.errorMessageKey = 'SELECT_COACH.ERRORS.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();

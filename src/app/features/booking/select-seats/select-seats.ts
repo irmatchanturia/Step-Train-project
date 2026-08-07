@@ -1,16 +1,22 @@
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { finalize, forkJoin } from 'rxjs';
 
 import { SeatAvailability, TrainCoach } from '../../trains/models/train-details-models';
+
 import { TrainService } from '../../registration/service/trains-service';
 import { BookingStateService } from '../service/booking-state';
 
 @Component({
   selector: 'app-select-seats',
   standalone: true,
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './select-seats.html',
   styleUrl: './select-seats.css',
 })
@@ -40,8 +46,12 @@ export class SelectSeats implements OnInit {
   seatRows: SeatAvailability[][] = [];
 
   isLoading = false;
-  errorMessage = '';
-  selectionErrorMessage = '';
+
+  errorMessageKey = '';
+
+  selectionErrorMessageKey = '';
+
+  readonly loadingItems = [1, 2, 3];
 
   ngOnInit(): void {
     const parentRoute = this.route.parent;
@@ -62,7 +72,7 @@ export class SelectSeats implements OnInit {
       trainId <= 0 ||
       scheduleId <= 0
     ) {
-      this.errorMessage = 'Invalid train or schedule ID.';
+      this.errorMessageKey = 'SELECT_SEATS.ERRORS.INVALID_IDS';
 
       return;
     }
@@ -96,14 +106,16 @@ export class SelectSeats implements OnInit {
 
     this.travelDate = bookingDraft.travelDate.slice(0, 10);
 
-    this.selectedSeatIds = new Set(bookingDraft.seatIds);
+    this.selectedSeatIds = new Set<number>(bookingDraft.seatIds);
 
     this.loadSeats();
   }
 
   loadSeats(): void {
     const trainId = this.trainId;
+
     const scheduleId = this.scheduleId;
+
     const coachId = this.coachId;
 
     if (
@@ -117,8 +129,9 @@ export class SelectSeats implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
-    this.selectionErrorMessage = '';
+
+    this.errorMessageKey = '';
+    this.selectionErrorMessageKey = '';
 
     forkJoin({
       coachesResponse: this.trainService.getCoachesByTrainId(trainId, 100, 1),
@@ -138,7 +151,7 @@ export class SelectSeats implements OnInit {
             coachesResponse.data.items.find((coach) => coach.id === coachId) ?? null;
 
           if (!selectedCoach) {
-            this.errorMessage = 'The selected coach was not found.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.COACH_NOT_FOUND';
 
             this.changeDetectorRef.markForCheck();
 
@@ -151,16 +164,11 @@ export class SelectSeats implements OnInit {
 
           this.seatRows = this.createSeatRows(this.seats);
 
-          /*
-           * ადრე შენახული ადგილებიდან
-           * ვტოვებთ მხოლოდ იმათ,
-           * რომლებიც ახლაც თავისუფალია.
-           */
-          const availableSeatIds = new Set(
+          const availableSeatIds = new Set<number>(
             this.seats.filter((seat) => seat.isAvailable).map((seat) => seat.id),
           );
 
-          this.selectedSeatIds = new Set(
+          this.selectedSeatIds = new Set<number>(
             [...this.selectedSeatIds].filter((seatId) => availableSeatIds.has(seatId)),
           );
 
@@ -173,15 +181,15 @@ export class SelectSeats implements OnInit {
           console.error('Failed to load seats:', error);
 
           if (error.status === 400) {
-            this.errorMessage = 'The selected journey, coach or date is invalid.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.INVALID_JOURNEY';
           } else if (error.status === 401) {
-            this.errorMessage = 'Your session has expired. Please sign in again.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.SESSION_EXPIRED';
           } else if (error.status === 404) {
-            this.errorMessage = 'Seats were not found for this coach.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.SEATS_NOT_FOUND';
           } else if (error.status === 0) {
-            this.errorMessage = 'Could not connect to the server.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.SERVER_CONNECTION';
           } else {
-            this.errorMessage = 'Seats could not be loaded. Please try again.';
+            this.errorMessageKey = 'SELECT_SEATS.ERRORS.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -194,9 +202,9 @@ export class SelectSeats implements OnInit {
       return;
     }
 
-    this.selectionErrorMessage = '';
+    this.selectionErrorMessageKey = '';
 
-    const updatedSeatIds = new Set(this.selectedSeatIds);
+    const updatedSeatIds = new Set<number>(this.selectedSeatIds);
 
     if (updatedSeatIds.has(seat.id)) {
       updatedSeatIds.delete(seat.id);
@@ -223,19 +231,22 @@ export class SelectSeats implements OnInit {
 
   continueToConfirmation(): void {
     if (this.selectedSeatIds.size === 0) {
-      this.selectionErrorMessage = 'Please select at least one seat.';
+      this.selectionErrorMessageKey = 'SELECT_SEATS.ERRORS.SELECT_AT_LEAST_ONE';
 
       this.changeDetectorRef.markForCheck();
+
       return;
     }
 
     const trainId = this.trainId;
+
     const scheduleId = this.scheduleId;
 
     if (trainId === null || scheduleId === null) {
-      this.selectionErrorMessage = 'Invalid booking information.';
+      this.selectionErrorMessageKey = 'SELECT_SEATS.ERRORS.INVALID_BOOKING';
 
       this.changeDetectorRef.markForCheck();
+
       return;
     }
 
@@ -287,12 +298,14 @@ export class SelectSeats implements OnInit {
     if (!match) {
       return {
         row: Number.MAX_SAFE_INTEGER,
+
         column: seatNumber,
       };
     }
 
     return {
       row: Number(match[1]),
+
       column: match[2].toUpperCase(),
     };
   }

@@ -3,15 +3,30 @@
   width: 100%;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font: inherit;
+}
+
+/* PAGE */
+
 .train-details-page {
-  width: 100%;
+  width: min(100%, 1220px);
   min-height: 100%;
+
+  margin: 0 auto;
   padding: 32px;
 }
+
+/* BACK */
 
 .back-link {
   display: inline-flex;
   align-items: center;
+
   gap: 8px;
 
   margin-bottom: 30px;
@@ -20,6 +35,7 @@
 
   font-size: 14px;
   font-weight: 600;
+
   text-decoration: none;
 
   transition:
@@ -28,27 +44,36 @@
 }
 
 .back-link:hover {
-  color: var(--primary-dark);
   transform: translateX(-2px);
+
+  color: var(--primary-dark);
 }
 
 .back-link svg {
   width: 18px;
   height: 18px;
 
+  flex-shrink: 0;
+
   fill: none;
+
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* Train hero */
+/* HERO */
 
 .train-hero {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) 1fr;
+
+  grid-template-columns:
+    minmax(280px, 360px)
+    minmax(0, 1fr);
+
   align-items: center;
+
   gap: 44px;
 
   margin-bottom: 46px;
@@ -56,22 +81,24 @@
 
 .train-image-wrapper {
   width: 100%;
-  overflow: hidden;
 
   aspect-ratio: 4 / 3;
+
+  overflow: hidden;
 
   border: 1px solid var(--border);
   border-radius: 22px;
 
   background: var(--surface-light);
+
   box-shadow: var(--shadow-medium);
 }
 
 .train-image {
-  display: block;
-
   width: 100%;
   height: 100%;
+
+  display: block;
 
   object-fit: cover;
 
@@ -83,20 +110,23 @@
 }
 
 .train-image-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-
   width: 100%;
   height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
   padding: 24px;
 
   color: var(--text-muted);
 
   font-size: 14px;
   font-weight: 600;
+
   text-align: center;
 }
 
@@ -105,11 +135,14 @@
   height: 46px;
 
   fill: none;
+
   stroke: currentColor;
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/* TRAIN INFORMATION */
 
 .train-main-information {
   min-width: 0;
@@ -122,24 +155,31 @@
 
   font-size: 13px;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  line-height: 1.4;
+
+  letter-spacing: 0.2px;
 }
 
 .train-name {
   margin: 0;
 
+  overflow-wrap: anywhere;
+
   color: var(--text-primary);
 
   font-size: clamp(38px, 5vw, 58px);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  line-height: 1.07;
+
+  letter-spacing: -0.5px;
 }
+
+/* STATISTICS */
 
 .train-statistics {
   display: flex;
   flex-wrap: wrap;
+
   gap: 46px;
 
   margin: 32px 0 0;
@@ -156,8 +196,9 @@
 
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  line-height: 1.4;
+
+  letter-spacing: 0.2px;
 }
 
 .statistic-item dd {
@@ -169,10 +210,11 @@
   font-weight: 800;
 }
 
-/* Tabs */
+/* TABS */
 
 .details-tabs {
   display: flex;
+
   gap: 8px;
 
   margin-bottom: 32px;
@@ -183,12 +225,14 @@
 .tab-button {
   position: relative;
 
+  min-width: 160px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
   gap: 9px;
 
-  min-width: 160px;
   padding: 17px 20px;
 
   border: 0;
@@ -208,14 +252,15 @@
 }
 
 .tab-button::after {
-  content: '';
-
   position: absolute;
+
   right: 0;
   bottom: -1px;
   left: 0;
 
   height: 2px;
+
+  content: '';
 
   background: transparent;
 
@@ -224,6 +269,7 @@
 
 .tab-button:hover {
   color: var(--text-primary);
+
   background: var(--surface-light);
 }
 
@@ -235,13 +281,19 @@
   background: var(--primary-dark);
 }
 
+.tab-button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 2px;
+}
+
 .tab-count {
+  min-width: 25px;
+  height: 25px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 25px;
-  height: 25px;
   padding: 0 7px;
 
   border-radius: 999px;
@@ -257,26 +309,30 @@
   animation: tab-content-enter 180ms ease-out;
 }
 
-/* Schedules */
+/* SCHEDULES */
 
 .schedule-list {
   display: grid;
+
   gap: 16px;
 }
 
 .schedule-card {
+  min-height: 88px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 24px;
 
-  min-height: 88px;
   padding: 20px 28px;
 
   border: 1px solid var(--border);
   border-radius: 18px;
 
   background: var(--surface);
+
   box-shadow: var(--shadow-small);
 
   transition:
@@ -286,17 +342,20 @@
 }
 
 .schedule-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-medium);
   transform: translateY(-2px);
+
+  border-color: var(--border-strong);
+
+  box-shadow: var(--shadow-medium);
 }
 
 .schedule-route {
+  min-width: 0;
+
   display: flex;
   align-items: center;
-  gap: 16px;
 
-  min-width: 0;
+  gap: 16px;
 
   color: var(--text-primary);
 
@@ -304,7 +363,11 @@
 }
 
 .schedule-route strong {
+  min-width: 0;
+
   line-height: 1.5;
+
+  overflow-wrap: anywhere;
 }
 
 .route-arrow {
@@ -314,6 +377,7 @@
   flex: 0 0 auto;
 
   fill: none;
+
   stroke: var(--primary-dark);
   stroke-width: 1.8;
   stroke-linecap: round;
@@ -323,6 +387,7 @@
 .schedule-actions {
   display: flex;
   align-items: center;
+
   gap: 24px;
 
   flex: 0 0 auto;
@@ -331,6 +396,7 @@
 .departure-information {
   display: inline-flex;
   align-items: center;
+
   gap: 7px;
 
   color: var(--text-secondary);
@@ -340,7 +406,10 @@
   width: 18px;
   height: 18px;
 
+  flex-shrink: 0;
+
   fill: none;
+
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -354,6 +423,7 @@
 
 .book-button {
   min-height: 44px;
+
   padding: 0 23px;
 
   border: 1px solid transparent;
@@ -366,6 +436,8 @@
   font-size: 14px;
   font-weight: 800;
 
+  white-space: nowrap;
+
   cursor: pointer;
 
   box-shadow: 0 10px 22px rgba(101, 120, 143, 0.2);
@@ -377,124 +449,170 @@
 }
 
 .book-button:hover {
-  background: var(--primary-darker);
-  box-shadow: 0 13px 26px rgba(101, 120, 143, 0.28);
   transform: translateY(-1px);
+
+  background: var(--primary-darker);
+
+  box-shadow: 0 13px 26px rgba(101, 120, 143, 0.28);
 }
 
 .book-button:active {
   transform: translateY(0);
 }
 
-/* Coaches */
+.book-button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
 
-.coaches-summary-card {
+/* COACHES */
+
+.coach-list {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 22px;
 
-  padding: 28px;
+  gap: 16px;
+}
+
+.coach-card {
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 18px 28px;
 
   border: 1px solid var(--border);
   border-radius: 18px;
 
   background: var(--surface);
+
   box-shadow: var(--shadow-small);
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
-.coaches-summary-icon {
+.coach-card:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--border-strong);
+
+  box-shadow: var(--shadow-medium);
+}
+
+.coach-primary-information {
+  min-width: 0;
+
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
 
-  width: 58px;
-  height: 58px;
-
-  border-radius: 18px;
-
-  color: var(--primary-dark);
-  background: var(--primary-light);
+  gap: 14px;
 }
 
-.coaches-summary-icon svg {
-  width: 29px;
-  height: 29px;
-
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.coaches-summary-content h2 {
-  margin: 0 0 8px;
-
-  color: var(--text-primary);
-
-  font-size: 21px;
-}
-
-.coaches-summary-content p {
+.coach-title {
   margin: 0;
 
-  color: var(--text-secondary);
-
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-.coaches-total-seats {
-  display: grid;
-  justify-items: end;
-  gap: 5px;
-
-  min-width: 95px;
-}
-
-.coaches-total-seats span {
-  color: var(--text-muted);
-
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.coaches-total-seats strong {
   color: var(--text-primary);
 
-  font-size: 25px;
+  font-size: 16px;
   font-weight: 800;
 }
 
-/* Empty and error states */
+.coach-class-badge {
+  min-height: 28px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 11px;
+
+  border-radius: 999px;
+
+  color: var(--primary-dark);
+  background: var(--primary-light);
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.coach-class-badge.second-class {
+  color: #28765d;
+
+  background: rgba(40, 118, 93, 0.1);
+}
+
+.coach-class-badge.business-class {
+  color: #4369a8;
+
+  background: rgba(67, 105, 168, 0.11);
+}
+
+.coach-secondary-information {
+  display: flex;
+  align-items: center;
+
+  gap: 30px;
+
+  flex-shrink: 0;
+}
+
+.coach-seat-count {
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.coach-price {
+  min-width: 70px;
+
+  color: var(--primary-dark);
+
+  font-size: 19px;
+  font-weight: 900;
+
+  text-align: right;
+
+  white-space: nowrap;
+}
+
+/* EMPTY */
 
 .empty-tab,
 .train-details-error {
+  min-height: 260px;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
 
-  min-height: 260px;
   padding: 40px;
 
   border: 1px solid var(--border);
   border-radius: 18px;
 
   background: var(--surface);
+
   text-align: center;
 }
 
 .empty-tab-icon,
 .error-icon {
+  width: 62px;
+  height: 62px;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 62px;
-  height: 62px;
   margin-bottom: 18px;
 
   border-radius: 20px;
@@ -509,6 +627,7 @@
   height: 30px;
 
   fill: none;
+
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -517,6 +636,7 @@
 
 .error-icon {
   color: #b94a4a;
+
   background: rgba(185, 74, 74, 0.1);
 }
 
@@ -532,6 +652,7 @@
 .empty-tab p,
 .train-details-error p {
   max-width: 520px;
+
   margin: 0;
 
   color: var(--text-secondary);
@@ -542,6 +663,7 @@
 
 .retry-button {
   min-height: 44px;
+
   margin-top: 22px;
   padding: 0 22px;
 
@@ -556,14 +678,77 @@
   font-weight: 700;
 
   cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 
-/* Loading skeleton */
+.retry-button:hover {
+  transform: translateY(-1px);
+
+  background: var(--primary-darker);
+}
+
+.retry-button:active {
+  transform: translateY(0);
+}
+
+/* COACH ERROR */
+
+.coaches-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 26px;
+
+  border: 1px solid rgba(185, 74, 74, 0.2);
+  border-radius: 18px;
+
+  background: rgba(185, 74, 74, 0.05);
+}
+
+.coaches-error h2 {
+  margin: 0 0 7px;
+
+  color: var(--text-primary);
+
+  font-size: 19px;
+}
+
+.coaches-error p {
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.coaches-error .retry-button {
+  flex-shrink: 0;
+
+  margin-top: 0;
+}
+
+/* SKELETON */
+
+.train-details-skeleton {
+  width: 100%;
+}
 
 .hero-skeleton {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) 1fr;
+
+  grid-template-columns:
+    minmax(280px, 360px)
+    minmax(0, 1fr);
+
   align-items: center;
+
   gap: 44px;
 
   margin-bottom: 46px;
@@ -571,8 +756,9 @@
 
 .information-skeleton {
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
+
   gap: 18px;
 }
 
@@ -581,7 +767,8 @@
 .title-skeleton,
 .statistics-skeleton,
 .tabs-skeleton,
-.schedule-skeleton {
+.schedule-skeleton,
+.coach-skeleton {
   background: linear-gradient(
     90deg,
     var(--surface-light) 25%,
@@ -624,7 +811,9 @@
 
 .tabs-skeleton {
   width: 330px;
+  max-width: 100%;
   height: 50px;
+
   margin-bottom: 32px;
 
   border-radius: 12px;
@@ -632,133 +821,15 @@
 
 .schedule-skeleton {
   height: 88px;
+
   margin-bottom: 16px;
 
   border-radius: 18px;
 }
 
-/* Animations */
-
-@keyframes skeleton-loading {
-  from {
-    background-position: 200% 0;
-  }
-
-  to {
-    background-position: -200% 0;
-  }
-}
-
-@keyframes tab-content-enter {
-  from {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.coach-list {
-  display: grid;
-  gap: 16px;
-}
-
-.coach-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-
-  min-height: 72px;
-  padding: 18px 28px;
-
-  border: 1px solid var(--border);
-  border-radius: 18px;
-
-  background: var(--surface);
-  box-shadow: var(--shadow-small);
-
-  transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
-}
-
-.coach-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-medium);
-  transform: translateY(-2px);
-}
-
-.coach-primary-information {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.coach-title {
-  margin: 0;
-
-  color: var(--text-primary);
-
-  font-size: 16px;
-  font-weight: 800;
-}
-
-.coach-class-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-height: 28px;
-  padding: 0 11px;
-
-  border-radius: 999px;
-
-  color: var(--primary-dark);
-  background: var(--primary-light);
-
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.coach-class-badge.second-class {
-  color: #28765d;
-  background: rgba(40, 118, 93, 0.1);
-}
-
-.coach-class-badge.business-class {
-  color: #4369a8;
-  background: rgba(67, 105, 168, 0.11);
-}
-
-.coach-secondary-information {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.coach-seat-count {
-  color: var(--text-secondary);
-
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.coach-price {
-  min-width: 70px;
-
-  color: var(--primary-dark);
-
-  font-size: 19px;
-  font-weight: 900;
-  text-align: right;
-}
-
 .coaches-loading {
   display: grid;
+
   gap: 16px;
 }
 
@@ -766,53 +837,14 @@
   min-height: 72px;
 
   border-radius: 18px;
-
-  background: linear-gradient(
-    90deg,
-    var(--surface-light) 25%,
-    var(--primary-light) 50%,
-    var(--surface-light) 75%
-  );
-
-  background-size: 200% 100%;
-
-  animation: skeleton-loading 1.3s infinite;
 }
 
-.coaches-error {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-
-  padding: 26px;
-
-  border: 1px solid rgba(185, 74, 74, 0.2);
-  border-radius: 18px;
-
-  background: rgba(185, 74, 74, 0.05);
-}
-
-.coaches-error h2 {
-  margin: 0 0 7px;
-
-  color: var(--text-primary);
-
-  font-size: 19px;
-}
-
-.coaches-error p {
-  margin: 0;
-
-  color: var(--text-secondary);
-
-  font-size: 14px;
-}
+/* AUTHENTICATION MODAL */
 
 .authentication-modal-backdrop {
   position: fixed;
-  z-index: 1000;
   inset: 0;
+  z-index: 1000;
 
   display: grid;
   place-items: center;
@@ -820,13 +852,13 @@
   padding: 20px;
 
   background: rgba(37, 49, 66, 0.48);
+
   backdrop-filter: blur(4px);
 }
 
 .authentication-modal {
-  position: relative;
-
   width: min(100%, 430px);
+
   padding: 34px;
 
   border: 1px solid var(--border);
@@ -837,52 +869,35 @@
   box-shadow: var(--shadow-large);
 
   text-align: center;
-}
 
-.authentication-modal-close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-
-  display: grid;
-  place-items: center;
-
-  width: 34px;
-  height: 34px;
-  padding: 0;
-
-  border: 0;
-  border-radius: 50%;
-
-  color: var(--text-secondary);
-  background: transparent;
-
-  font-size: 24px;
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-.authentication-modal-close:hover {
-  color: var(--text-primary);
-  background: var(--surface-light);
+  animation: modal-enter 180ms ease-out;
 }
 
 .authentication-modal-icon {
+  width: 62px;
+  height: 62px;
+
   display: grid;
   place-items: center;
 
-  width: 62px;
-  height: 62px;
   margin: 0 auto 20px;
 
   border-radius: 50%;
 
   color: var(--primary-dark);
   background: var(--primary-light);
+}
 
-  font-size: 28px;
-  font-weight: 800;
+.authentication-modal-icon svg {
+  width: 30px;
+  height: 30px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .authentication-modal h2 {
@@ -892,10 +907,12 @@
 
   font-size: 24px;
   font-weight: 800;
+  line-height: 1.3;
 }
 
 .authentication-modal p {
   max-width: 330px;
+
   margin: 0 auto;
 
   color: var(--text-secondary);
@@ -906,7 +923,9 @@
 
 .authentication-modal-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
   gap: 12px;
 
   margin-top: 28px;
@@ -915,6 +934,7 @@
 .authentication-cancel-button,
 .authentication-sign-in-button {
   min-height: 48px;
+
   padding: 0 18px;
 
   border-radius: 11px;
@@ -924,6 +944,12 @@
   font-weight: 800;
 
   cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .authentication-cancel-button {
@@ -938,47 +964,65 @@
 }
 
 .authentication-sign-in-button {
-  border: 0;
+  border: 1px solid var(--primary-dark);
 
   color: #ffffff;
   background: var(--primary-dark);
 }
 
 .authentication-sign-in-button:hover {
+  border-color: var(--primary-darker);
+
   background: var(--primary-darker);
 }
 
-@media (max-width: 480px) {
-  .authentication-modal {
-    padding: 30px 22px 24px;
+.authentication-cancel-button:focus-visible,
+.authentication-sign-in-button:focus-visible {
+  outline: 3px solid var(--primary-light);
+  outline-offset: 3px;
+}
+
+/* ANIMATIONS */
+
+@keyframes skeleton-loading {
+  from {
+    background-position: 200% 0;
   }
 
-  .authentication-modal-actions {
-    grid-template-columns: 1fr;
+  to {
+    background-position: -200% 0;
   }
 }
-@media (max-width: 620px) {
-  .coach-card {
-    align-items: flex-start;
-    flex-direction: column;
 
-    padding: 20px;
+@keyframes tab-content-enter {
+  from {
+    opacity: 0;
+
+    transform: translateY(5px);
   }
 
-  .coach-secondary-information {
-    justify-content: space-between;
+  to {
+    opacity: 1;
 
-    width: 100%;
-    padding-top: 16px;
-
-    border-top: 1px solid var(--border);
-  }
-
-  .coaches-error {
-    align-items: stretch;
-    flex-direction: column;
+    transform: translateY(0);
   }
 }
+
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* TABLET */
 
 @media (max-width: 850px) {
   .train-details-page {
@@ -988,6 +1032,7 @@
   .train-hero,
   .hero-skeleton {
     grid-template-columns: 1fr;
+
     gap: 26px;
   }
 
@@ -1007,9 +1052,12 @@
 
   .schedule-actions {
     width: 100%;
+
     justify-content: space-between;
   }
 }
+
+/* SMALL TABLET */
 
 @media (max-width: 620px) {
   .train-details-page {
@@ -1026,12 +1074,15 @@
 
   .train-statistics {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
     gap: 14px;
   }
 
   .statistic-item {
     min-width: 0;
+
     padding: 14px;
 
     border: 1px solid var(--border);
@@ -1050,13 +1101,16 @@
 
   .tab-button {
     min-width: 0;
+
     flex: 1;
+
     padding-inline: 8px;
   }
 
   .schedule-route {
     align-items: flex-start;
     flex-direction: column;
+
     gap: 8px;
   }
 
@@ -1064,33 +1118,68 @@
     transform: rotate(90deg);
   }
 
-  .coaches-summary-card {
-    grid-template-columns: auto 1fr;
+  .coach-card {
+    align-items: flex-start;
+    flex-direction: column;
+
+    padding: 20px;
   }
 
-  .coaches-total-seats {
-    grid-column: 1 / -1;
-    justify-items: start;
-
+  .coach-secondary-information {
     width: 100%;
-    padding-top: 18px;
+
+    justify-content: space-between;
+
+    padding-top: 16px;
 
     border-top: 1px solid var(--border);
   }
+
+  .coaches-error {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .coaches-error .retry-button {
+    width: 100%;
+  }
 }
+
+/* MOBILE */
+
+@media (max-width: 480px) {
+  .authentication-modal {
+    padding: 30px 22px 24px;
+  }
+
+  .authentication-modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* VERY SMALL MOBILE */
 
 @media (max-width: 420px) {
   .train-details-page {
     padding: 14px;
   }
 
+  .train-name {
+    font-size: 32px;
+  }
+
   .train-statistics {
     grid-template-columns: 1fr;
+  }
+
+  .schedule-card {
+    padding: 18px;
   }
 
   .schedule-actions {
     align-items: stretch;
     flex-direction: column;
+
     gap: 14px;
   }
 
@@ -1098,7 +1187,22 @@
     width: 100%;
   }
 
-  .coaches-summary-card {
-    grid-template-columns: 1fr;
+  .coach-secondary-information {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .coach-price {
+    text-align: left;
+  }
+
+  .details-tabs {
+    gap: 0;
+  }
+
+  .tab-button {
+    font-size: 13px;
   }
 }

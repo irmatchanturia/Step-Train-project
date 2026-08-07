@@ -1,21 +1,25 @@
-<section class="train-details-page">
+<main class="train-details-page">
   <a class="back-link" routerLink="/trains">
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M19 12H5"></path>
-      <path d="m10 17-5-5 5-5"></path>
+      <path d="m11 18-6-6 6-6"></path>
     </svg>
 
-    <span>Back to trains</span>
+    <span>
+      {{ 'TRAIN_DETAILS.BACK_TO_TRAINS' | translate }}
+    </span>
   </a>
 
   @if (isLoading) {
-    <div class="train-details-loading" aria-live="polite" aria-label="Loading train details">
+    <div class="train-details-skeleton">
       <div class="hero-skeleton">
         <div class="image-skeleton"></div>
 
         <div class="information-skeleton">
           <div class="small-line-skeleton"></div>
+
           <div class="title-skeleton"></div>
+
           <div class="statistics-skeleton"></div>
         </div>
       </div>
@@ -26,30 +30,37 @@
         <div class="schedule-skeleton"></div>
       }
     </div>
-  } @else if (errorMessage) {
+  } @else if (errorMessageKey) {
     <div class="train-details-error" role="alert">
       <div class="error-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 8v5"></path>
-          <path d="M12 16.5h.01"></path>
+
+          <path d="M12 7v6"></path>
+          <path d="M12 17h.01"></path>
         </svg>
       </div>
 
-      <h1>Train could not be loaded</h1>
+      <h1>
+        {{ 'TRAIN_DETAILS.ERROR_STATE.TITLE' | translate }}
+      </h1>
 
-      <p>{{ errorMessage }}</p>
+      <p>
+        {{ errorMessageKey | translate }}
+      </p>
 
-      <button class="retry-button" type="button" (click)="loadTrainDetails()">Try Again</button>
+      <button class="retry-button" type="button" (click)="loadTrainDetails()">
+        {{ 'TRAIN_DETAILS.ERROR_STATE.TRY_AGAIN' | translate }}
+      </button>
     </div>
   } @else if (train) {
-    <div class="train-hero">
+    <section class="train-hero">
       <div class="train-image-wrapper">
         @if (train.thumbnail) {
           <img
             class="train-image"
             [src]="train.thumbnail"
-            [alt]="train.name + ' train'"
+            [alt]="train.name + ' ' + ('TRAIN_DETAILS.TRAIN_INFO.IMAGE_ALT' | translate)"
             referrerpolicy="no-referrer"
           />
         } @else {
@@ -62,13 +73,18 @@
               <path d="m4 17 5-5 4 4 2-2 5 5"></path>
             </svg>
 
-            <span>Train image is unavailable</span>
+            <span>
+              {{ 'TRAIN_DETAILS.TRAIN_INFO.IMAGE_UNAVAILABLE' | translate }}
+            </span>
           </div>
         }
       </div>
 
       <div class="train-main-information">
-        <p class="train-number">Train #{{ train.number }}</p>
+        <p class="train-number">
+          {{ 'TRAIN_DETAILS.TRAIN_INFO.TRAIN' | translate }}
+          #{{ train.number }}
+        </p>
 
         <h1 class="train-name">
           {{ train.name }}
@@ -76,27 +92,43 @@
 
         <dl class="train-statistics">
           <div class="statistic-item">
-            <dt>Coaches</dt>
+            <dt>
+              {{ 'TRAIN_DETAILS.TRAIN_INFO.COACHES' | translate }}
+            </dt>
 
-            <dd>{{ train.coachesCount }}</dd>
+            <dd>
+              {{ train.coachesCount }}
+            </dd>
           </div>
 
           <div class="statistic-item">
-            <dt>Total Seats</dt>
+            <dt>
+              {{ 'TRAIN_DETAILS.TRAIN_INFO.TOTAL_SEATS' | translate }}
+            </dt>
 
-            <dd>{{ train.totalSeats }}</dd>
+            <dd>
+              {{ train.totalSeats }}
+            </dd>
           </div>
 
           <div class="statistic-item">
-            <dt>Schedules</dt>
+            <dt>
+              {{ 'TRAIN_DETAILS.TRAIN_INFO.SCHEDULES' | translate }}
+            </dt>
 
-            <dd>{{ train.schedules.length }}</dd>
+            <dd>
+              {{ train.schedules.length }}
+            </dd>
           </div>
         </dl>
       </div>
-    </div>
+    </section>
 
-    <div class="details-tabs" role="tablist" aria-label="Train information">
+    <div
+      class="details-tabs"
+      role="tablist"
+      [attr.aria-label]="'TRAIN_DETAILS.TRAIN_INFO.TRAIN_INFORMATION' | translate"
+    >
       <button
         id="schedules-tab"
         class="tab-button"
@@ -107,7 +139,10 @@
         aria-controls="schedules-panel"
         (click)="selectTab('schedules')"
       >
-        Schedules
+        <span>
+          {{ 'TRAIN_DETAILS.TABS.SCHEDULES' | translate }}
+        </span>
+
         <span class="tab-count">
           {{ train.schedules.length }}
         </span>
@@ -123,7 +158,10 @@
         aria-controls="coaches-panel"
         (click)="selectTab('coaches')"
       >
-        Coaches
+        <span>
+          {{ 'TRAIN_DETAILS.TABS.COACHES' | translate }}
+        </span>
+
         <span class="tab-count">
           {{ train.coachesCount }}
         </span>
@@ -149,9 +187,13 @@
               </svg>
             </div>
 
-            <h2>No schedules available</h2>
+            <h2>
+              {{ 'TRAIN_DETAILS.SCHEDULES.NO_SCHEDULES' | translate }}
+            </h2>
 
-            <p>This train does not currently have any available schedules.</p>
+            <p>
+              {{ 'TRAIN_DETAILS.SCHEDULES.NO_SCHEDULES_DESCRIPTION' | translate }}
+            </p>
           </div>
         } @else {
           <div class="schedule-list">
@@ -186,7 +228,7 @@
                   </div>
 
                   <button class="book-button" type="button" (click)="bookSchedule(schedule)">
-                    Book
+                    {{ 'TRAIN_DETAILS.SCHEDULES.BOOK' | translate }}
                   </button>
                 </div>
               </article>
@@ -197,19 +239,30 @@
     } @else {
       <section id="coaches-panel" class="tab-content" role="tabpanel" aria-labelledby="coaches-tab">
         @if (isCoachesLoading) {
-          <div class="coaches-loading" aria-live="polite" aria-label="Loading coaches">
+          <div
+            class="coaches-loading"
+            aria-live="polite"
+            [attr.aria-label]="'TRAIN_DETAILS.COACHES.LOADING' | translate"
+          >
             @for (item of loadingRows; track $index) {
               <div class="coach-skeleton"></div>
             }
           </div>
-        } @else if (coachesErrorMessage) {
+        } @else if (coachesErrorMessageKey) {
           <div class="coaches-error" role="alert">
             <div>
-              <h2>Coaches could not be loaded</h2>
-              <p>{{ coachesErrorMessage }}</p>
+              <h2>
+                {{ 'TRAIN_DETAILS.COACHES.LOAD_FAILED_TITLE' | translate }}
+              </h2>
+
+              <p>
+                {{ coachesErrorMessageKey | translate }}
+              </p>
             </div>
 
-            <button class="retry-button" type="button" (click)="loadCoaches()">Try Again</button>
+            <button class="retry-button" type="button" (click)="loadCoaches()">
+              {{ 'TRAIN_DETAILS.ERROR_STATE.TRY_AGAIN' | translate }}
+            </button>
           </div>
         } @else if (coaches.length === 0) {
           <div class="empty-tab">
@@ -225,16 +278,23 @@
               </svg>
             </div>
 
-            <h2>No coaches available</h2>
+            <h2>
+              {{ 'TRAIN_DETAILS.COACHES.NO_COACHES' | translate }}
+            </h2>
 
-            <p>This train does not currently have any available coaches.</p>
+            <p>
+              {{ 'TRAIN_DETAILS.COACHES.NO_COACHES_DESCRIPTION' | translate }}
+            </p>
           </div>
         } @else {
           <div class="coach-list">
             @for (coach of coaches; track coach.id) {
               <article class="coach-card">
                 <div class="coach-primary-information">
-                  <h2 class="coach-title">Coach {{ coach.number }}</h2>
+                  <h2 class="coach-title">
+                    {{ 'TRAIN_DETAILS.COACHES.COACH' | translate }}
+                    {{ coach.number }}
+                  </h2>
 
                   <span
                     class="coach-class-badge"
@@ -248,10 +308,11 @@
                 <div class="coach-secondary-information">
                   <span class="coach-seat-count">
                     {{ coach.seatCount }}
+
                     @if (coach.seatCount === 1) {
-                      seat
+                      {{ 'TRAIN_DETAILS.COACHES.SEAT' | translate }}
                     } @else {
-                      seats
+                      {{ 'TRAIN_DETAILS.COACHES.SEATS' | translate }}
                     }
                   </span>
 
@@ -264,34 +325,33 @@
       </section>
     }
   }
-</section>
+</main>
+
 @if (showAuthenticationModal) {
-  <div
-    class="authentication-modal-backdrop"
-    role="presentation"
-    (click)="closeAuthenticationModal()"
-  >
+  <div class="authentication-modal-backdrop" (click)="closeAuthenticationModal()">
     <section
       class="authentication-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="authenticationModalTitle"
+      aria-describedby="authenticationModalDescription"
       (click)="$event.stopPropagation()"
     >
-      <button
-        class="authentication-modal-close"
-        type="button"
-        aria-label="Close"
-        (click)="closeAuthenticationModal()"
-      >
-        ×
-      </button>
+      <div class="authentication-modal-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="3"></circle>
 
-      <div class="authentication-modal-icon" aria-hidden="true">♙</div>
+          <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20"></path>
+        </svg>
+      </div>
 
-      <h2 id="authenticationModalTitle">Sign in required</h2>
+      <h2 id="authenticationModalTitle">
+        {{ 'TRAIN_DETAILS.AUTH_MODAL.TITLE' | translate }}
+      </h2>
 
-      <p>You need to sign in before you can book this journey.</p>
+      <p id="authenticationModalDescription">
+        {{ 'TRAIN_DETAILS.AUTH_MODAL.DESCRIPTION' | translate }}
+      </p>
 
       <div class="authentication-modal-actions">
         <button
@@ -299,11 +359,11 @@
           type="button"
           (click)="closeAuthenticationModal()"
         >
-          Cancel
+          {{ 'TRAIN_DETAILS.AUTH_MODAL.CANCEL' | translate }}
         </button>
 
         <button class="authentication-sign-in-button" type="button" (click)="goToSignIn()">
-          Sign In
+          {{ 'TRAIN_DETAILS.AUTH_MODAL.SIGN_IN' | translate }}
         </button>
       </div>
     </section>

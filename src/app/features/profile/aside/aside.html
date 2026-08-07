@@ -1,21 +1,21 @@
 <aside class="profile-sidebar">
-  @if (isLoading) {
-    <div class="user-information">
-      <div class="avatar">
-        <span>...</span>
-      </div>
+  <div class="user-information">
+    @if (isLoading) {
+      <div class="avatar-placeholder" aria-hidden="true"></div>
 
-      <p class="user-email">Loading profile...</p>
-    </div>
-  } @else if (user) {
-    <div class="user-information">
-      @if (user.details?.pictureUrl) {
-        <img class="avatar-image" [src]="user.details?.pictureUrl" [alt]="fullName" />
-      } @else {
-        <div class="avatar">
-          <span>{{ initials }}</span>
-        </div>
-      }
+      <p class="user-email">
+        {{ 'ASIDE.LOADING_PROFILE' | translate }}
+      </p>
+    } @else if (user) {
+      <div class="avatar">
+        @if (user.details?.pictureUrl) {
+          <img class="avatar-image" [src]="user.details?.pictureUrl" [alt]="fullName" />
+        } @else {
+          <span class="avatar-initials">
+            {{ initials }}
+          </span>
+        }
+      </div>
 
       <h2 class="user-name">
         {{ fullName }}
@@ -24,48 +24,65 @@
       <p class="user-email">
         {{ user.email }}
       </p>
-    </div>
-  }
+    }
+  </div>
 
   <div class="divider"></div>
 
   <nav class="profile-navigation" aria-label="Profile navigation">
-    <a class="navigation-link" routerLink="/profile/my-profile" routerLinkActive="active">
+    <a
+      class="navigation-link"
+      routerLink="/profile"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="8" r="3"></circle>
-        <path d="M6 19c0-3.2 2.7-5.5 6-5.5s6 2.3 6 5.5"></path>
+
+        <path d="M6 20v-2.5A4.5 4.5 0 0 1 10.5 13h3a4.5 4.5 0 0 1 4.5 4.5V20"></path>
       </svg>
 
-      <span>My Profile</span>
+      <span>
+        {{ 'ASIDE.MY_PROFILE' | translate }}
+      </span>
     </a>
 
     <a class="navigation-link" routerLink="/profile/my-bookings" routerLinkActive="active">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="4" y="5" width="16" height="15" rx="2"></rect>
+
         <path d="M8 3v4M16 3v4M4 10h16"></path>
       </svg>
 
-      <span>My Bookings</span>
+      <span>
+        {{ 'ASIDE.MY_BOOKINGS' | translate }}
+      </span>
     </a>
 
     <a class="navigation-link" routerLink="/profile/settings" routerLinkActive="active">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="12" r="3"></circle>
+
         <path
           d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1a8 8 0 0 0-1.7-1L14.5 3h-5l-.4 3.1a8 8 0 0 0-1.7 1l-2.4-1-2 3.4L5.1 11a7 7 0 0 0 0 2L3 14.5l2 3.4 2.4-1a8 8 0 0 0 1.7 1l.4 3.1h5l.4-3.1a8 8 0 0 0 1.7-1l2.4 1 2-3.4-2.1-1.5a7 7 0 0 0 .1-1Z"
         ></path>
       </svg>
 
-      <span>Settings</span>
+      <span>
+        {{ 'ASIDE.SETTINGS' | translate }}
+      </span>
     </a>
   </nav>
 
   <button class="sign-out-button" type="button" (click)="signOut()">
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M10 5H5v14h5"></path>
-      <path d="M14 8l4 4-4 4M18 12H9"></path>
+      <path d="M10 17l5-5-5-5"></path>
+      <path d="M15 12H3"></path>
+      <path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"></path>
     </svg>
 
-    <span>Sign Out</span>
+    <span>
+      {{ 'ASIDE.SIGN_OUT' | translate }}
+    </span>
   </button>
 </aside>

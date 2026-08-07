@@ -1,8 +1,15 @@
 import { DatePipe, SlicePipe } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
+import { TranslatePipe } from '@ngx-translate/core';
+
 import { finalize } from 'rxjs';
 
 import { BookingDetailsModel } from '../models/booking-models';
@@ -10,7 +17,7 @@ import { BookingsService } from '../service/bookings-service';
 
 @Component({
   selector: 'app-booking-details',
-  imports: [ReactiveFormsModule, RouterLink, DatePipe, SlicePipe],
+  imports: [ReactiveFormsModule, RouterLink, DatePipe, SlicePipe, TranslatePipe],
   templateUrl: './booking-details.html',
   styleUrl: './booking-details.css',
 })
@@ -35,12 +42,13 @@ export class BookingDetails implements OnInit {
   isDeletingBooking = false;
   showDeleteConfirmation = false;
 
-  errorMessage = '';
-  dateSuccessMessage = '';
-  dateErrorMessage = '';
-  deleteErrorMessage = '';
+  errorMessageKey = '';
+  dateSuccessMessageKey = '';
+  dateErrorMessageKey = '';
+  deleteErrorMessageKey = '';
 
   readonly loadingRows = [1, 2, 3, 4, 5, 6, 7];
+
   readonly currencySymbol = '₾';
 
   readonly minimumTravelDate = this.formatLocalDateForInput(new Date());
@@ -51,11 +59,13 @@ export class BookingDetails implements OnInit {
     const bookingId = Number(idParameter);
 
     if (!idParameter || !Number.isInteger(bookingId) || bookingId <= 0) {
-      this.errorMessage = 'Invalid booking ID.';
+      this.errorMessageKey = 'BOOKING_DETAILS.MESSAGES.INVALID_ID';
+
       return;
     }
 
     this.bookingId = bookingId;
+
     this.loadBooking();
   }
 
@@ -67,13 +77,14 @@ export class BookingDetails implements OnInit {
     }
 
     this.isLoading = true;
-    this.errorMessage = '';
+    this.errorMessageKey = '';
 
     this.bookingsService
       .getBookingById(bookingId)
       .pipe(
         finalize(() => {
           this.isLoading = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -90,11 +101,11 @@ export class BookingDetails implements OnInit {
 
         error: (error: HttpErrorResponse) => {
           if (error.status === 404) {
-            this.errorMessage = 'Booking was not found.';
+            this.errorMessageKey = 'BOOKING_DETAILS.MESSAGES.BOOKING_NOT_FOUND';
           } else if (error.status === 401) {
-            this.errorMessage = 'Your session has expired. Please sign in again.';
+            this.errorMessageKey = 'BOOKING_DETAILS.MESSAGES.SESSION_EXPIRED';
           } else {
-            this.errorMessage = 'Booking details could not be loaded. Please try again.';
+            this.errorMessageKey = 'BOOKING_DETAILS.MESSAGES.LOAD_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -108,8 +119,9 @@ export class BookingDetails implements OnInit {
     }
 
     this.isChangingDate = true;
-    this.dateSuccessMessage = '';
-    this.dateErrorMessage = '';
+
+    this.dateSuccessMessageKey = '';
+    this.dateErrorMessageKey = '';
 
     this.changeDateForm.patchValue({
       travelDate: this.formatDateForInput(this.booking.travelDate),
@@ -122,7 +134,7 @@ export class BookingDetails implements OnInit {
     }
 
     this.isChangingDate = false;
-    this.dateErrorMessage = '';
+    this.dateErrorMessageKey = '';
 
     if (this.booking) {
       this.changeDateForm.patchValue({
@@ -142,6 +154,7 @@ export class BookingDetails implements OnInit {
       this.isUpdatingDate
     ) {
       this.changeDateForm.markAllAsTouched();
+
       return;
     }
 
@@ -150,8 +163,9 @@ export class BookingDetails implements OnInit {
     const formattedTravelDate = this.formatDateForBackend(selectedDate);
 
     this.isUpdatingDate = true;
-    this.dateSuccessMessage = '';
-    this.dateErrorMessage = '';
+
+    this.dateSuccessMessageKey = '';
+    this.dateErrorMessageKey = '';
 
     this.bookingsService
       .updateBookingDate(bookingId, {
@@ -160,6 +174,7 @@ export class BookingDetails implements OnInit {
       .pipe(
         finalize(() => {
           this.isUpdatingDate = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -171,20 +186,21 @@ export class BookingDetails implements OnInit {
           };
 
           this.isChangingDate = false;
-          this.dateSuccessMessage = 'Travel date was updated successfully.';
+
+          this.dateSuccessMessageKey = 'BOOKING_DETAILS.MESSAGES.DATE_UPDATED';
 
           this.changeDetectorRef.markForCheck();
         },
 
         error: (error: HttpErrorResponse) => {
           if (error.status === 404) {
-            this.dateErrorMessage = 'Booking was not found.';
+            this.dateErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.BOOKING_NOT_FOUND';
           } else if (error.status === 400) {
-            this.dateErrorMessage = 'The selected travel date is not valid.';
+            this.dateErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.INVALID_DATE';
           } else if (error.status === 401) {
-            this.dateErrorMessage = 'Your session has expired. Please sign in again.';
+            this.dateErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.SESSION_EXPIRED';
           } else {
-            this.dateErrorMessage = 'Travel date could not be updated. Please try again.';
+            this.dateErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.DATE_UPDATE_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -198,7 +214,7 @@ export class BookingDetails implements OnInit {
     }
 
     this.isChangingDate = false;
-    this.deleteErrorMessage = '';
+    this.deleteErrorMessageKey = '';
     this.showDeleteConfirmation = true;
   }
 
@@ -208,7 +224,7 @@ export class BookingDetails implements OnInit {
     }
 
     this.showDeleteConfirmation = false;
-    this.deleteErrorMessage = '';
+    this.deleteErrorMessageKey = '';
   }
 
   confirmDeleteBooking(): void {
@@ -219,13 +235,14 @@ export class BookingDetails implements OnInit {
     }
 
     this.isDeletingBooking = true;
-    this.deleteErrorMessage = '';
+    this.deleteErrorMessageKey = '';
 
     this.bookingsService
       .deleteBooking(bookingId)
       .pipe(
         finalize(() => {
           this.isDeletingBooking = false;
+
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -243,11 +260,11 @@ export class BookingDetails implements OnInit {
 
         error: (error: HttpErrorResponse) => {
           if (error.status === 404) {
-            this.deleteErrorMessage = 'This booking could not be found.';
+            this.deleteErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.DELETE_NOT_FOUND';
           } else if (error.status === 401) {
-            this.deleteErrorMessage = 'Your session has expired. Please sign in again.';
+            this.deleteErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.SESSION_EXPIRED';
           } else {
-            this.deleteErrorMessage = 'Booking could not be deleted. Please try again.';
+            this.deleteErrorMessageKey = 'BOOKING_DETAILS.MESSAGES.DELETE_FAILED';
           }
 
           this.changeDetectorRef.markForCheck();
@@ -269,7 +286,9 @@ export class BookingDetails implements OnInit {
 
   private formatLocalDateForInput(date: Date): string {
     const year = date.getFullYear();
+
     const month = String(date.getMonth() + 1).padStart(2, '0');
+
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;

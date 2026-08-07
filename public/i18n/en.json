@@ -1,0 +1,654 @@
+{
+  "HEADER": {
+    "HOME": "Home",
+    "TRAINS": "Trains",
+    "MY_PROFILE": "My Profile",
+    "SIGN_IN": "Sign In",
+    "GET_STARTED": "Get Started"
+  },
+  "FOOTER": {
+    "DESCRIPTION": "A simple way to discover train routes and plan your next journey.",
+    "HOME": "Home",
+    "TRAINS": "Trains",
+    "SIGN_IN": "Sign In",
+    "CREATE_ACCOUNT": "Create Account",
+    "BROWSE_TRAINS": "Browse Trains",
+    "TAGLINE": "Travel smarter. Journey farther."
+  },
+  "HOME": {
+    "HERO_TITLE": "Travel Smarter,",
+    "HERO_TITLE_ACCENT": "Journey Farther",
+    "HERO_DESCRIPTION": "Search thousands of train routes and book your seats in seconds.",
+
+    "SEARCH": {
+      "FROM": "From",
+      "TO": "To",
+      "ORIGIN_PLACEHOLDER": "Origin city or station",
+      "DESTINATION_PLACEHOLDER": "Destination city or station",
+      "SEARCH": "Search",
+      "SEARCHING": "Searching..."
+    },
+
+    "TRAIN": {
+      "NUMBER": "Train number",
+      "COACHES": "Coaches",
+      "TOTAL_SEATS": "Total seats"
+    },
+
+    "BENEFITS": {
+      "MULTIPLE_CLASSES": {
+        "TITLE": "Multiple Classes",
+        "DESCRIPTION": "Choose from First, Business, or Second class coaches on every train."
+      },
+      "FLEXIBLE_DATES": {
+        "TITLE": "Flexible Dates",
+        "DESCRIPTION": "Pick any future travel date when booking and change it before departure."
+      },
+      "CHOOSE_SEAT": {
+        "TITLE": "Choose Your Seat",
+        "DESCRIPTION": "Pick the exact seat you want from a live map of available seats."
+      },
+      "INSTANT_CONFIRMATION": {
+        "TITLE": "Instant Confirmation",
+        "DESCRIPTION": "Your booking is confirmed immediately. View and manage all trips in your profile."
+      }
+    },
+
+    "CTA": {
+      "DESCRIPTION": "Browse all available trains and schedules, then choose your seat.",
+      "BROWSE_TRAINS": "Browse Trains",
+      "CREATE_ACCOUNT": "Create Account"
+    },
+
+    "ERRORS": {
+      "BOTH_REQUIRED": "Please enter both origin and destination.",
+      "SAME_STATION": "Origin and destination must be different.",
+      "NO_TRAINS": "No trains found for this route.",
+      "SEARCH_FAILED": "Something went wrong while searching for trains.",
+      "STATIONS_FAILED": "Could not load stations."
+    }
+  },
+
+  "TRAINS": {
+    "TITLE": "Train Routes",
+    "DESCRIPTION": "Find trains by number, or filter by origin and destination.",
+
+    "SEARCH": {
+      "TITLE": "Search",
+      "TRAIN_NUMBER": "Train number",
+      "TRAIN_NUMBER_PLACEHOLDER": "e.g. Express, 42...",
+      "BUTTON": "Search"
+    },
+
+    "FILTER": {
+      "TITLE": "Filter by route",
+      "FROM": "From",
+      "TO": "To",
+      "ANY_ORIGIN": "Any origin",
+      "ANY_DESTINATION": "Any destination",
+      "APPLY": "Apply Filter",
+      "CLEAR": "Clear"
+    },
+
+    "RESULTS": {
+      "TRAIN_FOUND": "train found",
+      "TRAINS_FOUND": "trains found",
+      "LOADING": "Loading trains...",
+      "UNABLE_TO_LOAD": "Unable to load trains",
+      "TRY_AGAIN": "Try Again",
+      "NO_TRAINS": "No trains found",
+      "NO_TRAINS_DESCRIPTION": "Try changing the train number, origin, or destination.",
+      "CLEAR_FILTERS": "Clear Filters"
+    },
+
+    "CARD": {
+      "COACH": "coach",
+      "COACHES": "coaches",
+      "TOTAL_SEATS": "Total Seats",
+      "VIEW_DETAILS": "View details for"
+    },
+
+    "ERRORS": {
+      "LOAD_FAILED": "Failed to load trains. Please try again.",
+      "SEARCH_FAILED": "Failed to search trains. Please try again.",
+      "FILTER_FAILED": "Failed to filter trains. Please try again."
+    }
+  },
+
+  "TRAIN_DETAILS": {
+    "BACK_TO_TRAINS": "Back to trains",
+
+    "ERROR_STATE": {
+      "TITLE": "Train could not be loaded",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "TRAIN_INFO": {
+      "TRAIN": "Train",
+      "IMAGE_ALT": "train",
+      "IMAGE_UNAVAILABLE": "Train image is unavailable",
+      "COACHES": "Coaches",
+      "TOTAL_SEATS": "Total Seats",
+      "SCHEDULES": "Schedules",
+      "TRAIN_INFORMATION": "Train information"
+    },
+
+    "TABS": {
+      "SCHEDULES": "Schedules",
+      "COACHES": "Coaches"
+    },
+
+    "SCHEDULES": {
+      "NO_SCHEDULES": "No schedules available",
+      "NO_SCHEDULES_DESCRIPTION": "This train does not currently have any available schedules.",
+      "BOOK": "Book"
+    },
+
+    "COACHES": {
+      "LOADING": "Loading coaches",
+      "LOAD_FAILED_TITLE": "Coaches could not be loaded",
+      "NO_COACHES": "No coaches available",
+      "NO_COACHES_DESCRIPTION": "This train does not currently have any available coaches.",
+      "COACH": "Coach",
+      "SEAT": "seat",
+      "SEATS": "seats"
+    },
+
+    "AUTH_MODAL": {
+      "TITLE": "Sign in required",
+      "DESCRIPTION": "You need to sign in before you can book this journey.",
+      "CANCEL": "Cancel",
+      "SIGN_IN": "Sign In"
+    },
+
+    "ERRORS": {
+      "INVALID_ID": "Invalid train ID.",
+      "TRAIN_NOT_FOUND": "Train was not found.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "TRAIN_LOAD_FAILED": "Train details could not be loaded. Please try again.",
+      "COACHES_NOT_FOUND": "Coaches were not found for this train.",
+      "COACHES_LOAD_FAILED": "Coaches could not be loaded. Please try again."
+    }
+  },
+
+  "SIGN_UP": {
+    "BRAND": {
+      "TITLE": "STEP TRAINS",
+      "DESCRIPTION": "Your trusted platform for booking train tickets across the country.",
+
+      "EASY_BOOKING": {
+        "TITLE": "Easy Booking",
+        "DESCRIPTION": "Book your train tickets in just a few clicks"
+      },
+
+      "INSTANT_CONFIRMATION": {
+        "TITLE": "Instant Confirmation",
+        "DESCRIPTION": "Get your tickets confirmed right away"
+      },
+
+      "SECURE_PAYMENTS": {
+        "TITLE": "Secure Payments",
+        "DESCRIPTION": "Your payment information is always protected"
+      }
+    },
+
+    "FORM": {
+      "TITLE": "Create your account",
+      "DESCRIPTION": "Join thousands of travelers today",
+
+      "FIRST_NAME": "First name",
+      "LAST_NAME": "Last name",
+      "EMAIL": "Email address",
+      "PASSWORD": "Password (Min. 8 characters, uppercase and symbol)",
+
+      "CREATE_ACCOUNT": "Create Account",
+      "CREATING_ACCOUNT": "Creating account...",
+
+      "ALREADY_HAVE_ACCOUNT": "Already have an account?",
+      "SIGN_IN": "Sign In"
+    },
+
+    "VALIDATION": {
+      "FIRST_NAME_REQUIRED": "First name is required.",
+      "LAST_NAME_REQUIRED": "Last name is required.",
+      "EMAIL_REQUIRED": "Email address is required.",
+      "EMAIL_INVALID": "Please enter a valid email address.",
+      "PASSWORD_REQUIRED": "Password is required.",
+      "PASSWORD_PATTERN": "Password must contain at least 8 characters, one uppercase letter and one special symbol."
+    },
+
+    "MESSAGES": {
+      "FORM_INVALID": "Please fill in all fields correctly.",
+      "ALL_FIELDS_REQUIRED": "Please fill in all fields.",
+      "REGISTRATION_SUCCESS": "Registration completed successfully!",
+      "REGISTRATION_FAILED": "An error occurred during registration."
+    }
+  },
+
+  "SIGN_IN": {
+    "BRAND": {
+      "TITLE": "STEP TRAINS",
+      "DESCRIPTION": "Book train tickets and manage your trips with your account.",
+      "ROUTES": "Routes",
+      "STATIONS": "Stations",
+      "SUPPORT": "Support"
+    },
+
+    "FORM": {
+      "TITLE": "Welcome back",
+      "DESCRIPTION": "Sign in to book your next trip",
+      "EMAIL": "Email address",
+      "PASSWORD": "Password",
+      "REMEMBER_ME": "Remember me",
+      "FORGOT_PASSWORD": "Forgot password?",
+      "SIGN_IN": "Sign In",
+      "SIGNING_IN": "Signing in...",
+      "OR": "or",
+      "NO_ACCOUNT": "Don’t have an account?",
+      "CREATE_ACCOUNT": "Create one now"
+    },
+
+    "MESSAGES": {
+      "ALL_FIELDS_REQUIRED": "Please fill in all fields.",
+      "INVALID_CREDENTIALS": "Email or password is incorrect.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "LOGIN_FAILED": "Sign in failed. Please try again.",
+      "LOGIN_SUCCESS": "Login successful!"
+    }
+  },
+
+  "ASIDE": {
+    "LOADING_PROFILE": "Loading profile...",
+    "MY_PROFILE": "My Profile",
+    "MY_BOOKINGS": "My Bookings",
+    "SETTINGS": "Settings",
+    "SIGN_OUT": "Sign Out"
+  },
+
+  "BOOKING_DETAILS": {
+    "BACK_TO_BOOKINGS": "Back to bookings",
+
+    "ERROR_STATE": {
+      "TITLE": "Booking could not be loaded",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "INFORMATION": {
+      "IMAGE_ALT": "{{trainName}} train",
+      "TRAIN": "Train",
+      "DEPARTURE_TIME": "Departure Time",
+      "COACH": "Coach",
+      "TICKET_PRICE": "Ticket Price",
+      "SEAT": "Seat",
+      "TRAVEL_DATE": "Travel Date",
+      "BOOKED_ON": "Booked On"
+    },
+
+    "ACTIONS": {
+      "CHANGE_DATE": "Change Date",
+      "DELETE_BOOKING": "Delete Booking"
+    },
+
+    "CHANGE_DATE": {
+      "TITLE": "Change Travel Date",
+      "NEW_TRAVEL_DATE": "New Travel Date",
+      "DATE_REQUIRED": "Please select a new travel date.",
+      "SAVING": "Saving...",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
+    },
+
+    "DELETE": {
+      "TITLE": "Delete this booking?",
+      "DESCRIPTION": "Your booking from {{origin}} to {{destination}} will be permanently deleted.",
+      "CANCEL": "Cancel",
+      "DELETING": "Deleting...",
+      "CONFIRM": "Yes, Delete"
+    },
+
+    "MESSAGES": {
+      "INVALID_ID": "Invalid booking ID.",
+      "BOOKING_NOT_FOUND": "Booking was not found.",
+      "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+      "LOAD_FAILED": "Booking details could not be loaded. Please try again.",
+
+      "DATE_UPDATED": "Travel date was updated successfully.",
+      "INVALID_DATE": "The selected travel date is not valid.",
+      "DATE_UPDATE_FAILED": "Travel date could not be updated. Please try again.",
+
+      "DELETE_NOT_FOUND": "This booking could not be found.",
+      "DELETE_FAILED": "Booking could not be deleted. Please try again."
+    }
+  },
+
+  "MY_BOOKINGS": {
+    "TITLE": "My Bookings",
+    "DESCRIPTION": "View and manage all your train reservations.",
+
+    "FILTERS": {
+      "FROM_DATE": "From Date",
+      "TO_DATE": "To Date",
+      "INVALID_DATE_RANGE": "To date cannot be earlier than from date.",
+      "FILTER": "Filter",
+      "FILTERING": "Filtering...",
+      "CLEAR": "Clear",
+      "CLEAR_FILTERS": "Clear Filters"
+    },
+
+    "ERRORS": {
+      "LOAD_TITLE": "Bookings could not be loaded.",
+      "DELETE_TITLE": "Booking could not be deleted.",
+      "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+      "LOAD_FAILED": "Your bookings could not be loaded. Please try again.",
+      "DELETE_FAILED": "The booking could not be deleted. Please try again.",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "EMPTY": {
+      "FILTERED_TITLE": "No bookings found",
+      "FILTERED_DESCRIPTION": "There are no reservations matching the selected date range.",
+      "NO_BOOKINGS_TITLE": "No bookings yet",
+      "NO_BOOKINGS_DESCRIPTION": "When you book a train, your reservations will appear here.",
+      "BROWSE_TRAINS": "Browse Trains"
+    },
+
+    "BOOKING": {
+      "SEAT": "Seat",
+      "COACH": "Coach",
+      "DETAILS": "Details",
+      "DELETE": "Delete",
+      "DELETING": "Deleting..."
+    },
+
+    "PAGINATION": {
+      "PAGE": "Page",
+      "OF": "of",
+      "BOOKING": "booking",
+      "BOOKINGS": "bookings",
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "ARIA_LABEL": "Bookings pagination"
+    },
+
+    "DELETE_MODAL": {
+      "TITLE": "Delete this booking?",
+      "DESCRIPTION": "This booking will be permanently deleted. This action cannot be undone.",
+      "CANCEL": "Cancel",
+      "DELETING": "Deleting...",
+      "CONFIRM": "Yes, Delete"
+    }
+  },
+
+  "MY_PROFILE": {
+    "TITLE": "My Profile",
+    "DESCRIPTION": "Update your name, contact details and date of birth.",
+
+    "FORM": {
+      "PICTURE_URL": "Profile Picture URL",
+
+      "FIRST_NAME": "First Name",
+      "FIRST_NAME_PLACEHOLDER": "Enter your first name",
+
+      "LAST_NAME": "Last Name",
+      "LAST_NAME_PLACEHOLDER": "Enter your last name",
+
+      "EMAIL": "Email Address",
+      "EMAIL_PLACEHOLDER": "Enter your email address",
+
+      "PHONE_NUMBER": "Phone Number",
+      "PHONE_PLACEHOLDER": "e.g. +995 555 01 01 01",
+
+      "ADDRESS": "Address",
+      "ADDRESS_PLACEHOLDER": "Enter your address",
+
+      "DATE_OF_BIRTH": "Date of Birth",
+
+      "SAVING": "Saving...",
+      "SAVE_CHANGES": "Save Changes"
+    },
+
+    "VALIDATION": {
+      "FIRST_NAME_REQUIRED": "First name is required.",
+      "LAST_NAME_REQUIRED": "Last name is required.",
+      "EMAIL_REQUIRED": "Email address is required.",
+      "EMAIL_INVALID": "Enter a valid email address."
+    },
+
+    "MESSAGES": {
+      "UPDATE_SUCCESS": "Profile updated successfully.",
+      "UPDATE_FAILED": "Profile could not be updated. Please try again."
+    }
+  },
+
+  "PROFILE_LAYOUT": {
+    "ERRORS": {
+      "USER_LOAD_FAILED": "User information could not be loaded."
+    }
+  },
+
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "DESCRIPTION": "Manage your password and account.",
+
+    "PASSWORD": {
+      "CURRENT_PASSWORD": "Current Password",
+      "CURRENT_PASSWORD_PLACEHOLDER": "Enter your current password",
+      "CURRENT_PASSWORD_REQUIRED": "Current password is required.",
+
+      "NEW_PASSWORD": "New Password",
+      "NEW_PASSWORD_PLACEHOLDER": "Enter your new password",
+      "NEW_PASSWORD_REQUIRED": "New password is required.",
+      "MIN_LENGTH": "Password must contain at least 8 characters.",
+
+      "UPDATING": "Updating...",
+      "UPDATE_PASSWORD": "Update Password"
+    },
+
+    "DANGER_ZONE": {
+      "DESCRIPTION": "Once you delete your account, all data will be permanently removed. This action cannot be undone.",
+      "DELETE_ACCOUNT": "Delete Account"
+    },
+
+    "DELETE_MODAL": {
+      "TITLE": "Delete your account?",
+      "DESCRIPTION": "Your profile, bookings and account data will be permanently removed. You will not be able to restore them.",
+      "CANCEL": "Cancel",
+      "DELETING": "Deleting...",
+      "DELETE_ACCOUNT": "Delete Account"
+    },
+
+    "SUCCESS": {
+      "TITLE": "Password Updated",
+      "DESCRIPTION": "Your password has been changed successfully.",
+      "DONE": "Done"
+    },
+
+    "ERRORS": {
+      "SAME_PASSWORD": "New password must be different from your current password.",
+      "PASSWORD_UPDATE_FAILED": "Password could not be updated. Please check your current password.",
+      "SERVER_TIMEOUT": "The server took too long to respond. Please try again later.",
+      "DELETE_ACCOUNT_FAILED": "Your account could not be deleted. Please try again later."
+    }
+  },
+
+  "CONFIRMATION": {
+    "SUCCESS": {
+      "TITLE": "Booking Confirmed",
+      "DESCRIPTION": "Your booking was created successfully.",
+      "BOOKING_ID": "Booking ID",
+      "BACK_TO_TRAINS": "Back to Trains"
+    },
+
+    "ERROR_STATE": {
+      "TITLE": "Booking summary could not be loaded",
+      "BACK_TO_SEATS": "Back to Seats",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "REVIEW": {
+      "BACK_TO_SEATS": "Back to seats",
+      "TITLE": "Review and Confirm",
+      "DESCRIPTION": "Check your journey details before creating the booking.",
+
+      "JOURNEY": "Journey",
+      "TRAIN": "Train",
+      "FROM": "From",
+      "TO": "To",
+      "DEPARTURE": "Departure",
+      "TRAVEL_DATE": "Travel date",
+      "COACH": "Coach",
+
+      "SELECTED_SEATS": "Selected seats"
+    },
+
+    "PAYMENT": {
+      "TITLE": "Price Summary",
+      "PRICE_PER_SEAT": "Price per seat",
+      "NUMBER_OF_SEATS": "Number of seats",
+      "TOTAL": "Total",
+      "CREATING_BOOKING": "Creating Booking...",
+      "CONFIRM_BOOKING": "Confirm Booking",
+      "NOTE": "Seats are confirmed only after the booking is successfully created."
+    },
+
+    "ERRORS": {
+      "INVALID_IDS": "Invalid train or schedule ID.",
+      "SCHEDULE_NOT_FOUND": "The selected schedule was not found.",
+      "COACH_NOT_FOUND": "The selected coach was not found.",
+      "SEATS_NOT_FOUND": "One or more selected seats could not be found. Please select your seats again.",
+      "SEAT_UNAVAILABLE": "Seat {{seatNumber}} is no longer available. Please select another seat.",
+      "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+      "BOOKING_INFO_NOT_FOUND": "Booking information could not be found.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "LOAD_FAILED": "Booking information could not be loaded. Please try again.",
+
+      "INVALID_BOOKING": "The selected booking information is invalid.",
+      "SEATS_NO_LONGER_AVAILABLE": "One or more selected seats are no longer available.",
+      "CREATE_FAILED": "Your booking could not be created. Please try again."
+    }
+  },
+
+  "SELECT_COACH": {
+    "ERROR_STATE": {
+      "TITLE": "Coach information could not be loaded",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "HEADER": {
+      "STEP": "Step 1 of 4",
+      "TITLE": "Select a Coach",
+      "DESCRIPTION": "Choose the coach class you would like to travel in."
+    },
+
+    "EMPTY": {
+      "TITLE": "No coaches available",
+      "DESCRIPTION": "This train currently has no coaches available for booking."
+    },
+
+    "COACH": {
+      "AVAILABLE_COACHES": "Available coaches",
+      "SELECT_ARIA": "Select coach {{number}}, {{class}}, {{seatCount}} seats, {{price}} lari",
+      "SEAT": "seat",
+      "SEATS": "seats",
+      "COACH": "Coach",
+      "SCROLL_HINT": "Scroll horizontally to view all coaches",
+      "SELECTED_COACH": "Selected coach",
+      "SELECT_TO_CONTINUE": "Select a coach to continue",
+      "CONTINUE_TO_DATE": "Continue to Date"
+    },
+
+    "ERRORS": {
+      "INVALID_IDS": "Invalid train or schedule ID.",
+      "SCHEDULE_NOT_FOUND": "The selected schedule was not found.",
+      "NOT_FOUND": "Train, schedule or coaches were not found.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "LOAD_FAILED": "Coach information could not be loaded. Please try again."
+    }
+  },
+
+  "SELECT_DATE": {
+    "ERROR_STATE": {
+      "TITLE": "Travel information could not be loaded",
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "HEADER": {
+      "BACK_TO_COACHES": "Back to coaches",
+      "TITLE": "Choose Travel Date",
+      "COACH": "Coach",
+      "CLASS": "class"
+    },
+
+    "FORM": {
+      "TRAVEL_DATE": "Travel Date",
+      "DATE_REQUIRED": "Please select a travel date.",
+      "CONTINUE_TO_SEATS": "Continue to Seats"
+    },
+
+    "ERRORS": {
+      "INVALID_IDS": "Invalid train or schedule ID.",
+      "SCHEDULE_NOT_FOUND": "The selected schedule was not found.",
+      "COACH_NOT_FOUND": "The selected coach was not found.",
+      "NOT_FOUND": "Train, schedule or coach was not found.",
+      "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "LOAD_FAILED": "Travel information could not be loaded. Please try again.",
+      "VALID_DATE_REQUIRED": "Please enter a valid travel date.",
+      "PAST_DATE": "Please select today or a future date."
+    }
+  },
+
+  "SELECT_SEATS": {
+    "ERROR_STATE": {
+      "TRY_AGAIN": "Try Again"
+    },
+
+    "HEADER": {
+      "BACK_TO_DATE": "Back to date",
+      "TITLE": "Select Your Seats",
+      "COACH": "Coach",
+      "CLASS": "class",
+      "TRAVEL_DATE": "Travel date"
+    },
+
+    "COACH": {
+      "COACH": "Coach",
+      "CLASS": "class",
+      "PER_SEAT": "per seat",
+      "SEAT_MAP": "Coach seat map",
+      "FRONT": "Front",
+      "NO_SEATS": "No seats were found for this coach."
+    },
+
+    "SEAT": {
+      "AVAILABLE": "Available",
+      "SELECTED": "Selected",
+      "BOOKED": "Booked",
+      "AVAILABLE_ARIA": "Seat {{number}}, available",
+      "BOOKED_ARIA": "Seat {{number}}, booked",
+      "REMOVE_ARIA": "Remove seat {{number}}"
+    },
+
+    "SUMMARY": {
+      "TITLE": "Your Selection",
+      "COACH": "Coach",
+      "TRAVEL_DATE": "Travel date",
+      "SELECTED_SEATS": "Selected seats",
+      "EMPTY_SELECTION": "Select one or more available seats.",
+      "TOTAL": "Total",
+      "CONTINUE": "Continue to Confirmation"
+    },
+
+    "ERRORS": {
+      "INVALID_IDS": "Invalid train or schedule ID.",
+      "COACH_NOT_FOUND": "The selected coach was not found.",
+      "INVALID_JOURNEY": "The selected journey, coach or date is invalid.",
+      "SESSION_EXPIRED": "Your session has expired. Please sign in again.",
+      "SEATS_NOT_FOUND": "Seats were not found for this coach.",
+      "SERVER_CONNECTION": "Could not connect to the server.",
+      "LOAD_FAILED": "Seats could not be loaded. Please try again.",
+      "SELECT_AT_LEAST_ONE": "Please select at least one seat.",
+      "INVALID_BOOKING": "Invalid booking information."
+    }
+  }
+}
