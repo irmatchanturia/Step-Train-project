@@ -1,6 +1,6 @@
 import { Component, effect, inject } from '@angular/core';
-
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -15,7 +15,6 @@ import { UpdateProfileRequest } from '../models/user-models';
 })
 export class MyProfile {
   private readonly formBuilder = inject(FormBuilder);
-
   private readonly profileService = inject(ProfileService);
 
   readonly profileForm = this.formBuilder.nonNullable.group({
@@ -45,25 +44,41 @@ export class MyProfile {
         return;
       }
 
-      this.profileForm.patchValue({
-        firstName: user.firstName ?? '',
+      /*
+       * reset() განზრახ გამოიყენება patchValue()-ის ნაცვლად.
+       *
+       * ახალი user-ის ჩატვირთვის შემდეგ:
+       * - form pristine ხდება
+       * - touched state იწმინდება
+       * - ძველი validation state აღარ რჩება
+       */
+      this.profileForm.reset(
+        {
+          firstName: user.firstName ?? '',
 
-        lastName: user.lastName ?? '',
+          lastName: user.lastName ?? '',
 
-        email: user.email ?? '',
+          email: user.email ?? '',
 
-        pictureUrl: user.details?.pictureUrl ?? '',
+          pictureUrl: user.details?.pictureUrl ?? '',
 
-        phoneNumber: user.details?.phoneNumber ?? '',
+          phoneNumber: user.details?.phoneNumber ?? '',
 
-        address: user.details?.address ?? '',
+          address: user.details?.address ?? '',
 
-        dob: this.formatDateForInput(user.details?.dob),
-      });
+          dob: this.formatDateForInput(user.details?.dob),
+        },
+        {
+          emitEvent: false,
+        },
+      );
     });
   }
 
   onSubmit(): void {
+    this.successMessageKey = '';
+    this.errorMessageKey = '';
+
     if (this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
 
@@ -90,26 +105,32 @@ export class MyProfile {
 
     this.isSaving = true;
 
-    this.successMessageKey = '';
-    this.errorMessageKey = '';
+    this.profileService
+      .updateCurrentUser(updateProfileRequest)
+      .pipe(
+        finalize(() => {
+          this.isSaving = false;
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.successMessageKey = 'MY_PROFILE.MESSAGES.UPDATE_SUCCESS';
 
-    this.profileService.updateCurrentUser(updateProfileRequest).subscribe({
-      next: () => {
-        this.isSaving = false;
+          /*
+           * currentUser signal უკვე განახლებულია
+           * ProfileService-დან.
+           *
+           * effect() ავტომატურად გაუშვებს reset()-ს,
+           * ამიტომ აქ ხელით patchValue აღარ გვჭირდება.
+           */
+        },
 
-        this.successMessageKey = 'MY_PROFILE.MESSAGES.UPDATE_SUCCESS';
+        error: (error) => {
+          console.error('Failed to update profile:', error);
 
-        this.profileForm.markAsPristine();
-      },
-
-      error: (error) => {
-        console.error('Failed to update profile:', error);
-
-        this.isSaving = false;
-
-        this.errorMessageKey = 'MY_PROFILE.MESSAGES.UPDATE_FAILED';
-      },
-    });
+          this.errorMessageKey = 'MY_PROFILE.MESSAGES.UPDATE_FAILED';
+        },
+      });
   }
 
   private formatDateForInput(date: string | null | undefined): string {

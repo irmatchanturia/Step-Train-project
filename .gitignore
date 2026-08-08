@@ -43,3 +43,8 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 src/environments/environment.development.ts
+
+# AI Server
+/ai-server/node_modules/
+/ai-server/dist/
+/ai-server/.env

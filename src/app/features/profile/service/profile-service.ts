@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { map, Observable, tap, throwError } from 'rxjs';
+import { map, Observable, switchMap, tap, throwError } from 'rxjs';
+
 import {
   ProfileResponse,
   ProfileUser,
@@ -14,15 +15,20 @@ import { AuthService } from '../../registration/service/auth';
 })
 export class ProfileService {
   private readonly profileUrl = 'https://trainsapi.stepacademy.ge/api/users/me';
-  private readonly updateProfileUrl = 'https://trainsapi.stepacademy.ge/api/users';
-  private readonly currentUserSignal = signal<ProfileUser | null>(null);
-  private readonly authService = inject(AuthService);
-  readonly currentUser = this.currentUserSignal.asReadonly();
 
-  constructor(private http: HttpClient) {}
+  private readonly updateProfileUrl = 'https://trainsapi.stepacademy.ge/api/users';
+
+  private readonly currentUserSignal = signal<ProfileUser | null>(null);
+
+  private readonly authService = inject(AuthService);
+
+  private readonly http = inject(HttpClient);
+
+  readonly currentUser = this.currentUserSignal.asReadonly();
 
   getCurrentUser(): Observable<ProfileUser> {
     const accessToken = this.authService.getAccessToken();
+
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }
@@ -31,17 +37,22 @@ export class ProfileService {
       Authorization: `Bearer ${accessToken}`,
     });
 
-    return this.http.get<ProfileResponse>(this.profileUrl, { headers }).pipe(
-      map((response) => response.data),
+    return this.http
+      .get<ProfileResponse>(this.profileUrl, {
+        headers,
+      })
+      .pipe(
+        map((response) => response.data),
 
-      tap((user) => {
-        this.currentUserSignal.set(user);
-      }),
-    );
+        tap((user) => {
+          this.currentUserSignal.set(user);
+        }),
+      );
   }
 
   updateCurrentUser(request: UpdateProfileRequest): Observable<ProfileUser> {
     const accessToken = this.authService.getAccessToken();
+
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }
@@ -50,16 +61,26 @@ export class ProfileService {
       Authorization: `Bearer ${accessToken}`,
     });
 
-    return this.http.put<ProfileResponse>(this.updateProfileUrl, request, { headers }).pipe(
-      map((response) => response.data),
-      tap((user) => {
-        this.currentUserSignal.set(user);
-      }),
-    );
+    /*
+     * PUT response-ს აღარ ვენდობით როგორც
+     * საბოლოო ProfileUser-ს.
+     *
+     * Update-ის წარმატების შემდეგ მაშინვე
+     * ვაკეთებთ GET /users/me-ს.
+     *
+     * ამიტომ UI refresh-ის გარეშეც
+     * ზუსტად backend-ში შენახულ მონაცემს მიიღებს.
+     */
+    return this.http
+      .put<unknown>(this.updateProfileUrl, request, {
+        headers,
+      })
+      .pipe(switchMap(() => this.getCurrentUser()));
   }
 
   changePassword(request: ChangePasswordRequest): Observable<unknown> {
     const accessToken = this.authService.getAccessToken();
+
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }
@@ -71,12 +92,15 @@ export class ProfileService {
     return this.http.put<unknown>(
       'https://trainsapi.stepacademy.ge/api/users/change-password',
       request,
-      { headers },
+      {
+        headers,
+      },
     );
   }
 
   deleteProfile(): Observable<unknown> {
     const accessToken = this.authService.getAccessToken();
+
     if (!accessToken) {
       return throwError(() => new Error('Access token was not found'));
     }

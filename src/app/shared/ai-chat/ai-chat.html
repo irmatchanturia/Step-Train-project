@@ -1,0 +1,93 @@
+<button
+  id="ai-chat-toggle"
+  class="chat-toggle"
+  type="button"
+  aria-label="Open AI assistant"
+  (click)="toggleChat()"
+>
+  <span *ngIf="!isOpen">✦</span>
+  <span *ngIf="isOpen">×</span>
+</button>
+
+<section *ngIf="isOpen" class="chat-panel">
+  <header class="chat-header">
+    <div>
+      <strong>STEP AI</strong>
+      <span>Train Assistant</span>
+    </div>
+
+    <button type="button" class="close-button" aria-label="Close" (click)="toggleChat()">×</button>
+  </header>
+
+  <div #messagesContainer class="messages">
+    <div *ngIf="messages.length === 0" class="welcome-message">
+      <div class="assistant-icon">✦</div>
+
+      <strong>როგორ შემიძლია დაგეხმაროთ?</strong>
+
+      <p>მკითხეთ მატარებლების, განრიგის, ფასების ან ბილეთის დაჯავშნის შესახებ.</p>
+    </div>
+
+    <div
+      *ngFor="let chatMessage of messages"
+      class="message-row"
+      [class.user-row]="chatMessage.role === 'user'"
+    >
+      <div
+        class="message-bubble"
+        [class.user-message]="chatMessage.role === 'user'"
+        [class.assistant-message]="chatMessage.role === 'assistant'"
+      >
+        {{ chatMessage.content }}
+      </div>
+
+      <div
+        *ngIf="chatMessage.bookingProposal && !chatMessage.bookingConfirmed"
+        class="booking-actions"
+      >
+        <button
+          type="button"
+          class="confirm-button"
+          [disabled]="isBooking"
+          (click)="confirmBooking(chatMessage)"
+        >
+          {{ isBooking ? 'ჯავშნის შექმნა...' : 'დადასტურება' }}
+        </button>
+
+        <button
+          type="button"
+          class="cancel-button"
+          [disabled]="isBooking"
+          (click)="cancelBooking(chatMessage)"
+        >
+          გაუქმება
+        </button>
+      </div>
+
+      <div *ngIf="chatMessage.bookingConfirmed" class="booking-confirmed">✓ დადასტურებულია</div>
+    </div>
+
+    <div *ngIf="isSending" class="message-row">
+      <div class="message-bubble assistant-message typing">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <form class="chat-input" (ngSubmit)="sendMessage()">
+    <input
+      id="ai-chat-message"
+      type="text"
+      name="aiMessage"
+      [(ngModel)]="message"
+      [disabled]="isSending"
+      autocomplete="off"
+      maxlength="2000"
+      placeholder="მომწერეთ შეტყობინება..."
+    />
+
+    <button id="ai-chat-send" type="submit" [disabled]="isSending || !message.trim()">➤</button>
+  </form>
+</section>
