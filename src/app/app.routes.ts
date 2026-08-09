@@ -15,11 +15,16 @@ import { SelectCoach } from './features/booking/select-coach/select-coach';
 import { SelectDate } from './features/booking/select-date/select-date';
 import { SelectSeats } from './features/booking/select-seats/select-seats';
 import { Confirmation } from './features/booking/confirmation/confirmation';
+import { ForgotPassword } from './features/registration/forgot-password/forgot-password';
+import { resetTokenGuard } from './core/guards/reset-token-guard';
+import { ResetPassword } from './features/registration/reset-password/reset-password';
+import { VerifyEmail } from './features/registration/verify-email/verify-email';
 
 export const routes: Routes = [
   {
     path: '',
     component: Home,
+    canActivate: [resetTokenGuard],
   },
   {
     path: 'sign-up',
@@ -28,6 +33,18 @@ export const routes: Routes = [
   {
     path: 'sign-in',
     component: SignIn,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPassword,
+  },
+  {
+    path: 'reset-password',
+    component: ResetPassword,
+  },
+  {
+    path: 'verify-email',
+    component: VerifyEmail,
   },
   {
     path: 'trains',

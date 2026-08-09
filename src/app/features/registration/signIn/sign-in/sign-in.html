@@ -122,9 +122,9 @@
             </span>
           </label>
 
-          <button class="forgot-password" type="button">
-            {{ 'SIGN_IN.FORM.FORGOT_PASSWORD' | translate }}
-          </button>
+          <a class="forgot-password" routerLink="/forgot-password">
+            {{ 'SIGN_IN.FORGOT_PASSWORD' | translate }}
+          </a>
         </div>
 
         @if (errorMessageKey) {

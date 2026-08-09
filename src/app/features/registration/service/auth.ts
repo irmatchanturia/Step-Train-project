@@ -33,8 +33,6 @@ export class AuthService {
 
     this.isAuthenticated.set(true);
 
-    console.log('Saving tokens in:', rememberMe ? 'localStorage' : 'sessionStorage');
-
     console.log(
       'Token exists immediately after saving:',
       Boolean(storage.getItem(this.accessTokenKey)),
@@ -70,4 +68,56 @@ export class AuthService {
       localStorage.getItem(this.accessTokenKey) ?? sessionStorage.getItem(this.accessTokenKey),
     );
   }
+  forgetPassword(email: string): Observable<ForgetPasswordResponse> {
+    const encodedEmail = encodeURIComponent(email.trim());
+
+    return this.http.post<ForgetPasswordResponse>(
+      `${this.baseUrl}/forget-password/${encodedEmail}`,
+      null,
+    );
+  }
+  resetPassword(token: string, password: string): Observable<ResetPasswordResponse> {
+    return this.http.put<ResetPasswordResponse>(`${this.baseUrl}/reset-password`, {
+      token,
+      password,
+    });
+  }
+  resendEmailVerification(email: string): Observable<ResendEmailVerificationResponse> {
+    const encodedEmail = encodeURIComponent(email.trim());
+
+    return this.http.post<ResendEmailVerificationResponse>(
+      `${this.baseUrl}/resend-email-verification/${encodedEmail}`,
+      null,
+    );
+  }
+  verifyEmail(request: VerifyEmailRequest): Observable<VerifyEmailResponse> {
+    return this.http.put<VerifyEmailResponse>(`${this.baseUrl}/verify-email`, request);
+  }
+}
+export interface ForgetPasswordResponse {
+  data: string;
+  meta?: Record<string, unknown>;
+}
+
+export interface ResetPasswordResponse {
+  data: number;
+  meta?: Record<string, unknown>;
+}
+
+export interface ResendEmailVerificationResponse {
+  data: number;
+  meta?: Record<string, unknown>;
+}
+
+export interface VerifyEmailRequest {
+  email: string;
+  code: string;
+}
+
+export interface VerifyEmailResponse {
+  data: {
+    accessToken: string;
+    refreshToken: string;
+  };
+  meta?: Record<string, unknown>;
 }

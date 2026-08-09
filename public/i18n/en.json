@@ -650,5 +650,106 @@
       "SELECT_AT_LEAST_ONE": "Please select at least one seat.",
       "INVALID_BOOKING": "Invalid booking information."
     }
+  },
+  "FORGOT_PASSWORD": {
+    "BRAND_SUBTITLE": "Train ticket booking",
+    "TITLE": "Forgot password",
+    "DESCRIPTION": "Enter your email address and we will send you a password reset link.",
+    "BACK_TO_SIGN_IN": "Back to sign in",
+
+    "FORM": {
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "Enter your email",
+      "SUBMIT": "Send reset link",
+      "SENDING": "Sending..."
+    },
+
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_INVALID": "Enter a valid email address."
+    },
+
+    "MESSAGES": {
+      "ERROR": "The request could not be sent. Please try again."
+    },
+
+    "SUCCESS": {
+      "TITLE": "Check your email",
+      "DESCRIPTION": "If the email exists in our system, a password reset link has been sent.",
+      "BACK_TO_SIGN_IN": "Back to sign in"
+    }
+  },
+  "RESET_PASSWORD": {
+    "BRAND_SUBTITLE": "Train ticket booking",
+    "TITLE": "Create a new password",
+    "DESCRIPTION": "Enter a new password for your account.",
+
+    "FORM": {
+      "PASSWORD": "New password",
+      "PASSWORD_PLACEHOLDER": "Enter your new password",
+      "CONFIRM_PASSWORD": "Confirm password",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm your new password",
+      "SUBMIT": "Change password",
+      "SAVING": "Changing..."
+    },
+
+    "VALIDATION": {
+      "PASSWORD_REQUIRED": "Password is required.",
+      "PASSWORD_LENGTH": "Password must contain at least 8 characters.",
+      "PASSWORD_UPPERCASE": "Password must contain at least one uppercase letter.",
+      "PASSWORD_SPECIAL": "Password must contain at least one special character.",
+      "CONFIRM_PASSWORD_REQUIRED": "Please confirm your password.",
+      "PASSWORDS_MISMATCH": "Passwords do not match."
+    },
+
+    "MESSAGES": {
+      "ERROR": "The password could not be changed. The link may be expired or already used.",
+      "INVALID_LINK": "The password reset link is invalid."
+    },
+
+    "SUCCESS": {
+      "TITLE": "Password changed",
+      "DESCRIPTION": "Your new password has been saved successfully. You can now sign in.",
+      "SIGN_IN": "Sign in"
+    },
+
+    "INVALID_LINK": {
+      "TITLE": "Invalid link",
+      "DESCRIPTION": "The required reset token could not be found in this password reset link.",
+      "REQUEST_NEW": "Request a new link"
+    }
+  },
+  "VERIFY_EMAIL": {
+    "BRAND_SUBTITLE": "Train ticket booking",
+    "TITLE": "Verify your email",
+    "DESCRIPTION": "Enter the verification code sent to your email address.",
+
+    "FORM": {
+      "EMAIL": "Email",
+      "EMAIL_PLACEHOLDER": "Enter your email",
+      "CODE": "Verification code",
+      "CODE_PLACEHOLDER": "Enter verification code",
+      "VERIFY": "Verify email",
+      "VERIFYING": "Verifying..."
+    },
+
+    "VALIDATION": {
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_INVALID": "Enter a valid email address.",
+      "CODE_REQUIRED": "Verification code is required."
+    },
+
+    "MESSAGES": {
+      "SUCCESS": "Your email has been verified successfully.",
+      "ERROR": "Email verification failed. Check the code and try again.",
+      "RESEND_SUCCESS": "A new verification code has been sent.",
+      "RESEND_ERROR": "The verification code could not be resent."
+    },
+
+    "RESEND": {
+      "QUESTION": "Didn't receive the code?",
+      "BUTTON": "Resend",
+      "SENDING": "Sending..."
+    }
   }
 }

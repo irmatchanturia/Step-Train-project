@@ -1,7 +1,8 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+
 import { environment } from '../../../environments/environment';
-import { AuthService } from '../../../app/features/registration/service/auth';
+import { AuthService } from '../../features/registration/service/auth';
 
 export const apiKeyInterceptorInterceptor: HttpInterceptorFn = (req, next) => {
   const isStepApiRequest = req.url.startsWith('https://trainsapi.stepacademy.ge/api');

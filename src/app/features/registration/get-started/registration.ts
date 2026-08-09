@@ -78,20 +78,34 @@ export class SignUp {
     this.isLoading = true;
 
     this.authService.signUp(userData).subscribe({
-      next: () => {
+      next: async () => {
         this.isLoading = false;
+
+
+        const navigationSucceeded = await this.router.navigate(['/verify-email'], {
+          queryParams: {
+            email: userData.email,
+          },
+        });
+
+
+        if (!navigationSucceeded) {
+          console.error('Navigation to verify-email was cancelled.');
+
+          return;
+        }
 
         const successMessage = this.translateService.instant(
           'SIGN_UP.MESSAGES.REGISTRATION_SUCCESS',
         );
 
         this.toastService.success(successMessage);
-
-        void this.router.navigate(['/sign-in']);
       },
 
       error: (error: HttpErrorResponse) => {
         this.isLoading = false;
+
+        console.error('Registration failed:', error);
 
         if (error.error?.message) {
           this.backendErrorMessage = error.error.message;
