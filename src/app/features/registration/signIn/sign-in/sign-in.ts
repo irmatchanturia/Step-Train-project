@@ -16,15 +16,10 @@ import { AuthService } from '../../service/auth';
 })
 export class SignIn {
   private readonly authService = inject(AuthService);
-
   private readonly router = inject(Router);
-
   private readonly route = inject(ActivatedRoute);
-
   private readonly toastService = inject(ToastService);
-
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
-
   private readonly translateService = inject(TranslateService);
 
   email = '';
@@ -58,7 +53,6 @@ export class SignIn {
       .pipe(
         finalize(() => {
           this.isLoading = false;
-
           this.changeDetectorRef.markForCheck();
         }),
       )
@@ -86,7 +80,7 @@ export class SignIn {
 
           console.error('Backend response:', error.error);
 
-          if (error.status === 401) {
+          if (error.status === 400 || error.status === 401) {
             this.errorMessageKey = 'SIGN_IN.MESSAGES.INVALID_CREDENTIALS';
           } else if (error.status === 0) {
             this.errorMessageKey = 'SIGN_IN.MESSAGES.SERVER_CONNECTION';
@@ -112,10 +106,24 @@ export class SignIn {
   }
 
   private extractBackendMessage(error: HttpErrorResponse): string | null {
+    let message: string | null = null;
+
     if (typeof error.error === 'string') {
-      return error.error;
+      message = error.error;
+    } else {
+      message = error.error?.message ?? error.error?.title ?? error.error?.data?.message ?? null;
     }
 
-    return error.error?.message ?? error.error?.title ?? error.error?.data?.message ?? null;
+    if (!message) {
+      return null;
+    }
+
+    const normalizedMessage = message.trim().toLowerCase();
+
+    if (normalizedMessage === 'error' || normalizedMessage === 'unknown error') {
+      return null;
+    }
+
+    return message;
   }
 }
