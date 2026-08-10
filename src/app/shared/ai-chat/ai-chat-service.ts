@@ -30,8 +30,7 @@ export interface CreateBookingResponse {
 export class AiChatService {
   private readonly http = inject(HttpClient);
 
-  private readonly aiChatUrl = 'http://localhost:3000/ai/chat';
-
+  private readonly aiChatUrl = '/ai/chat';
   private readonly bookingsUrl = 'https://trainsapi.stepacademy.ge/api/bookings';
 
   sendMessage(message: string, history: AiHistoryMessage[]): Observable<AiChatResponse> {
