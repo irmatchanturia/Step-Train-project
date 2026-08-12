@@ -17,8 +17,8 @@ export interface BookingConfirmationPayload {
 export class BookingNotificationService {
   private readonly http = inject(HttpClient);
 
-  private readonly webhookUrl = 'http://localhost:5678/webhook/booking-confirmation';
-
+  private readonly webhookUrl = '/webhook/booking-confirmation';
+  
   sendBookingConfirmation(payload: BookingConfirmationPayload): Observable<unknown> {
     return this.http.post(this.webhookUrl, payload);
   }
