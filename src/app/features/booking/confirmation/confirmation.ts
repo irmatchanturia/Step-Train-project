@@ -5,8 +5,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { TranslatePipe } from '@ngx-translate/core';
-import { finalize, forkJoin } from 'rxjs';
-
+import { finalize, forkJoin, switchMap } from 'rxjs';
 import {
   SeatAvailability,
   TrainCoach,
@@ -18,6 +17,8 @@ import { TrainService } from '../../registration/service/trains-service';
 import { BookingsService } from '../../profile/service/bookings-service';
 import { CreateBookingRequest } from '../../booking/models/create-booking-models';
 import { BookingStateService } from '../service/booking-state';
+import { ProfileService } from '../../profile/service/profile-service';
+import { BookingNotificationService } from '../service/booking-notification-service';
 
 @Component({
   selector: 'app-confirmation',
@@ -38,6 +39,9 @@ export class Confirmation implements OnInit {
   private readonly bookingStateService = inject(BookingStateService);
 
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly profileService = inject(ProfileService);
+
+  private readonly bookingNotificationService = inject(BookingNotificationService);
 
   private trainId: number | null = null;
   private scheduleId: number | null = null;
@@ -287,13 +291,16 @@ export class Confirmation implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          this.bookingId = response.data;
+          const bookingId = response.data;
+
+          this.bookingId = bookingId;
+
+          this.sendBookingConfirmation(bookingId);
 
           this.bookingStateService.clearDraft();
 
           this.changeDetectorRef.detectChanges();
         },
-
         error: (error: HttpErrorResponse) => {
           console.error('Failed to create booking:', error);
 
@@ -330,5 +337,42 @@ export class Confirmation implements OnInit {
     }
 
     return this.coach.price * this.selectedSeats.length;
+  }
+  private sendBookingConfirmation(bookingId: number): void {
+    const schedule = this.schedule;
+
+    if (!schedule || !this.travelDate || this.selectedSeats.length === 0) {
+      return;
+    }
+
+    const from = schedule.origin;
+    const to = schedule.destination;
+    const date = this.travelDate;
+
+    const seat = this.selectedSeats.map((selectedSeat) => selectedSeat.number).join(', ');
+
+    this.profileService
+      .getCurrentUser()
+      .pipe(
+        switchMap((user) =>
+          this.bookingNotificationService.sendBookingConfirmation({
+            email: user.email,
+            bookingId,
+            from,
+            to,
+            date,
+            seat,
+          }),
+        ),
+      )
+      .subscribe({
+        next: () => {
+          console.log('Booking confirmation email sent');
+        },
+
+        error: (error) => {
+          console.error('Booking was created, but confirmation email failed:', error);
+        },
+      });
   }
 }
