@@ -93,7 +93,12 @@
       @if (filteredTrains.length > 0) {
         <section class="train-results">
           @for (train of filteredTrains; track train.id) {
-            <article class="train-card">
+            <button
+              class="train-card"
+              type="button"
+              (click)="openTrain(train.id)"
+              [attr.aria-label]="train.name"
+            >
               <img [src]="train.thumbnail" [alt]="train.name" />
 
               <h2>
@@ -114,7 +119,7 @@
                 {{ 'HOME.TRAIN.TOTAL_SEATS' | translate }}:
                 {{ train.totalSeats }}
               </p>
-            </article>
+            </button>
           }
         </section>
       }

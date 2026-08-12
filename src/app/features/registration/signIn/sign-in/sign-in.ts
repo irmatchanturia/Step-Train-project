@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -14,13 +14,16 @@ import { AuthService } from '../../service/auth';
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css',
 })
-export class SignIn {
+export class SignIn implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly translateService = inject(TranslateService);
+
+  private readonly rememberedEmailKey = 'rememberedEmail';
+  private readonly rememberedPasswordKey = 'rememberedPassword';
 
   email = '';
   password = '';
@@ -30,6 +33,10 @@ export class SignIn {
   backendErrorMessage = '';
 
   isLoading = false;
+
+  ngOnInit(): void {
+    this.loadRememberedCredentials();
+  }
 
   signIn(): void {
     this.errorMessageKey = '';
@@ -62,6 +69,8 @@ export class SignIn {
 
           this.authService.saveTokens(accessToken, refreshToken, this.rememberMe);
 
+          this.handleRememberMe();
+
           const successMessage = this.translateService.instant('SIGN_IN.MESSAGES.LOGIN_SUCCESS');
 
           this.toastService.success(successMessage);
@@ -77,7 +86,6 @@ export class SignIn {
 
         error: (error: HttpErrorResponse) => {
           console.error('Login error:', error);
-
           console.error('Backend response:', error.error);
 
           if (error.status === 400 || error.status === 401) {
@@ -99,10 +107,29 @@ export class SignIn {
       });
   }
 
-  onRememberMeChange(event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
+  private handleRememberMe(): void {
+    if (this.rememberMe) {
+      localStorage.setItem(this.rememberedEmailKey, this.email.trim());
 
-    this.rememberMe = checkbox.checked;
+      localStorage.setItem(this.rememberedPasswordKey, this.password);
+
+      return;
+    }
+
+    localStorage.removeItem(this.rememberedEmailKey);
+    localStorage.removeItem(this.rememberedPasswordKey);
+  }
+
+  private loadRememberedCredentials(): void {
+    const rememberedEmail = localStorage.getItem(this.rememberedEmailKey);
+
+    const rememberedPassword = localStorage.getItem(this.rememberedPasswordKey);
+
+    if (rememberedEmail && rememberedPassword) {
+      this.email = rememberedEmail;
+      this.password = rememberedPassword;
+      this.rememberMe = true;
+    }
   }
 
   private extractBackendMessage(error: HttpErrorResponse): string | null {
