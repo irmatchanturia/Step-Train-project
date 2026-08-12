@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-
 import { AuthService } from '../../../app/features/registration/service/auth';
 
 @Component({
@@ -13,6 +12,7 @@ import { AuthService } from '../../../app/features/registration/service/auth';
 export class Header {
   private readonly authService = inject(AuthService);
   private readonly translateService = inject(TranslateService);
+  private readonly router = inject(Router);
 
   readonly isAuthenticated = this.authService.isAuthenticated;
 
@@ -42,5 +42,10 @@ export class Header {
     localStorage.setItem('language', language);
 
     this.translateService.use(language);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/sign-in']);
   }
 }

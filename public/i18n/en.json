@@ -4,7 +4,8 @@
     "TRAINS": "Trains",
     "MY_PROFILE": "My Profile",
     "SIGN_IN": "Sign In",
-    "GET_STARTED": "Get Started"
+    "GET_STARTED": "Get Started",
+    "LOG_OUT": "Log Out"
   },
   "FOOTER": {
     "DESCRIPTION": "A simple way to discover train routes and plan your next journey.",

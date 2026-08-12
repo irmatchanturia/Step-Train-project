@@ -52,6 +52,10 @@
       <a class="get-started-button" routerLink="/sign-up">
         {{ 'HEADER.GET_STARTED' | translate }}
       </a>
+    } @else {
+      <button class="logout-button" type="button" (click)="logout()">
+        {{ 'HEADER.LOG_OUT' | translate }}
+      </button>
     }
   </div>
 </header>
